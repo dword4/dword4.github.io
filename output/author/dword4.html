@@ -62,8 +62,8 @@
 
     <div class='article'>
         <div class="content-title">
-            <a href="https://dword4.github.io/clean-slate.html"><h1>Clean&nbsp;Slate</h1></a>
-Mon 16 August 2021
+            <a href="https://dword4.github.io/staircase-programming-challenge.html"><h1>Staircase&nbsp;Challenge</h1></a>
+Fri 27 August 2021
 
 by <a class="url fn" href="https://dword4.github.io/author/dword4.html">dword4</a>
  
@@ -72,11 +72,47 @@ by <a class="url fn" href="https://dword4.github.io/author/dword4.html">dword4</
  
         </div>
         
-        <div><p>I have pondered doing this for quite a while, patching Wordpress becomes tiresome and the majority of its features
-are of no real use to&nbsp;me</p></div>
+        <div><p>The other day I was doing a programming challenge somewhere online and was given the staircase problem randomly, its a pretty simple one but after looking my code over a few times I thought I had this about as simplified as possible without resorting to something like using&nbsp;lambdas.</p>
+<div class="highlight"><pre><span></span><code><span class="ch">#!/usr/bin/env python3</span>
+
+<span class="k">def</span> <span class="nf">caseit</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="n">spaces</span> <span class="o">=</span> <span class="n">n</span> <span class="o">-</span> <span class="mi">1</span>
+    <span class="n">stairs</span> <span class="o">=</span> <span class="mi">1</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+        <span class="n">space</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="n">stair</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">sp</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">spaces</span><span class="p">):</span>
+            <span class="n">space</span> <span class="o">+=</span> <span class="s2">&quot; &quot;</span>
+        <span class="k">for</span> <span class="n">st</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">stairs</span><span class="p">):</span>
+            <span class="n">stair</span> <span class="o">+=</span> <span class="s2">&quot;#&quot;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">space</span><span class="si">}{</span><span class="n">stair</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">spaces</span> <span class="o">-=</span> <span class="mi">1</span>
+        <span class="n">stairs</span> <span class="o">+=</span> <span class="mi">1</span>
+
+<span class="n">caseit</span><span class="p">(</span><span class="mi">35</span><span class="p">)</span>
+</code></pre></div></div>
         <hr />
     </div>
 		
+
+ 
+        
+
+ 
+
+    <div class='article'>
+        <a href="https://dword4.github.io/clean-slate.html"><h2>Clean&nbsp;Slate</h2></a>
+        <div class= "well small"> Mon 16 August 2021
+
+by <a class="url fn" href="https://dword4.github.io/author/dword4.html">dword4</a>
+ 
+
+
+ </div>
+        <div class="summary"><p>some thoughts on starting&nbsp;over</p> <a class="btn btn-info xsmall" href="https://dword4.github.io/clean-slate.html">read more</a></div>
+    </div>	
+				
 
  
         
@@ -152,6 +188,7 @@ by <a class="url fn" href="https://dword4.github.io/author/dword4.html">dword4</
                 </li>
                 
                 <li><a href="https://dword4.github.io/category/cloud-aws.html">cloud-aws</a></li>
+                <li><a href="https://dword4.github.io/category/programming.html">programming</a></li>
                 <li><a href="https://dword4.github.io/category/projects.html">projects</a></li>
                 <li><a href="https://dword4.github.io/category/thoughts.html">thoughts</a></li>
                    
