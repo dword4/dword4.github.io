@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>dword4.github.io - Finding Data in the <span class="caps">NHL</span> <span class="caps">API</span></title>
+    <title>dword4.github.io - programming</title>
     <meta name="description" content="">
     <meta name="author" content="dword4">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -55,23 +55,58 @@
     <div class="row">
 
         <div class="span9">
+        
+
+        
+
+
     <div class='article'>
         <div class="content-title">
-            <h1>Finding Data in the <span class="caps">NHL</span> <span class="caps">API</span></h1>
-Wed 03 February 2021
+            <a href="https://dword4.github.io/staircase-programming-challenge.html"><h1>Staircase&nbsp;Challenge</h1></a>
+Fri 27 August 2021
 
 by <a class="url fn" href="https://dword4.github.io/author/dword4.html">dword4</a>
  
 
 
+ 
         </div>
-	
-        <div><p>So I decided to retake my <span class="caps">NHL</span> <span class="caps">API</span> video to try to improve things (now that I know how to get my audio better) and maybe make it a little easier to digest. Turns out even a 3 and a half minute video takes hours to get just right and somehow I still am not totally satisfied with it. I think perhaps this may be something I spend more time on in the near future to try to provide people with a little bit of educational material. In the meantime feel free to go have a watch of Finding Data in the <span class="caps">NHL</span> <span class="caps">API</span> over on&nbsp;Odysee</p>
-<iframe id="lbry-iframe" width="560" height="315" src="https://odysee.com/$/embed/finding-nhl-api-data-ver2/34ef2fb7111b89d085278977ed360a5e2f26b854?r=78vvaGh68aEumFv5QdiG1ocN7FFBLXGi" allowfullscreen></iframe></div>
-	
-        <hr>
+        
+        <div><p>The other day I was doing a programming challenge somewhere online and was given the staircase problem randomly, its a pretty simple one but after looking my code over a few times I thought I had this about as simplified as possible without resorting to something like using&nbsp;lambdas.</p>
+<div class="highlight"><pre><span></span><code><span class="ch">#!/usr/bin/env python3</span>
 
+<span class="k">def</span> <span class="nf">caseit</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="n">spaces</span> <span class="o">=</span> <span class="n">n</span> <span class="o">-</span> <span class="mi">1</span>
+    <span class="n">stairs</span> <span class="o">=</span> <span class="mi">1</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+        <span class="n">space</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="n">stair</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">sp</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">spaces</span><span class="p">):</span>
+            <span class="n">space</span> <span class="o">+=</span> <span class="s2">&quot; &quot;</span>
+        <span class="k">for</span> <span class="n">st</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">stairs</span><span class="p">):</span>
+            <span class="n">stair</span> <span class="o">+=</span> <span class="s2">&quot;#&quot;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">space</span><span class="si">}{</span><span class="n">stair</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">spaces</span> <span class="o">-=</span> <span class="mi">1</span>
+        <span class="n">stairs</span> <span class="o">+=</span> <span class="mi">1</span>
+
+<span class="n">caseit</span><span class="p">(</span><span class="mi">35</span><span class="p">)</span>
+</code></pre></div></div>
+        <hr />
     </div>
+		
+<div class="pagination">
+<ul>
+    <li class="prev disabled"><a href="#">&larr; Previous</a></li>
+
+    <li class="active"><a href="https://dword4.github.io/category/programming.html">1</a></li>
+
+    <li class="next disabled"><a href="#">&rarr; Next</a></li>
+
+</ul>
+</div>
+ 
+  
         </div>
         
         <div class="span3">
