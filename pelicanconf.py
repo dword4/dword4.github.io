@@ -11,7 +11,7 @@ TIMEZONE = 'America/New_York'
 
 DEFAULT_LANG = 'en'
 
-THEME = "tuxlite_tbs"
+THEME = "/home/dhynes/pelican-themes/tuxlite_tbs"
 TYPOGRIFY = True
 # Feed generation is usually not desired when developing
 FEED_ALL_ATOM = None
