@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="utf-8" />
+    <!-- Set the viewport width to device width for mobile -->
+    <meta name="viewport" content="width=device-width" />
+
+    <title>dword4 - general</title>
+
+    <link rel="stylesheet" href="/theme/css/normalize.css" />
+    <link rel="stylesheet" href="/theme/css/foundation.min.css" />
+    <link rel="stylesheet" href="/theme/css/style.css" />
+    <link rel="stylesheet" href="/theme/css/pygments.css" />	
+    <script src="/theme/js/custom.modernizr.js"></script>
+
+    <!-- So Firefox can bookmark->"abo this site" -->
+
+</head>
+
+<body>
+
+<!-- Nav Bar -->
+<nav>
+<div class="top-bar">
+<div class="row">
+    <div class="large-9 large-centered columns">
+	    <h1><a href="">dword4</a></h1>
+    </div>
+</div>
+</div>
+
+<!-- Show menu items and pages -->
+<div class="row">
+<div class="large-9 columns">
+    <ul class="button-group navigation">
+
+            <li><a href="/pages/about-me.html" class="button secondary small">About&nbsp;Me</a></li>
+    </ul>
+</div>
+</div>
+</nav>
+<!-- End Nav -->
+
+
+<!-- Main Page Content and Sidebar -->
+<div class="row">
+
+    <!-- Main Blog Content -->
+    <div class="large-9 columns">
+        
+        
+
+            <article>
+                <a href="/always-check-env-variables.html"><h3 class="article-title">Crontab – Always Check your Environment&nbsp;Variables</h3></a>
+<h6 class="subheader" title="2016-06-16T00:00:00-04:00">Thu 16 June 2016
+</h6>
+
+
+<hr>
+<p>So I have been running into this issue for like a month now where a script that I can run from the command line by hand executes fine, but when I try to run it via a crontab job it just goes absolutely pear shaped without any real explanation.  Finally I got some time at the beginning of a shift to sit with one of our senior guys to take a look at it as the script provides data the entire team uses and when it doesn&#8217;t run they get cranky.  It turns out that the environment my cron jobs run as is highly different, as indicated by the following which is obtained by adding adding a line to output env to a text file every time the crontab job&nbsp;ran.</p>
+<div class="highlight"><pre><span></span><code><span class="nv">XDG_SESSION_ID</span><span class="o">=</span><span class="m">159</span>
+<span class="nv">SHELL</span><span class="o">=</span>/bin/sh
+<span class="nv">OLDPWD</span><span class="o">=</span>/home/dword
+<span class="nv">USER</span><span class="o">=</span>dword
+&lt;strong&gt;PATH<span class="o">=</span>/usr/bin:/bin
+&lt;/strong&gt;PWD<span class="o">=</span>/home/dword/labmap
+<span class="nv">LANG</span><span class="o">=</span>en_US.UTF-8
+<span class="nv">HOME</span><span class="o">=</span>/home/dword
+<span class="nv">SHLVL</span><span class="o">=</span><span class="m">2</span>
+<span class="nv">LOGNAME</span><span class="o">=</span>dword
+<span class="nv">XDG_RUNTIME_DIR</span><span class="o">=</span>/run/user/1000
+<span class="nv">_</span><span class="o">=</span>/usr/bin/env
+</code></pre></div>
+
+<p>Compare that against the results from env when run by&nbsp;hand</p>
+<div class="highlight"><pre><span></span><code> <span class="nv">XDG_SESSION_ID</span><span class="o">=</span><span class="m">145</span>
+ <span class="nv">HOSTNAME</span><span class="o">=</span>dword-cent7
+ <span class="nv">TERM</span><span class="o">=</span>xterm
+ <span class="nv">SHELL</span><span class="o">=</span>/bin/bash
+ <span class="nv">HISTSIZE</span><span class="o">=</span><span class="m">500000</span>
+ <span class="nv">SSH_CLIENT</span><span class="o">=</span><span class="m">192</span>.168.42.120 <span class="m">49429</span> <span class="m">22</span>
+ <span class="nv">SSH_TTY</span><span class="o">=</span>/dev/pts/0
+ <span class="nv">USER</span><span class="o">=</span>dword
+ <span class="nv">LS_COLORS</span><span class="o">=</span><span class="nv">rs</span><span class="o">=</span><span class="m">0</span>:di<span class="o">=</span><span class="m">01</span><span class="p">;</span><span class="m">34</span>:ln<span class="o">=</span><span class="m">01</span><span class="p">;</span><span class="m">36</span>:mh<span class="o">=</span><span class="m">00</span>:pi<span class="o">=</span><span class="m">40</span><span class="p">;</span><span class="m">33</span>:so<span class="o">=</span><span class="m">01</span><span class="p">;</span><span class="m">35</span>:do<span class="o">=</span><span class="m">01</span><span class="p">;</span><span class="m">35</span>:bd<span class="o">=</span><span class="m">40</span><span class="p">;</span><span class="m">33</span><span class="p">;</span><span class="m">01</span>:cd<span class="o">=</span><span class="m">40</span><span class="p">;</span><span class="m">33</span><span class="p">;</span><span class="m">01</span>:or<span class="o">=</span><span class="m">40</span><span class="p">;</span><span class="m">31</span><span class="p">;</span><span class="m">01</span>:mi<span class="o">=</span><span class="m">01</span><span class="p">;</span><span class="m">05</span><span class="p">;</span><span class="m">37</span><span class="p">;</span><span class="m">41</span>:su<span class="o">=</span><span class="m">37</span><span class="p">;</span><span class="m">41</span>:sg<span class="o">=</span><span class="m">30</span><span class="p">;</span><span class="m">43</span>:ca<span class="o">=</span><span class="m">30</span><span class="p">;</span><span class="m">41</span>:tw<span class="o">=</span><span class="m">30</span><span class="p">;</span><span class="m">42</span>:ow<span class="o">=</span><span class="m">34</span><span class="p">;</span><span class="m">42</span>:st<span class="o">=</span><span class="m">37</span><span class="p">;</span><span class="m">44</span>:ex<span class="o">=</span><span class="m">01</span><span class="p">;</span><span class="m">32</span>:*.tar<span class="o">=</span><span class="m">01</span><span class="p">;</span><span class="m">31</span>:*.tgz<span class="o">=</span><span class="m">01</span><span class="p">;</span><span class="m">31</span>:*.arc<span class="o">=</span><span class="m">01</span><span class="p">;</span><span class="m">31</span>:*.arj<span class="o">=</span><span class="m">01</span><span class="p">;</span><span class="m">31</span>:*.taz<span class="o">=</span><span class="m">01</span><span class="p">;</span><span class="m">31</span>:*.lha<span class="o">=</span><span class="m">01</span><span class="p">;</span><span class="m">31</span>:*.lz4<span class="o">=</span><span class="m">01</span><span class="p">;</span><span class="m">31</span>:*.lzh<span class="o">=</span><span class="m">01</span><span class="p">;</span><span class="m">31</span>:*.lzma<span class="o">=</span><span class="m">01</span><span class="p">;</span><span class="m">31</span>:*.tlz<span class="o">=</span><span class="m">01</span><span class="p">;</span><span class="m">31</span>:*.txz<span class="o">=</span><span class="m">01</span><span class="p">;</span><span class="m">31</span>:*.tzo<span class="o">=</span><span class="m">01</span><span class="p">;</span><span class="m">31</span>:*.t7z<span class="o">=</span><span class="m">01</span><span class="p">;</span><span class="m">31</span>:*.zip<span class="o">=</span><span class="m">01</span><span class="p">;</span><span class="m">31</span>:*.z<span class="o">=</span><span class="m">01</span><span class="p">;</span><span class="m">31</span>:*.Z<span class="o">=</span><span class="m">01</span><span class="p">;</span><span class="m">31</span>:*.dz<span class="o">=</span><span class="m">01</span><span class="p">;</span><span class="m">31</span>:*.gz<span class="o">=</span><span class="m">01</span><span class="p">;</span><span class="m">31</span>:*.lrz<span class="o">=</span><span class="m">01</span><span class="p">;</span><span class="m">31</span>:*.lz<span class="o">=</span><span class="m">01</span><span class="p">;</span><span class="m">31</span>:*.lzo<span class="o">=</span><span class="m">01</span><span class="p">;</span><span class="m">31</span>:*.xz<span class="o">=</span><span class="m">01</span><span class="p">;</span><span class="m">31</span>:*.bz2<span class="o">=</span><span class="m">01</span><span class="p">;</span><span class="m">31</span>:*.bz<span class="o">=</span><span class="m">01</span><span class="p">;</span><span class="m">31</span>:*.tbz<span class="o">=</span><span class="m">01</span><span class="p">;</span><span class="m">31</span>:*.tbz2<span class="o">=</span><span class="m">01</span><span class="p">;</span><span class="m">31</span>:*.tz<span class="o">=</span><span class="m">01</span><span class="p">;</span><span class="m">31</span>:*.deb<span class="o">=</span><span class="m">01</span><span class="p">;</span><span class="m">31</span>:*.rpm<span class="o">=</span><span class="m">01</span><span class="p">;</span><span class="m">31</span>:*.jar<span class="o">=</span><span class="m">01</span><span class="p">;</span><span class="m">31</span>:*.war<span class="o">=</span><span class="m">01</span><span class="p">;</span><span class="m">31</span>:*.ear<span class="o">=</span><span class="m">01</span><span class="p">;</span><span class="m">31</span>:*.sar<span class="o">=</span><span class="m">01</span><span class="p">;</span><span class="m">31</span>:*.rar<span class="o">=</span><span class="m">01</span><span class="p">;</span><span class="m">31</span>:*.alz<span class="o">=</span><span class="m">01</span><span class="p">;</span><span class="m">31</span>:*.ace<span class="o">=</span><span class="m">01</span><span class="p">;</span><span class="m">31</span>:*.zoo<span class="o">=</span><span class="m">01</span><span class="p">;</span><span class="m">31</span>:*.cpio<span class="o">=</span><span class="m">01</span><span class="p">;</span><span class="m">31</span>:*.7z<span class="o">=</span><span class="m">01</span><span class="p">;</span><span class="m">31</span>:*.rz<span class="o">=</span><span class="m">01</span><span class="p">;</span><span class="m">31</span>:*.cab<span class="o">=</span><span class="m">01</span><span class="p">;</span><span class="m">31</span>:*.jpg<span class="o">=</span><span class="m">01</span><span class="p">;</span><span class="m">35</span>:*.jpeg<span class="o">=</span><span class="m">01</span><span class="p">;</span><span class="m">35</span>:*.gif<span class="o">=</span><span class="m">01</span><span class="p">;</span><span class="m">35</span>:*.bmp<span class="o">=</span><span class="m">01</span><span class="p">;</span><span class="m">35</span>:*.pbm<span class="o">=</span><span class="m">01</span><span class="p">;</span><span class="m">35</span>:*.pgm<span class="o">=</span><span class="m">01</span><span class="p">;</span><span class="m">35</span>:*.ppm<span class="o">=</span><span class="m">01</span><span class="p">;</span><span class="m">35</span>:*.tga<span class="o">=</span><span class="m">01</span><span class="p">;</span><span class="m">35</span>:*.xbm<span class="o">=</span><span class="m">01</span><span class="p">;</span><span class="m">35</span>:*.xpm<span class="o">=</span><span class="m">01</span><span class="p">;</span><span class="m">35</span>:*.tif<span class="o">=</span><span class="m">01</span><span class="p">;</span><span class="m">35</span>:*.tiff<span class="o">=</span><span class="m">01</span><span class="p">;</span><span class="m">35</span>:*.png<span class="o">=</span><span class="m">01</span><span class="p">;</span><span class="m">35</span>:*.svg<span class="o">=</span><span class="m">01</span><span class="p">;</span><span class="m">35</span>:*.svgz<span class="o">=</span><span class="m">01</span><span class="p">;</span><span class="m">35</span>:*.mng<span class="o">=</span><span class="m">01</span><span class="p">;</span><span class="m">35</span>:*.pcx<span class="o">=</span><span class="m">01</span><span class="p">;</span><span class="m">35</span>:*.mov<span class="o">=</span><span class="m">01</span><span class="p">;</span><span class="m">35</span>:*.mpg<span class="o">=</span><span class="m">01</span><span class="p">;</span><span class="m">35</span>:*.mpeg<span class="o">=</span><span class="m">01</span><span class="p">;</span><span class="m">35</span>:*.m2v<span class="o">=</span><span class="m">01</span><span class="p">;</span><span class="m">35</span>:*.mkv<span class="o">=</span><span class="m">01</span><span class="p">;</span><span class="m">35</span>:*.webm<span class="o">=</span><span class="m">01</span><span class="p">;</span><span class="m">35</span>:*.ogm<span class="o">=</span><span class="m">01</span><span class="p">;</span><span class="m">35</span>:*.mp4<span class="o">=</span><span class="m">01</span><span class="p">;</span><span class="m">35</span>:*.m4v<span class="o">=</span><span class="m">01</span><span class="p">;</span><span class="m">35</span>:*.mp4v<span class="o">=</span><span class="m">01</span><span class="p">;</span><span class="m">35</span>:*.vob<span class="o">=</span><span class="m">01</span><span class="p">;</span><span class="m">35</span>:*.qt<span class="o">=</span><span class="m">01</span><span class="p">;</span><span class="m">35</span>:*.nuv<span class="o">=</span><span class="m">01</span><span class="p">;</span><span class="m">35</span>:*.wmv<span class="o">=</span><span class="m">01</span><span class="p">;</span><span class="m">35</span>:*.asf<span class="o">=</span><span class="m">01</span><span class="p">;</span><span class="m">35</span>:*.rm<span class="o">=</span><span class="m">01</span><span class="p">;</span><span class="m">35</span>:*.rmvb<span class="o">=</span><span class="m">01</span><span class="p">;</span><span class="m">35</span>:*.flc<span class="o">=</span><span class="m">01</span><span class="p">;</span><span class="m">35</span>:*.avi<span class="o">=</span><span class="m">01</span><span class="p">;</span><span class="m">35</span>:*.fli<span class="o">=</span><span class="m">01</span><span class="p">;</span><span class="m">35</span>:*.flv<span class="o">=</span><span class="m">01</span><span class="p">;</span><span class="m">35</span>:*.gl<span class="o">=</span><span class="m">01</span><span class="p">;</span><span class="m">35</span>:*.dl<span class="o">=</span><span class="m">01</span><span class="p">;</span><span class="m">35</span>:*.xcf<span class="o">=</span><span class="m">01</span><span class="p">;</span><span class="m">35</span>:*.xwd<span class="o">=</span><span class="m">01</span><span class="p">;</span><span class="m">35</span>:*.yuv<span class="o">=</span><span class="m">01</span><span class="p">;</span><span class="m">35</span>:*.cgm<span class="o">=</span><span class="m">01</span><span class="p">;</span><span class="m">35</span>:*.emf<span class="o">=</span><span class="m">01</span><span class="p">;</span><span class="m">35</span>:*.axv<span class="o">=</span><span class="m">01</span><span class="p">;</span><span class="m">35</span>:*.anx<span class="o">=</span><span class="m">01</span><span class="p">;</span><span class="m">35</span>:*.ogv<span class="o">=</span><span class="m">01</span><span class="p">;</span><span class="m">35</span>:*.ogx<span class="o">=</span><span class="m">01</span><span class="p">;</span><span class="m">35</span>:*.aac<span class="o">=</span><span class="m">01</span><span class="p">;</span><span class="m">36</span>:*.au<span class="o">=</span><span class="m">01</span><span class="p">;</span><span class="m">36</span>:*.flac<span class="o">=</span><span class="m">01</span><span class="p">;</span><span class="m">36</span>:*.mid<span class="o">=</span><span class="m">01</span><span class="p">;</span><span class="m">36</span>:*.midi<span class="o">=</span><span class="m">01</span><span class="p">;</span><span class="m">36</span>:*.mka<span class="o">=</span><span class="m">01</span><span class="p">;</span><span class="m">36</span>:*.mp3<span class="o">=</span><span class="m">01</span><span class="p">;</span><span class="m">36</span>:*.mpc<span class="o">=</span><span class="m">01</span><span class="p">;</span><span class="m">36</span>:*.ogg<span class="o">=</span><span class="m">01</span><span class="p">;</span><span class="m">36</span>:*.ra<span class="o">=</span><span class="m">01</span><span class="p">;</span><span class="m">36</span>:*.wav<span class="o">=</span><span class="m">01</span><span class="p">;</span><span class="m">36</span>:*.axa<span class="o">=</span><span class="m">01</span><span class="p">;</span><span class="m">36</span>:*.oga<span class="o">=</span><span class="m">01</span><span class="p">;</span><span class="m">36</span>:*.spx<span class="o">=</span><span class="m">01</span><span class="p">;</span><span class="m">36</span>:*.xspf<span class="o">=</span><span class="m">01</span><span class="p">;</span><span class="m">36</span>:
+ <span class="nv">MAIL</span><span class="o">=</span>/var/spool/mail/dword
+&lt;strong&gt; <span class="nv">PATH</span><span class="o">=</span>/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/home/dword/.local/bin:/home/dword/bin&lt;/strong&gt;
+ <span class="nv">PWD</span><span class="o">=</span>/home/dword/labmap
+ <span class="nv">LANG</span><span class="o">=</span>en_US.UTF-8
+ <span class="nv">HISTCONTROL</span><span class="o">=</span>ignoredups
+ <span class="nv">SHLVL</span><span class="o">=</span><span class="m">1</span>
+ <span class="nv">HOME</span><span class="o">=</span>/home/dword
+ <span class="nv">LOGNAME</span><span class="o">=</span>dword
+ <span class="nv">SSH_CONNECTION</span><span class="o">=</span><span class="m">192</span>.168.42.120 <span class="m">49429</span> <span class="m">192</span>.168.33.232 <span class="m">22</span>
+ <span class="nv">LESSOPEN</span><span class="o">=||</span>/usr/bin/lesspipe.sh %s
+ <span class="nv">XDG_RUNTIME_DIR</span><span class="o">=</span>/run/user/1000
+ <span class="nv">_</span><span class="o">=</span>/usr/bin/env
+ <span class="nv">OLDPWD</span><span class="o">=</span>/home/dword/labmap/web
+</code></pre></div>
+
+<p>Notice the path statement is very sparse when cron outputs the environment variables, turns out that anemic path lacked access to fping which was integral to my script building out a list of live hosts within our lab environment. Once that was fixed the cron jobs hum along nicely and churn out an updated map of the lab every hour without me doing anything and now I know that crontabjobs run with fairly different environment variables than scripts manually ran and can cause all kinds of havoc if you don&#8217;t use full explicit path statements in your bash scripts that you plan to&nbsp;automate.</p><p class="subheader">Category: <a href="/category/general.html">general</a>
+
+</p>
+
+
+
+            </article>
+
+<div class="pagination-centered">
+<h6 class="subheader">Page 1 of 1</h6>
+
+<p>
+
+</p>
+</div>
+
+
+
+            <!-- /#posts-list -->
+
+    </div>
+    <!-- End Main Content -->
+
+    <!-- Sidebar -->
+    <aside class="large-3 columns">
+        <h5 class="sidebar-title">Site</h5>
+        <ul class="side-nav">
+            <li><a href="/archives.html">Archives</a>
+            <li><a href="/tags.html">Tags</a>
+
+
+        </ul>
+
+		
+        <h5 class="sidebar-title">Categories</h5>
+        <ul class="side-nav">
+            <li><a href="/category/automation.html">automation</a></li>
+            <li><a href="/category/cloud.html">cloud</a></li>
+            <li><a href="/category/cloud-aws.html">cloud-aws</a></li>
+            <li><a href="/category/fixes.html">fixes</a></li>
+            <li><a href="/category/general.html">general</a></li>
+            <li><a href="/category/homelab.html">Homelab</a></li>
+            <li><a href="/category/programming.html">programming</a></li>
+            <li><a href="/category/programming-cloud-git.html">programming, cloud, git</a></li>
+            <li><a href="/category/projects.html">projects</a></li>
+            <li><a href="/category/sysadmin.html">sysadmin</a></li>
+            <li><a href="/category/thoughts.html">thoughts</a></li>
+   
+        </ul>
+
+        <h5 class="sidebar-title">Links</h5>
+        <ul class="side-nav">
+            <li><a href="https://www.dazedpro.com/">DazedPro</a></li>
+            <li><a href="https://mpietruszka.com/">mikep</a></li>
+        </ul>
+		
+
+    </aside> <!-- End Sidebar -->
+
+</div> <!-- End Main Content and Sidebar -->
+
+
+<!-- Footer -->
+<footer class="row">
+    <div class="large-12 columns">
+        <hr />
+        <div class="row">
+            <div class="large-6 columns">
+                <p>dword4 by dword4</p>
+            </div>
+            </div>
+    </div>
+</footer>

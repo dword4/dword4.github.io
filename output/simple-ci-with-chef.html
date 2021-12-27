@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="utf-8" />
+    <!-- Set the viewport width to device width for mobile -->
+    <meta name="viewport" content="width=device-width" />
+
+    <title>Simple CI with Chef</title>
+
+    <link rel="stylesheet" href="/theme/css/normalize.css" />
+    <link rel="stylesheet" href="/theme/css/foundation.min.css" />
+    <link rel="stylesheet" href="/theme/css/style.css" />
+    <link rel="stylesheet" href="/theme/css/pygments.css" />	
+    <script src="/theme/js/custom.modernizr.js"></script>
+
+    <!-- So Firefox can bookmark->"abo this site" -->
+
+</head>
+
+<body>
+
+<!-- Nav Bar -->
+<nav>
+<div class="top-bar">
+<div class="row">
+    <div class="large-9 large-centered columns">
+	    <h1><a href="">dword4</a></h1>
+    </div>
+</div>
+</div>
+
+<!-- Show menu items and pages -->
+<div class="row">
+<div class="large-9 columns">
+    <ul class="button-group navigation">
+
+            <li><a href="/pages/about-me.html" class="button secondary small">About&nbsp;Me</a></li>
+    </ul>
+</div>
+</div>
+</nav>
+<!-- End Nav -->
+
+
+<!-- Main Page Content and Sidebar -->
+<div class="row">
+
+    <!-- Main Blog Content -->
+    <div class="large-9 columns">
+<article>
+    <header>
+        <h3 class="article-title"><a href="//2018/09/simple-ci-with-chef/" rel="bookmark"
+        title="Permalink to Simple CI with Chef">Simple <span class="caps">CI</span> with&nbsp;Chef</a></h3>
+    </header>
+
+<h6 class="subheader" title="2018-09-04T15:48:24+00:00">Tue 04 September 2018
+</h6>
+
+
+    <ul>
+<li>Homelab</li>
+<li>Linux&nbsp;tags:</li>
+<li>automation</li>
+<li>chef</li>
+<li><span class="caps">CI</span></li>
+<li>devops</li>
+<li>git</li>
+</ul>
+<hr>
+<p>So I needed to work out a way to make a script I wrote recently be deployed across a whole host of systems, turns out the only option is Chef so I had to dive into it and read a bunch of stuff.  Also had to try a bunch of things and ended up with my own Chef server in the lab to test against.  Several hours of clicking and clacking later and I have my task worked out, so here it&nbsp;is.</p>
+<p>First we need to create a new cookbook and drop a pretty simple default recipe in, all it does is make sure git is installed then clone a repo to&nbsp;/opt/nhlapi.</p>
+<pre class="lang:ruby decode:true EnlighterJSRAW" title="default.rb" data-enlighter-language="ruby">#
+# Cookbook:: repo
+# Recipe:: default
+#
+# Copyright:: 2018, The Authors, All Rights Reserved.
+#
+#
+package 'git' do
+  action :install
+end
+
+git '/opt/nhlapi' do
+  repository 'git://gitlab.com/dword4/nhlapi.git'
+  revision 'master'
+  action :sync
+end
+default.rb (END)
+</pre>
+
+<p>Once we have the recipe we need a role to tell it what to&nbsp;do.</p>
+<pre class="lang:default decode:true  EnlighterJSRAW" title="repo-update.json role" data-enlighter-language="json">{
+   "name": "repo-update",
+   "description": "update chef from time to time",
+   "json_class": "Chef::Role",
+   "default_attributes": {
+     "chef_client": {
+       "interval": 1800,
+       "splay": 60
+     }
+   },
+   "override_attributes": {
+   },
+   "chef_type": "role",
+   "run_list": ["recipe[chef-client::default]",
+                "recipe[chef-client::delete_validation]"
+   ],
+   "env_run_lists": {
+   }
+}</pre>
+
+<p>Create the role with <span class="lang:default decode:true  crayon-inline "># knife role from file repo-update.json</span>  (or whatever you named the file to create the role&nbsp;from).</p>
+<p>Now all that is left is to assign the role to the node so use <span class="lang:default decode:true  crayon-inline ">#knife node edit itsj-cheftest.itscum.local</span>  and assign the role and repo to the node we&nbsp;want</p>
+<pre class="lang:default decode:true  EnlighterJSRAW" data-enlighter-language="json">{
+  "name": "itsj-cheftest.itscum.local",
+  "chef_environment": "_default",
+  "normal": {
+    "tags": [
+
+    ]
+  },
+  "policy_name": null,
+  "policy_group": null,
+  "run_list": [
+    "recipe[nginx]",
+    "recipe[repo]",
+    "role[repo-update]"
+]
+
+}</pre>
+
+<p>That is enough to get it working, you can kick back and watch it with # while :; do knife status &#8216;role:repo-update&#8217; &#8211;run-list; sleep 120; done and wait to see it run in about 30 minutes based on the interval and splay values.  Speaking of which Interval is pretty self explanatory, but Splay not-so-much; Splay is used keep a bunch of nodes from all running at once basically so it doesn&#8217;t overwhelm a system that they might be checking into or otherwise digitally&nbsp;assaulting.</p>
+<p class="subheader">Category: <a href="/category/posts.html">posts</a>
+
+</p>
+
+
+
+
+</article>
+    </div>
+    <!-- End Main Content -->
+
+    <!-- Sidebar -->
+    <aside class="large-3 columns">
+        <h5 class="sidebar-title">Site</h5>
+        <ul class="side-nav">
+            <li><a href="/archives.html">Archives</a>
+            <li><a href="/tags.html">Tags</a>
+
+
+        </ul>
+
+		
+        <h5 class="sidebar-title">Categories</h5>
+        <ul class="side-nav">
+            <li><a href="/category/automation.html">automation</a></li>
+            <li><a href="/category/cloud-aws.html">cloud-aws</a></li>
+            <li><a href="/category/general.html">general</a></li>
+            <li><a href="/category/homelab.html">Homelab</a></li>
+            <li><a href="/category/posts.html">posts</a></li>
+            <li><a href="/category/programming.html">programming</a></li>
+            <li><a href="/category/programming-cloud-git.html">programming, cloud, git</a></li>
+            <li><a href="/category/projects.html">projects</a></li>
+            <li><a href="/category/thoughts.html">thoughts</a></li>
+   
+        </ul>
+
+        <h5 class="sidebar-title">Links</h5>
+        <ul class="side-nav">
+            <li><a href="https://www.dazedpro.com/">DazedPro</a></li>
+            <li><a href="https://mpietruszka.com/">mikep</a></li>
+        </ul>
+		
+
+    </aside> <!-- End Sidebar -->
+
+</div> <!-- End Main Content and Sidebar -->
+
+
+<!-- Footer -->
+<footer class="row">
+    <div class="large-12 columns">
+        <hr />
+        <div class="row">
+            <div class="large-6 columns">
+                <p>dword4 by dword4</p>
+            </div>
+            </div>
+    </div>
+</footer>

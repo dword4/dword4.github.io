@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="utf-8" />
+    <!-- Set the viewport width to device width for mobile -->
+    <meta name="viewport" content="width=device-width" />
+
+    <title>Simple Icinga2 Plugin</title>
+
+    <link rel="stylesheet" href="/theme/css/normalize.css" />
+    <link rel="stylesheet" href="/theme/css/foundation.min.css" />
+    <link rel="stylesheet" href="/theme/css/style.css" />
+    <link rel="stylesheet" href="/theme/css/pygments.css" />	
+    <script src="/theme/js/custom.modernizr.js"></script>
+
+    <!-- So Firefox can bookmark->"abo this site" -->
+
+</head>
+
+<body>
+
+<!-- Nav Bar -->
+<nav>
+<div class="top-bar">
+<div class="row">
+    <div class="large-9 large-centered columns">
+	    <h1><a href="">dword4</a></h1>
+    </div>
+</div>
+</div>
+
+<!-- Show menu items and pages -->
+<div class="row">
+<div class="large-9 columns">
+    <ul class="button-group navigation">
+
+            <li><a href="/pages/about-me.html" class="button secondary small">About&nbsp;Me</a></li>
+    </ul>
+</div>
+</div>
+</nav>
+<!-- End Nav -->
+
+
+<!-- Main Page Content and Sidebar -->
+<div class="row">
+
+    <!-- Main Blog Content -->
+    <div class="large-9 columns">
+<article>
+    <header>
+        <h3 class="article-title"><a href="/simple-icinga2-plugin.html" rel="bookmark"
+        title="Permalink to Simple Icinga2 Plugin">Simple Icinga2&nbsp;Plugin</a></h3>
+    </header>
+
+<h6 class="subheader" title="2018-07-30T00:00:00-04:00">Mon 30 July 2018
+</h6>
+
+
+    <hr>
+<p>I&#8217;ve seen bits and pieces of the process of creating an Icinga2 (or Nagios) plugin, so here are my notes dumped straight from my&nbsp;brain.</p>
+<p>First and foremost we need a script to call from Icinga, in this case I created a very simple Python script to simply get the version of LibreNMS running on my monitoring&nbsp;system.</p>
+<div class="highlight"><pre><span></span><code><span class="ch">#!/usr/bin/python</span>
+<span class="kn">import</span> <span class="nn">argparse</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Process some integers.&#39;</span><span class="p">)</span>
+
+<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;-H&#39;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store&quot;</span><span class="p">,</span><span class="n">dest</span><span class="o">=</span><span class="s2">&quot;host&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;name of host to check&#39;</span><span class="p">)</span>
+
+<span class="c1">#parser.add_argument(&#39;token&#39;, metavar=&#39;token&#39;, help=&#39;API token&#39;)</span>
+<span class="n">token</span> <span class="o">=</span> <span class="s1">&#39;yourAPItokenGOEShere&#39;</span>
+<span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+
+<span class="n">host_check</span> <span class="o">=</span> <span class="s1">&#39;http://&#39;</span><span class="o">+</span><span class="n">args</span><span class="o">.</span><span class="n">host</span><span class="o">+</span><span class="s1">&#39;/api/v0/system&#39;</span>
+<span class="n">headers</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;X-Auth-Token&#39;</span><span class="p">:</span> <span class="n">token</span> <span class="p">}</span>
+<span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">host_check</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span><span class="n">verify</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="n">json_string</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">text</span>
+<span class="n">parsed_json</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">json_string</span><span class="p">)</span>
+
+<span class="n">system_status</span> <span class="o">=</span> <span class="n">parsed_json</span><span class="p">[</span><span class="s1">&#39;status&#39;</span><span class="p">]</span>
+<span class="n">system_ver</span> <span class="o">=</span> <span class="n">parsed_json</span><span class="p">[</span><span class="s1">&#39;system&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;local_ver&#39;</span><span class="p">]</span>
+
+<span class="k">if</span> <span class="n">system_status</span> <span class="o">==</span> <span class="s1">&#39;ok&#39;</span><span class="p">:</span>
+    <span class="n">ret</span> <span class="o">=</span> <span class="s2">&quot;status: &quot;</span><span class="o">+</span><span class="n">system_status</span><span class="o">+</span><span class="s2">&quot; version:&quot;</span><span class="o">+</span><span class="n">system_ver</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">ret</span><span class="p">)</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="k">elif</span> <span class="n">system_status</span> <span class="o">!=</span> <span class="s1">&#39;ok&#39;</span><span class="p">:</span>
+    <span class="n">ret</span> <span class="o">=</span> <span class="s2">&quot;status: &quot;</span><span class="o">+</span><span class="n">system_status</span><span class="o">+</span><span class="s2">&quot; version:&quot;</span><span class="o">+</span><span class="n">system_ver</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">ret</span><span class="p">)</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+</code></pre></div>
+
+<p>This is a pretty simple script, you could call it with ./check_lnms_ver.py -H 192.168.1.100 to see how it works.  With the script working the next portion is done in the command line, first create the directory that will later be referenced as&nbsp;CustomPluginDir</p>
+<p><code># mkdir -p /opt/monitoring/plugins</code></p>
+<p>Now we need to tell Icinga2 about the directory, this is done in a few different&nbsp;places</p>
+<p>in <strong>/etc/icinga2/constants.conf</strong> add the&nbsp;following</p>
+<p><code>const CustomPluginDir = &amp;#8220;/opt/monitoring/plugins&amp;#8221;</code></p>
+<p>and in <strong>/etc/icinga2/conf.d/commands.conf</strong> we add the following&nbsp;block</p>
+<div class="highlight"><pre><span></span><code>object CheckCommand &quot;check-lnms&quot; {
+    command = [ CustomPluginDir + &quot;/check_librenms.py&quot; ]
+
+    arguments = {
+        &quot;-H&quot; = &quot;$address$&quot;
+    }
+}
+</code></pre></div>
+
+<p>The block above defines the custom command, specifies the script we created first and also passes the correct flags.  Now its time to add the check into the hosts.conf file, so place the following block into <strong>/etc/icinga2/conf.d/hosts.conf</strong></p>
+<div class="highlight"><pre><span></span><code>object Host &quot;itsj-lnms&quot; {
+        address = &quot;192.168.1.85&quot;
+        check_command = &quot;check-lnms&quot;
+}
+</code></pre></div>
+
+<p>And with that we wait for the next polling cycle and should see something like the screenshot below
+<a href="images/Greenshot-2018-07-30-14.18.48.png"><img alt="screenshot" src="images/Greenshot-2018-07-30-14.18.48.png"></a></p>
+<p>This is a highly simplistic example, but figuring it out was necessary for me because I had to port some existing code from Ruby to Python so I wanted to know exactly how a plugin was created to understand what values were returned and how it all fits&nbsp;together.</p>
+<p class="subheader">Category: <a href="/category/homelab.html">Homelab</a>
+
+    Tagged: 
+    <a href="/tag/homelab.html">homelab </a>
+    <a href="/tag/linux.html">linux </a>
+    <a href="/tag/programming.html">programming </a>
+    <a href="/tag/icinga.html">icinga </a>
+    <a href="/tag/monitoring.html">monitoring </a>
+</p>
+
+
+
+
+</article>
+    </div>
+    <!-- End Main Content -->
+
+    <!-- Sidebar -->
+    <aside class="large-3 columns">
+        <h5 class="sidebar-title">Site</h5>
+        <ul class="side-nav">
+            <li><a href="/archives.html">Archives</a>
+            <li><a href="/tags.html">Tags</a>
+
+
+        </ul>
+
+		
+        <h5 class="sidebar-title">Categories</h5>
+        <ul class="side-nav">
+            <li><a href="/category/automation.html">automation</a></li>
+            <li><a href="/category/cloud.html">cloud</a></li>
+            <li><a href="/category/cloud-aws.html">cloud-aws</a></li>
+            <li><a href="/category/fixes.html">fixes</a></li>
+            <li><a href="/category/general.html">general</a></li>
+            <li><a href="/category/homelab.html">Homelab</a></li>
+            <li><a href="/category/programming.html">programming</a></li>
+            <li><a href="/category/programming-cloud-git.html">programming, cloud, git</a></li>
+            <li><a href="/category/projects.html">projects</a></li>
+            <li><a href="/category/sysadmin.html">sysadmin</a></li>
+            <li><a href="/category/thoughts.html">thoughts</a></li>
+   
+        </ul>
+
+        <h5 class="sidebar-title">Links</h5>
+        <ul class="side-nav">
+            <li><a href="https://www.dazedpro.com/">DazedPro</a></li>
+            <li><a href="https://mpietruszka.com/">mikep</a></li>
+        </ul>
+		
+
+    </aside> <!-- End Sidebar -->
+
+</div> <!-- End Main Content and Sidebar -->
+
+
+<!-- Footer -->
+<footer class="row">
+    <div class="large-12 columns">
+        <hr />
+        <div class="row">
+            <div class="large-6 columns">
+                <p>dword4 by dword4</p>
+            </div>
+            </div>
+    </div>
+</footer>

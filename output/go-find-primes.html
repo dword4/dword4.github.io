@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="utf-8" />
+    <!-- Set the viewport width to device width for mobile -->
+    <meta name="viewport" content="width=device-width" />
+
+    <title>go find some prime numbers!</title>
+
+    <link rel="stylesheet" href="/theme/css/normalize.css" />
+    <link rel="stylesheet" href="/theme/css/foundation.min.css" />
+    <link rel="stylesheet" href="/theme/css/style.css" />
+    <link rel="stylesheet" href="/theme/css/pygments.css" />	
+    <script src="/theme/js/custom.modernizr.js"></script>
+
+    <!-- So Firefox can bookmark->"abo this site" -->
+
+</head>
+
+<body>
+
+<!-- Nav Bar -->
+<nav>
+<div class="top-bar">
+<div class="row">
+    <div class="large-9 large-centered columns">
+	    <h1><a href="">dword4</a></h1>
+    </div>
+</div>
+</div>
+
+<!-- Show menu items and pages -->
+<div class="row">
+<div class="large-9 columns">
+    <ul class="button-group navigation">
+
+            <li><a href="/pages/about-me.html" class="button secondary small">About&nbsp;Me</a></li>
+    </ul>
+</div>
+</div>
+</nav>
+<!-- End Nav -->
+
+
+<!-- Main Page Content and Sidebar -->
+<div class="row">
+
+    <!-- Main Blog Content -->
+    <div class="large-9 columns">
+<article>
+    <header>
+        <h3 class="article-title"><a href="/go-find-primes.html" rel="bookmark"
+        title="Permalink to go find some prime numbers!">go find some prime&nbsp;numbers!</a></h3>
+    </header>
+
+<h6 class="subheader" title="2015-11-09T00:00:00-05:00">Mon 09 November 2015
+</h6>
+
+
+    <hr>
+<p>so a few friends keep bugging me that i need to learn their wonderful hipster language go, finally i relented this evening and poked around in it for about 45 minutes to create my tried and true primes code that i can almost do in my sleep now. its ugly and nowhere near as fast as i had it running in c++ back in the day but its kinda cool that i could get it done in about an hour from first writing a line of code in go. i honestly don&#8217;t know if i will ever use the language as a main language in any projects but its the first time i have touched a compiled language in probably the better part of 5 years, these days i do about 105% of my things in python or bash when there are command line tools to do most of what i&nbsp;want.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="s">&quot;fmt&quot;</span>
+
+<span class="kd">func</span> <span class="nx">main</span><span class="p">()</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">limit</span> <span class="kt">int</span> <span class="p">=</span> <span class="mi">10000</span>
+        <span class="k">for</span> <span class="nx">j</span> <span class="o">:=</span> <span class="mi">2</span><span class="p">;</span> <span class="nx">j</span> <span class="o">&amp;</span><span class="nx">lt</span><span class="p">;=</span> <span class="nx">limit</span><span class="p">;</span> <span class="nx">j</span><span class="o">++</span> <span class="p">{</span>
+                <span class="k">if</span> <span class="nx">j</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">{</span>
+                        <span class="c1">// not prime, we care not!</span>
+                <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                        <span class="c1">// lets do the test loop thing</span>
+                        <span class="kd">var</span> <span class="nx">slimit</span> <span class="kt">int</span> <span class="p">=</span> <span class="nx">j</span> <span class="o">/</span> <span class="mi">2</span>
+
+                        <span class="kd">var</span> <span class="nx">multiples</span> <span class="kt">int</span> <span class="p">=</span> <span class="mi">0</span>
+                        <span class="k">for</span> <span class="nx">jj</span> <span class="o">:=</span> <span class="mi">1</span><span class="p">;</span> <span class="nx">jj</span> <span class="o">&amp;</span><span class="nx">lt</span><span class="p">;=</span> <span class="nx">slimit</span><span class="p">;</span> <span class="nx">jj</span><span class="o">++</span> <span class="p">{</span>
+                                <span class="k">if</span> <span class="nx">j</span> <span class="o">%</span> <span class="nx">jj</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">{</span>
+                                        <span class="nx">multiples</span><span class="o">++</span>
+                                <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                                        <span class="c1">// no multiples here boss</span>
+                                <span class="p">}</span>
+                        <span class="p">}</span>
+                        <span class="k">if</span> <span class="nx">multiples</span> <span class="o">==</span> <span class="mi">1</span> <span class="p">{</span>
+                                <span class="nx">fmt</span><span class="p">.</span><span class="nb">println</span><span class="p">(</span><span class="nx">j</span><span class="p">,</span> <span class="s">&quot;is probably a prime&quot;</span><span class="p">)</span>
+                        <span class="p">}</span>
+                <span class="p">}</span>
+        <span class="p">}</span>
+</code></pre></div>
+<p class="subheader">Category: <a href="/category/programming.html">programming</a>
+
+</p>
+
+
+
+
+</article>
+    </div>
+    <!-- End Main Content -->
+
+    <!-- Sidebar -->
+    <aside class="large-3 columns">
+        <h5 class="sidebar-title">Site</h5>
+        <ul class="side-nav">
+            <li><a href="/archives.html">Archives</a>
+            <li><a href="/tags.html">Tags</a>
+
+
+        </ul>
+
+		
+        <h5 class="sidebar-title">Categories</h5>
+        <ul class="side-nav">
+            <li><a href="/category/automation.html">automation</a></li>
+            <li><a href="/category/cloud.html">cloud</a></li>
+            <li><a href="/category/cloud-aws.html">cloud-aws</a></li>
+            <li><a href="/category/fixes.html">fixes</a></li>
+            <li><a href="/category/general.html">general</a></li>
+            <li><a href="/category/homelab.html">Homelab</a></li>
+            <li><a href="/category/programming.html">programming</a></li>
+            <li><a href="/category/programming-cloud-git.html">programming, cloud, git</a></li>
+            <li><a href="/category/projects.html">projects</a></li>
+            <li><a href="/category/sysadmin.html">sysadmin</a></li>
+            <li><a href="/category/thoughts.html">thoughts</a></li>
+   
+        </ul>
+
+        <h5 class="sidebar-title">Links</h5>
+        <ul class="side-nav">
+            <li><a href="https://www.dazedpro.com/">DazedPro</a></li>
+            <li><a href="https://mpietruszka.com/">mikep</a></li>
+        </ul>
+		
+
+    </aside> <!-- End Sidebar -->
+
+</div> <!-- End Main Content and Sidebar -->
+
+
+<!-- Footer -->
+<footer class="row">
+    <div class="large-12 columns">
+        <hr />
+        <div class="row">
+            <div class="large-6 columns">
+                <p>dword4 by dword4</p>
+            </div>
+            </div>
+    </div>
+</footer>

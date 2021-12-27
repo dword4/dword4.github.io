@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="utf-8" />
+    <!-- Set the viewport width to device width for mobile -->
+    <meta name="viewport" content="width=device-width" />
+
+    <title>PaaS Frustrations</title>
+
+    <link rel="stylesheet" href="/theme/css/normalize.css" />
+    <link rel="stylesheet" href="/theme/css/foundation.min.css" />
+    <link rel="stylesheet" href="/theme/css/style.css" />
+    <link rel="stylesheet" href="/theme/css/pygments.css" />	
+    <script src="/theme/js/custom.modernizr.js"></script>
+
+    <!-- So Firefox can bookmark->"abo this site" -->
+
+</head>
+
+<body>
+
+<!-- Nav Bar -->
+<nav>
+<div class="top-bar">
+<div class="row">
+    <div class="large-9 large-centered columns">
+	    <h1><a href="">dword4</a></h1>
+    </div>
+</div>
+</div>
+
+<!-- Show menu items and pages -->
+<div class="row">
+<div class="large-9 columns">
+    <ul class="button-group navigation">
+
+            <li><a href="/pages/about-me.html" class="button secondary small">About&nbsp;Me</a></li>
+    </ul>
+</div>
+</div>
+</nav>
+<!-- End Nav -->
+
+
+<!-- Main Page Content and Sidebar -->
+<div class="row">
+
+    <!-- Main Blog Content -->
+    <div class="large-9 columns">
+<article>
+    <header>
+        <h3 class="article-title"><a href="/paas-frustrations.html" rel="bookmark"
+        title="Permalink to PaaS Frustrations">PaaS&nbsp;Frustrations</a></h3>
+    </header>
+
+<h6 class="subheader" title="2021-02-03T00:00:00-05:00">Wed 03 February 2021
+</h6>
+
+
+    <p>So after several days working with the Support folks at Digital Ocean they finally nailed down why my deploys were never getting new code and I am still not clear on the reason it was an issue to begin with but I figured it needs to be documented to maybe save someone else the&nbsp;trouble.</p>
+<p><strong>The&nbsp;Details</strong></p>
+<p>My code is a mix of Python (and some <span class="caps">HTML</span>/<span class="caps">JS</span>) using Flask, Python version in this specific situation was 3.8.2 (at least locally anyway). Using the Digital Ocean App platform and a domain hosted through them as well (hockey-info.online). Docker version locally was 20.10.2, build 2291f61 on a Fedora 32 based&nbsp;system.</p>
+<p><strong>The&nbsp;Problem</strong></p>
+<p>No code changes I made after Jan 15th seemed to be pulled when doing a deploy, deploys would trigger properly however they never got the correct code just the correct commit sum. I tried manual deploys, I tried automatic, I searched the internet high, low and inbetween but couldn’t figure it&nbsp;out.</p>
+<p><strong>Solution&nbsp;(Eventually)</strong></p>
+<p>I finally broke down and opened a ticket with <span class="caps">DO</span> on a Wednesday, after going back and forth with their support people and trying a lot of things they finally informed me of a solution on the Tuesday after. It seems that in the Dockerfile I was doing a <code>RUN git clone https://gitlab.com/dword4/hockey-info.git .</code> which was running the git command to pull code down outside of the methods used by the App platform. The fix turns out was as simple as replacing that line with <code>COPY . /hockey-info</code> and then pushing the code&nbsp;up.</p>
+<p>Still not entirely sure why this functions this way, there appears to be some kind of git caching going on but I have no real insight as to why, probably due to how the app platform is&nbsp;built.</p>
+<p class="subheader">Category: <a href="/category/programming-cloud-git.html">programming, cloud, git</a>
+
+</p>
+
+
+
+
+</article>
+    </div>
+    <!-- End Main Content -->
+
+    <!-- Sidebar -->
+    <aside class="large-3 columns">
+        <h5 class="sidebar-title">Site</h5>
+        <ul class="side-nav">
+            <li><a href="/archives.html">Archives</a>
+            <li><a href="/tags.html">Tags</a>
+
+
+        </ul>
+
+		
+        <h5 class="sidebar-title">Categories</h5>
+        <ul class="side-nav">
+            <li><a href="/category/automation.html">automation</a></li>
+            <li><a href="/category/cloud.html">cloud</a></li>
+            <li><a href="/category/cloud-aws.html">cloud-aws</a></li>
+            <li><a href="/category/fixes.html">fixes</a></li>
+            <li><a href="/category/general.html">general</a></li>
+            <li><a href="/category/homelab.html">Homelab</a></li>
+            <li><a href="/category/programming.html">programming</a></li>
+            <li><a href="/category/programming-cloud-git.html">programming, cloud, git</a></li>
+            <li><a href="/category/projects.html">projects</a></li>
+            <li><a href="/category/sysadmin.html">sysadmin</a></li>
+            <li><a href="/category/thoughts.html">thoughts</a></li>
+   
+        </ul>
+
+        <h5 class="sidebar-title">Links</h5>
+        <ul class="side-nav">
+            <li><a href="https://www.dazedpro.com/">DazedPro</a></li>
+            <li><a href="https://mpietruszka.com/">mikep</a></li>
+        </ul>
+		
+
+    </aside> <!-- End Sidebar -->
+
+</div> <!-- End Main Content and Sidebar -->
+
+
+<!-- Footer -->
+<footer class="row">
+    <div class="large-12 columns">
+        <hr />
+        <div class="row">
+            <div class="large-6 columns">
+                <p>dword4 by dword4</p>
+            </div>
+            </div>
+    </div>
+</footer>
