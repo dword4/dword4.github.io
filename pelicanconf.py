@@ -1,6 +1,6 @@
 AUTHOR = 'dword4'
 SITENAME = 'dword4'
-SITEURL = '/'
+SITEURL = 'https://dword4.github.io'
 
 PATH = 'content'
 THEME = 'tuxlite_zf'
