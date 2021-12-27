@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="utf-8" />
+    <!-- Set the viewport width to device width for mobile -->
+    <meta name="viewport" content="width=device-width" />
+
+    <title>Hockey-Info Release v1.0</title>
+
+    <link rel="stylesheet" href="/theme/css/normalize.css" />
+    <link rel="stylesheet" href="/theme/css/foundation.min.css" />
+    <link rel="stylesheet" href="/theme/css/style.css" />
+    <link rel="stylesheet" href="/theme/css/pygments.css" />	
+    <script src="/theme/js/custom.modernizr.js"></script>
+
+    <!-- So Firefox can bookmark->"abo this site" -->
+
+</head>
+
+<body>
+
+<!-- Nav Bar -->
+<nav>
+<div class="top-bar">
+<div class="row">
+    <div class="large-9 large-centered columns">
+	    <h1><a href="">dword4</a></h1>
+    </div>
+</div>
+</div>
+
+<!-- Show menu items and pages -->
+<div class="row">
+<div class="large-9 columns">
+    <ul class="button-group navigation">
+
+            <li><a href="/pages/about-me.html" class="button secondary small">About&nbsp;Me</a></li>
+    </ul>
+</div>
+</div>
+</nav>
+<!-- End Nav -->
+
+
+<!-- Main Page Content and Sidebar -->
+<div class="row">
+
+    <!-- Main Blog Content -->
+    <div class="large-9 columns">
+<article>
+    <header>
+        <h3 class="article-title"><a href="/hockey-info-release-1.html" rel="bookmark"
+        title="Permalink to Hockey-Info Release v1.0">Hockey-Info Release&nbsp;v1.0</a></h3>
+    </header>
+
+<h6 class="subheader" title="2020-07-26T00:00:00-04:00">Sun 26 July 2020
+</h6>
+
+
+    <p><img alt="screenshot" src="images/hockey-info-release-1.png"></p>
+<p><a href="https://gitlab.com/dword4/hockey-info">gitlab.com/dword4/hockey-info</a></p>
+<p>This is probably as “complete” as the Hockey-Info project may ever get so I figured its worth an actual blog post (and git tag at v1.0 too). A little over a year ago I was fed up with the <span class="caps">NHL</span>’s mobile website and decided I wanted to create something that gave me all the information without the associated fluff and annoyance. I had already spent time documenting the <span class="caps">NHL</span> <span class="caps">API</span> and using that knowledge to build smaller things like a sopel plugin for hockey stats. So I started throwing things together with Flask and suddenly hockey-info.online came to&nbsp;be!</p>
+<p><strong>Features</strong></p>
+<ul>
+<li>News&nbsp;Headlines</li>
+<li>Scores view (only shows today’s&nbsp;games/scores)</li>
+<li>Standings (grouped by Conference/Division and sometimes showing&nbsp;Wildcards)</li>
+<li>Schedule (day, week and month views, team specific or league&nbsp;wide)</li>
+<li>Team&nbsp;Views</li>
+<li>Regular&nbsp;Season</li>
+<li>Playoffs</li>
+<li>Previous&nbsp;Games</li>
+<li>Game&nbsp;details</li>
+<li>Box Score&nbsp;information</li>
+<li>Goals by period with&nbsp;details</li>
+<li>Shots on goal by&nbsp;period</li>
+<li>Penalties by period with&nbsp;details</li>
+</ul>
+<p><strong>Important&nbsp;Details</strong></p>
+<p>Built in Python 3 with Flask, Requests, and some various other bits and bobs. It runs either by itself with the usual process to launch a Flask application or if you are so inclined there is a Dockerfile that can be used to launch it with a little less&nbsp;pain.</p>
+<p>There is some caching going on with requests_cache however this is by no means optimal, I would like to eventually do more work with a proper web cache but for now this works since the site is so light weight. I make use of CDNs for all the JavaScript so that also helps speed things up (and more importantly move the burden off of wherever you choose to run it in the first&nbsp;place).</p>
+<p>Timezone awareness is non-existent, I basically converted everything from whatever the <span class="caps">NHL</span> stores (<span class="caps">UTC</span> time/date) to Eastern Time since that is where I live. I try to be very privacy conscious and I couldn’t justify the time expenditure in methods of determining user location for time conversion processes, if someone wants to suggest it or contribute it PRs are&nbsp;welcome.</p>
+<p><strong>Legal&nbsp;Considerations</strong></p>
+<p>I have zero affiliation with the <span class="caps">NHL</span> beyond sometimes buying their branded merchandise and viewing their games when I get the chance. There are no ads served by the application (or even any decent way to add them without altering all the templates) so I make no money from anything (not even the&nbsp;blog).</p>
+<p class="subheader">Category: <a href="/category/programming.html">programming</a>
+
+</p>
+
+
+
+
+</article>
+    </div>
+    <!-- End Main Content -->
+
+    <!-- Sidebar -->
+    <aside class="large-3 columns">
+        <h5 class="sidebar-title">Site</h5>
+        <ul class="side-nav">
+            <li><a href="/archives.html">Archives</a>
+            <li><a href="/tags.html">Tags</a>
+
+
+        </ul>
+
+		
+        <h5 class="sidebar-title">Categories</h5>
+        <ul class="side-nav">
+            <li><a href="/category/automation.html">automation</a></li>
+            <li><a href="/category/cloud.html">cloud</a></li>
+            <li><a href="/category/cloud-aws.html">cloud-aws</a></li>
+            <li><a href="/category/fixes.html">fixes</a></li>
+            <li><a href="/category/general.html">general</a></li>
+            <li><a href="/category/homelab.html">Homelab</a></li>
+            <li><a href="/category/programming.html">programming</a></li>
+            <li><a href="/category/programming-cloud-git.html">programming, cloud, git</a></li>
+            <li><a href="/category/projects.html">projects</a></li>
+            <li><a href="/category/sysadmin.html">sysadmin</a></li>
+            <li><a href="/category/thoughts.html">thoughts</a></li>
+   
+        </ul>
+
+        <h5 class="sidebar-title">Links</h5>
+        <ul class="side-nav">
+            <li><a href="https://www.dazedpro.com/">DazedPro</a></li>
+            <li><a href="https://mpietruszka.com/">mikep</a></li>
+        </ul>
+		
+
+    </aside> <!-- End Sidebar -->
+
+</div> <!-- End Main Content and Sidebar -->
+
+
+<!-- Footer -->
+<footer class="row">
+    <div class="large-12 columns">
+        <hr />
+        <div class="row">
+            <div class="large-6 columns">
+                <p>dword4 by dword4</p>
+            </div>
+            </div>
+    </div>
+</footer>

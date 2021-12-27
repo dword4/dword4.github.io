@@ -1,82 +1,65 @@
 <!DOCTYPE html>
-<html lang="en">
 <head>
-    <meta charset="utf-8">
+    <meta charset="utf-8" />
+    <!-- Set the viewport width to device width for mobile -->
+    <meta name="viewport" content="width=device-width" />
+
     <title>dword4 - monitoring</title>
-    <meta name="description" content="">
-    <meta name="author" content="dword4">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
-    <!--[if lt IE 9]>
-    <script src="/theme/html5.js"></script>
-    <![endif]-->
+    <link rel="stylesheet" href="/theme/css/normalize.css" />
+    <link rel="stylesheet" href="/theme/css/foundation.min.css" />
+    <link rel="stylesheet" href="/theme/css/style.css" />
+    <link rel="stylesheet" href="/theme/css/pygments.css" />	
+    <script src="/theme/js/custom.modernizr.js"></script>
 
-    <!-- Le styles -->
-    <link href="/theme/bootstrap.min.css" rel="stylesheet">
-    <link href="/theme/bootstrap.min.responsive.css" rel="stylesheet">
-    <link href="/theme/local.css" rel="stylesheet">
-    <link href="/theme/pygments.css" rel="stylesheet">
-
-    <!-- counter.dev tracking -->
-    <script>if(!sessionStorage.getItem("_swa")&&document.referrer.indexOf(location.protocol+"//"+location.host)!== 0){fetch("https://counter.dev/track?"+new URLSearchParams({referrer:document.referrer,screen:screen.width+"x"+screen.height,user:"dword4",utcoffset:"-5"}))};sessionStorage.setItem("_swa","1");</script>
-    <!-- end conter.dev tracking -->
     <!-- So Firefox can bookmark->"abo this site" -->
 
 </head>
 
 <body>
 
-<div class="navbar">
-    <div class="navbar-inner">
-    <div class="container">
-
-         <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-             <span class="icon-bar"></span>
-             <span class="icon-bar"></span>
-             <span class="icon-bar"></span>
-         </a>
-
-        <a class="brand" href="">dword4</a>
-
-        <div class="nav-collapse">
-        <ul class="nav">
-            
-            <li><a href="/pages/about-me.html">About Me</a></li>
-        </ul>
-        </div>
-        
-    </div>
+<!-- Nav Bar -->
+<nav>
+<div class="top-bar">
+<div class="row">
+    <div class="large-9 large-centered columns">
+	    <h1><a href="">dword4</a></h1>
     </div>
 </div>
+</div>
 
-<div class="container">
-    <div class="content">
-    <div class="row">
+<!-- Show menu items and pages -->
+<div class="row">
+<div class="large-9 columns">
+    <ul class="button-group navigation">
 
-        <div class="span9">
+            <li><a href="/pages/about-me.html" class="button secondary small">About&nbsp;Me</a></li>
+    </ul>
+</div>
+</div>
+</nav>
+<!-- End Nav -->
+
+
+<!-- Main Page Content and Sidebar -->
+<div class="row">
+
+    <!-- Main Blog Content -->
+    <div class="large-9 columns">
+        
         
 
-        
+            <article>
+                <a href="/monitoring-cloudwatch-agent-procstat.html"><h3 class="article-title">Monitoring on <span class="caps">AWS</span> with CloudWatch Agent and&nbsp;Procstat</h3></a>
+<h6 class="subheader" title="2020-08-26T00:00:00-04:00">Wed 26 August 2020
+</h6>
 
 
-    <div class='article'>
-        <div class="content-title">
-            <a href="/monitoring-cloudwatch-agent-procstat.html"><h1>Monitoring on AWS with CloudWatch Agent and Procstat</h1></a>
-Wed 26 August 2020
-
-by <a class="url fn" href="/author/dword4.html">dword4</a>
- 
-
-
- 
-        </div>
-        
-        <div><p>One of the first issues I ran into was with IAM Policies, or lack thereof . Specifically it was the managed policy <strong>CloudWatchAgentServerPolicy</strong> which needed to be added. The telltale sign that you forgot to add this Policy is an error message in the Agent logs, seen below</p>
+<p>One of the first issues I ran into was with <span class="caps">IAM</span> Policies, or lack thereof . Specifically it was the managed policy <strong>CloudWatchAgentServerPolicy</strong> which needed to be added. The telltale sign that you forgot to add this Policy is an error message in the Agent logs, seen&nbsp;below</p>
 <div class="highlight"><pre><span></span><code><span class="mf">2020</span><span class="o">-</span><span class="mf">08</span><span class="o">-</span><span class="mf">17</span><span class="n">T22</span><span class="p">:</span><span class="mf">46</span><span class="p">:</span><span class="mf">18</span><span class="n">Z</span> <span class="n">E</span><span class="err">!</span> <span class="n">refresh</span> <span class="n">EC2</span> <span class="n">Instance</span> <span class="n">Tags</span> <span class="n">failed</span><span class="p">:</span> <span class="n">NoCredentialProviders</span><span class="p">:</span> <span class="n">no</span> <span class="nb">val</span><span class="n">id</span> <span class="n">providers</span> <span class="n">in</span> <span class="n">chain</span><span class="o">&lt;</span><span class="n">br</span><span class="o">&gt;</span><span class="n">caused</span> <span class="n">by</span><span class="p">:</span> <span class="n">EnvAccessKeyNotFound</span><span class="p">:</span> <span class="n">failed</span> <span class="kr">to</span> <span class="n">find</span> <span class="n">credentials</span> <span class="n">in</span> <span class="n">the</span> <span class="n">environment</span><span class="mf">.</span>
 </code></pre></div>
 
-<p>The procstat plugin fortunately is already part of the Agent from install, but it still needs to be configured. In order to do this you have to add a configuration file specific to your monitoring needs. For old school admins the easiest way to think of procstat is that it basically ties into the ps tool. It’s like doing a <code>ps -ef | grep</code> to find something about a running process.</p>
+<p>The procstat plugin fortunately is already part of the Agent from install, but it still needs to be configured. In order to do this you have to add a configuration file specific to your monitoring needs. For old school admins the easiest way to think of procstat is that it basically ties into the ps tool. It’s like doing a <code>ps -ef | grep</code> to find something about a running&nbsp;process.</p>
 <div class="highlight"><pre><span></span><code><span class="o">[</span><span class="n">root@lab-master amazon-cloudwatch-agent.d</span><span class="o">]</span><span class="err">#</span><span class="w"> </span><span class="n">pwd</span><span class="w"></span>
 <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">aws</span><span class="o">/</span><span class="n">amazon</span><span class="o">-</span><span class="n">cloudwatch</span><span class="o">-</span><span class="n">agent</span><span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">amazon</span><span class="o">-</span><span class="n">cloudwatch</span><span class="o">-</span><span class="n">agent</span><span class="p">.</span><span class="n">d</span><span class="w"></span>
 <span class="o">[</span><span class="n">root@lab-master amazon-cloudwatch-agent.d</span><span class="o">]</span><span class="err">#</span><span class="w"> </span><span class="n">cat</span><span class="w"> </span><span class="n">processes</span><span class="w"></span>
@@ -96,7 +79,7 @@ by <a class="url fn" href="/author/dword4.html">dword4</a>
 <span class="err">}</span><span class="w"></span>
 </code></pre></div>
 
-<p>This will get us far enough that now we can see values in the Metrics view of CloudWatch. Once we have data there its time to construct a metric alarm. My goal was to use Terraform however its less painful to do in the AWS console.</p>
+<p>This will get us far enough that now we can see values in the Metrics view of CloudWatch. Once we have data there its time to construct a metric alarm. My goal was to use Terraform however its less painful to do in the <span class="caps">AWS</span>&nbsp;console.</p>
 <div class="highlight"><pre><span></span><code><span class="nv">resource</span> <span class="s2">&quot;</span><span class="s">aws_cloudwatch_metric_alarm</span><span class="s2">&quot;</span> <span class="s2">&quot;</span><span class="s">nginx-master</span><span class="s2">&quot;</span> {
   <span class="nv">alarm_name</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="s">nginx master alarm</span><span class="s2">&quot;</span>
   <span class="nv">comparison_operator</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="s">LessThanThreshold</span><span class="s2">&quot;</span>
@@ -122,82 +105,135 @@ by <a class="url fn" href="/author/dword4.html">dword4</a>
 }
 </code></pre></div>
 
-<p>The alarm creation proved to be a lot harder than I had expected, taking up several hours. I had to re-create things in my lab setup twice and do a Terraform import. The problem turned out to be that the dimensions{} block is not optional despite what the Terraform docs say. Had it said the fields were all required I probably would have saved days of time</p>
-<h2>Polish Work</h2>
-<p>In the process of working things out I hard coded a lot of values in the Dimensions {} block. Naturally that is not good practice, especially with IaaS so I will need to rework it to use variables instead. Also the alarm names should utilize the Terraform workspace values for better naming.</p></div>
-        <hr />
-    </div>
-		
-<div class="pagination">
-<ul>
-    <li class="prev disabled"><a href="#">&larr; Previous</a></li>
+<p>The alarm creation proved to be a lot harder than I had expected, taking up several hours. I had to re-create things in my lab setup twice and do a Terraform import. The problem turned out to be that the dimensions{} block is not optional despite what the Terraform docs say. Had it said the fields were all required I probably would have saved days of&nbsp;time</p>
+<h2>Polish&nbsp;Work</h2>
+<p>In the process of working things out I hard coded a lot of values in the Dimensions {} block. Naturally that is not good practice, especially with IaaS so I will need to rework it to use variables instead. Also the alarm names should utilize the Terraform workspace values for better&nbsp;naming.</p><p class="subheader">Category: <a href="/category/cloud-aws.html">cloud-aws</a>
 
-    <li class="active"><a href="/tag/monitoring.html">1</a></li>
+    Tagged: 
+    <a href="/tag/aws.html">AWS </a>
+    <a href="/tag/cloudwatch.html">CloudWatch </a>
+    <a href="/tag/procstat.html">procstat </a>
+    <a href="/tag/ec2.html">EC2 </a>
+    <a href="/tag/monitoring.html">monitoring </a>
+</p>
 
-    <li class="next disabled"><a href="#">&rarr; Next</a></li>
 
-</ul>
-</div>
- 
-  
-        </div>
+
+            </article>
+
+
+                <hr  class="gradient"/>
+
+
         
-        <div class="span3">
-
-            <div class="well" style="padding: 8px 0; background-color: #FBFBFB;">
-            <ul class="nav nav-list">
-                <li class="nav-header"> 
-                Site
-                </li>
-            
-                <li><a href="/archives.html">Archives</a>
-                <li><a href="/tags.html">Tags</a>
 
 
+            <article>
+                <a href="/simple-icinga2-plugin.html"><h3 class="article-title">Simple Icinga2&nbsp;Plugin</h3></a>
+<h6 class="subheader" title="2018-07-30T00:00:00-04:00">Mon 30 July 2018
+</h6>
 
 
-            </ul>
+<p>A simple Icinga2 Plugin to build off&nbsp;of</p><p class="subheader">Category: <a href="/category/homelab.html">Homelab</a>
+
+    Tagged: 
+    <a href="/tag/homelab.html">homelab </a>
+    <a href="/tag/linux.html">linux </a>
+    <a href="/tag/programming.html">programming </a>
+    <a href="/tag/icinga.html">icinga </a>
+    <a href="/tag/monitoring.html">monitoring </a>
+</p>
+
+
+
+                <a class="button radius secondary small right" href="/simple-icinga2-plugin.html">Read More</a>
+                <hr  class="gradient"/>
+            </article>
+
+        
+
+
+            <article>
+                <a href="/synology-post-mortem.html"><h3 class="article-title">Homelab: Synology failure&nbsp;post-mortem</h3></a>
+<h6 class="subheader" title="2018-07-02T00:00:00-04:00">Mon 02 July 2018
+</h6>
+
+
+<p>a post-mortem of my Synology storage system&#8217;s&nbsp;failure</p><p class="subheader">Category: <a href="/category/homelab.html">homelab</a>
+
+    Tagged: 
+    <a href="/tag/homelab.html">homelab </a>
+    <a href="/tag/librenms.html">librenms </a>
+    <a href="/tag/linux.html">linux </a>
+    <a href="/tag/monitoring.html">monitoring </a>
+    <a href="/tag/xenserver.html">xenserver </a>
+</p>
+
+
+
+                <a class="button radius secondary small right" href="/synology-post-mortem.html">Read More</a>
+                <hr  class="gradient"/>
+            </article>
+
+            <!-- /#posts-list -->
+<div class="pagination-centered">
+<h6 class="subheader">Page 1 of 1</h6>
+
+<p>
+
+</p>
+</div>
+
+    </div>
+    <!-- End Main Content -->
+
+    <!-- Sidebar -->
+    <aside class="large-3 columns">
+        <h5 class="sidebar-title">Site</h5>
+        <ul class="side-nav">
+            <li><a href="/archives.html">Archives</a>
+            <li><a href="/tags.html">Tags</a>
+
+
+        </ul>
+
+		
+        <h5 class="sidebar-title">Categories</h5>
+        <ul class="side-nav">
+            <li><a href="/category/automation.html">automation</a></li>
+            <li><a href="/category/cloud.html">cloud</a></li>
+            <li><a href="/category/cloud-aws.html">cloud-aws</a></li>
+            <li><a href="/category/fixes.html">fixes</a></li>
+            <li><a href="/category/general.html">general</a></li>
+            <li><a href="/category/homelab.html">Homelab</a></li>
+            <li><a href="/category/programming.html">programming</a></li>
+            <li><a href="/category/programming-cloud-git.html">programming, cloud, git</a></li>
+            <li><a href="/category/projects.html">projects</a></li>
+            <li><a href="/category/sysadmin.html">sysadmin</a></li>
+            <li><a href="/category/thoughts.html">thoughts</a></li>
+   
+        </ul>
+
+        <h5 class="sidebar-title">Links</h5>
+        <ul class="side-nav">
+            <li><a href="https://www.dazedpro.com/">DazedPro</a></li>
+            <li><a href="https://mpietruszka.com/">mikep</a></li>
+        </ul>
+		
+
+    </aside> <!-- End Sidebar -->
+
+</div> <!-- End Main Content and Sidebar -->
+
+
+<!-- Footer -->
+<footer class="row">
+    <div class="large-12 columns">
+        <hr />
+        <div class="row">
+            <div class="large-6 columns">
+                <p>dword4 by dword4</p>
             </div>
-
-
-            <div class="well" style="padding: 8px 0; background-color: #FBFBFB;">
-            <ul class="nav nav-list">
-                <li class="nav-header"> 
-                Categories
-                </li>
-                
-                <li><a href="/category/cloud-aws.html">cloud-aws</a></li>
-                <li><a href="/category/programming.html">programming</a></li>
-                <li><a href="/category/projects.html">projects</a></li>
-                <li><a href="/category/thoughts.html">thoughts</a></li>
-                   
-            </ul>
             </div>
-
-
-            <div class="well" style="padding: 8px 0; background-color: #FBFBFB;">
-            <ul class="nav nav-list">
-                <li class="nav-header"> 
-                Links
-                </li>
-            
-                <li><a href="https://www.dazedpro.com/">DazedPro</a></li>
-                <li><a href="https://mpietruszka.com/">mikep</a></li>
-            </ul>
-            </div>
-
-
-
-        </div>  
-    </div>     </div> 
-<footer>
-<br />
-<p><a href="">dword4</a> &copy; dword4 2020</p>
+    </div>
 </footer>
-
-</div> <!-- /container -->
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-<script src="/theme/bootstrap-collapse.js"></script>
- 
-</body>
-</html>

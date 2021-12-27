@@ -1,138 +1,124 @@
 <!DOCTYPE html>
-<html lang="en">
 <head>
-    <meta charset="utf-8">
-    <title>dword4 - Sunsetting a Project</title>
-    <meta name="description" content="">
-    <meta name="author" content="dword4">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8" />
+    <!-- Set the viewport width to device width for mobile -->
+    <meta name="viewport" content="width=device-width" />
 
-    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
-    <!--[if lt IE 9]>
-    <script src="/theme/html5.js"></script>
-    <![endif]-->
+    <title>Sunsetting a Project</title>
 
-    <!-- Le styles -->
-    <link href="/theme/bootstrap.min.css" rel="stylesheet">
-    <link href="/theme/bootstrap.min.responsive.css" rel="stylesheet">
-    <link href="/theme/local.css" rel="stylesheet">
-    <link href="/theme/pygments.css" rel="stylesheet">
+    <link rel="stylesheet" href="/theme/css/normalize.css" />
+    <link rel="stylesheet" href="/theme/css/foundation.min.css" />
+    <link rel="stylesheet" href="/theme/css/style.css" />
+    <link rel="stylesheet" href="/theme/css/pygments.css" />	
+    <script src="/theme/js/custom.modernizr.js"></script>
 
-    <!-- counter.dev tracking -->
-    <script>if(!sessionStorage.getItem("_swa")&&document.referrer.indexOf(location.protocol+"//"+location.host)!== 0){fetch("https://counter.dev/track?"+new URLSearchParams({referrer:document.referrer,screen:screen.width+"x"+screen.height,user:"dword4",utcoffset:"-5"}))};sessionStorage.setItem("_swa","1");</script>
-    <!-- end conter.dev tracking -->
     <!-- So Firefox can bookmark->"abo this site" -->
 
 </head>
 
 <body>
 
-<div class="navbar">
-    <div class="navbar-inner">
-    <div class="container">
-
-         <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-             <span class="icon-bar"></span>
-             <span class="icon-bar"></span>
-             <span class="icon-bar"></span>
-         </a>
-
-        <a class="brand" href="">dword4</a>
-
-        <div class="nav-collapse">
-        <ul class="nav">
-            
-            <li><a href="/pages/about-me.html">About Me</a></li>
-        </ul>
-        </div>
-        
-    </div>
+<!-- Nav Bar -->
+<nav>
+<div class="top-bar">
+<div class="row">
+    <div class="large-9 large-centered columns">
+	    <h1><a href="">dword4</a></h1>
     </div>
 </div>
+</div>
 
-<div class="container">
-    <div class="content">
-    <div class="row">
+<!-- Show menu items and pages -->
+<div class="row">
+<div class="large-9 columns">
+    <ul class="button-group navigation">
 
-        <div class="span9">
-    <div class='article'>
-        <div class="content-title">
-            <h1>Sunsetting a Project</h1>
-Wed 13 October 2021
-
-by <a class="url fn" href="/author/dword4.html">dword4</a>
- 
+            <li><a href="/pages/about-me.html" class="button secondary small">About&nbsp;Me</a></li>
+    </ul>
+</div>
+</div>
+</nav>
+<!-- End Nav -->
 
 
-        </div>
-	
-        <div><p>For a while now I have struggled to develop the <a href="http://gitlab.com/dword4/hockey-info">hockey-info</a> project further, trying to make it faster or more friendly for mobile use.  I dabbled with new frameworks to make a faster interface, pondered the idea of turning it into an API and learning JS to put a more stylish interface in front of it.  Even put time into moving some of the more cumbersome API hits into redisJSON objects for the sake of speed. </p>
-<p>It wasn't until I had the local version configured to use Redis that I realized I would have to pay more to run it on the internet, and after some research I realized that it would more than double the cost from 5$ a month to about 20 to 25$ a month depending on where I decided to host it.  There are some hosted Redis options that would have simplified the process but they were the most expensive, when I looked at doing most of the configruation by hand it saved me money but added more complexity that I wasn't really interested in.</p>
-<p>Realizing I had hit the wall of a reasonable hobby project, going from 60$ a year to well over 240$ was something I could not justify.  I had pondered ways to try to monetize things but they fell flat when I looked at actual traffic numbers.  The users were simply not there to run any sort of advertising and without actual users nobody would donate to such a project either to keep it online.  With the financial realities staring at me from a spreadsheet and the difficulty of writing actual code to move the project forward I decided it was time to hang it up.</p>
-<p>I started the project in March of 2019 almost a year after I had begun documenting the NHL API, taking all the things I learned along the way and creating someting to show for all my efforts.  In more than a few job interviews I talked about the project, how I had grown it and shaped it into something I used almost daily. It was great fun to grow the application with new features, fixing the various quirks that showed up during the Covid-19 shortened season as the NHL altered playoff formats.  But as with so many things it just doesn't make sense to put money into hosting it when there are so many better applications out there doing the same thing.</p>
-<p>While it is kind of bittersweet to sunset a project like this I think it will eventually free up some mental resources to put into something new and exciting that hopefully will force me to learn some new languages and techniques along the way.</p></div>
-	
-        <hr>
+<!-- Main Page Content and Sidebar -->
+<div class="row">
 
+    <!-- Main Blog Content -->
+    <div class="large-9 columns">
+<article>
+    <header>
+        <h3 class="article-title"><a href="/sunsetting-hockey-info.html" rel="bookmark"
+        title="Permalink to Sunsetting a Project">Sunsetting a&nbsp;Project</a></h3>
+    </header>
+
+<h6 class="subheader" title="2021-10-13T00:00:00-04:00">Wed 13 October 2021
+</h6>
+
+
+    <p>For a while now I have struggled to develop the <a href="http://gitlab.com/dword4/hockey-info">hockey-info</a> project further, trying to make it faster or more friendly for mobile use.  I dabbled with new frameworks to make a faster interface, pondered the idea of turning it into an <span class="caps">API</span> and learning <span class="caps">JS</span> to put a more stylish interface in front of it.  Even put time into moving some of the more cumbersome <span class="caps">API</span> hits into redisJSON objects for the sake of&nbsp;speed. </p>
+<p>It wasn&#8217;t until I had the local version configured to use Redis that I realized I would have to pay more to run it on the internet, and after some research I realized that it would more than double the cost from 5$ a month to about 20 to 25$ a month depending on where I decided to host it.  There are some hosted Redis options that would have simplified the process but they were the most expensive, when I looked at doing most of the configruation by hand it saved me money but added more complexity that I wasn&#8217;t really interested&nbsp;in.</p>
+<p>Realizing I had hit the wall of a reasonable hobby project, going from 60$ a year to well over 240$ was something I could not justify.  I had pondered ways to try to monetize things but they fell flat when I looked at actual traffic numbers.  The users were simply not there to run any sort of advertising and without actual users nobody would donate to such a project either to keep it online.  With the financial realities staring at me from a spreadsheet and the difficulty of writing actual code to move the project forward I decided it was time to hang it&nbsp;up.</p>
+<p>I started the project in March of 2019 almost a year after I had begun documenting the <span class="caps">NHL</span> <span class="caps">API</span>, taking all the things I learned along the way and creating someting to show for all my efforts.  In more than a few job interviews I talked about the project, how I had grown it and shaped it into something I used almost daily. It was great fun to grow the application with new features, fixing the various quirks that showed up during the Covid-19 shortened season as the <span class="caps">NHL</span> altered playoff formats.  But as with so many things it just doesn&#8217;t make sense to put money into hosting it when there are so many better applications out there doing the same&nbsp;thing.</p>
+<p>While it is kind of bittersweet to sunset a project like this I think it will eventually free up some mental resources to put into something new and exciting that hopefully will force me to learn some new languages and techniques along the&nbsp;way.</p>
+<p class="subheader">Category: <a href="/category/thoughts.html">thoughts</a>
+
+</p>
+
+
+
+
+</article>
     </div>
-        </div>
-        
-        <div class="span3">
+    <!-- End Main Content -->
 
-            <div class="well" style="padding: 8px 0; background-color: #FBFBFB;">
-            <ul class="nav nav-list">
-                <li class="nav-header"> 
-                Site
-                </li>
-            
-                <li><a href="/archives.html">Archives</a>
-                <li><a href="/tags.html">Tags</a>
+    <!-- Sidebar -->
+    <aside class="large-3 columns">
+        <h5 class="sidebar-title">Site</h5>
+        <ul class="side-nav">
+            <li><a href="/archives.html">Archives</a>
+            <li><a href="/tags.html">Tags</a>
 
 
+        </ul>
+
+		
+        <h5 class="sidebar-title">Categories</h5>
+        <ul class="side-nav">
+            <li><a href="/category/automation.html">automation</a></li>
+            <li><a href="/category/cloud.html">cloud</a></li>
+            <li><a href="/category/cloud-aws.html">cloud-aws</a></li>
+            <li><a href="/category/fixes.html">fixes</a></li>
+            <li><a href="/category/general.html">general</a></li>
+            <li><a href="/category/homelab.html">Homelab</a></li>
+            <li><a href="/category/programming.html">programming</a></li>
+            <li><a href="/category/programming-cloud-git.html">programming, cloud, git</a></li>
+            <li><a href="/category/projects.html">projects</a></li>
+            <li><a href="/category/sysadmin.html">sysadmin</a></li>
+            <li><a href="/category/thoughts.html">thoughts</a></li>
+   
+        </ul>
+
+        <h5 class="sidebar-title">Links</h5>
+        <ul class="side-nav">
+            <li><a href="https://www.dazedpro.com/">DazedPro</a></li>
+            <li><a href="https://mpietruszka.com/">mikep</a></li>
+        </ul>
+		
+
+    </aside> <!-- End Sidebar -->
+
+</div> <!-- End Main Content and Sidebar -->
 
 
-            </ul>
+<!-- Footer -->
+<footer class="row">
+    <div class="large-12 columns">
+        <hr />
+        <div class="row">
+            <div class="large-6 columns">
+                <p>dword4 by dword4</p>
             </div>
-
-
-            <div class="well" style="padding: 8px 0; background-color: #FBFBFB;">
-            <ul class="nav nav-list">
-                <li class="nav-header"> 
-                Categories
-                </li>
-                
-                <li><a href="/category/cloud-aws.html">cloud-aws</a></li>
-                <li><a href="/category/programming.html">programming</a></li>
-                <li><a href="/category/projects.html">projects</a></li>
-                <li><a href="/category/thoughts.html">thoughts</a></li>
-                   
-            </ul>
             </div>
-
-
-            <div class="well" style="padding: 8px 0; background-color: #FBFBFB;">
-            <ul class="nav nav-list">
-                <li class="nav-header"> 
-                Links
-                </li>
-            
-                <li><a href="https://www.dazedpro.com/">DazedPro</a></li>
-                <li><a href="https://mpietruszka.com/">mikep</a></li>
-            </ul>
-            </div>
-
-
-
-        </div>  
-    </div>     </div> 
-<footer>
-<br />
-<p><a href="">dword4</a> &copy; dword4 2021</p>
+    </div>
 </footer>
-
-</div> <!-- /container -->
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-<script src="/theme/bootstrap-collapse.js"></script>
- 
-</body>
-</html>

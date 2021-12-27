@@ -1,125 +1,231 @@
 <!DOCTYPE html>
-<html lang="en">
 <head>
-    <meta charset="utf-8">
-    <title>dword4 - Tags</title>
-    <meta name="description" content="">
-    <meta name="author" content="dword4">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8" />
+    <!-- Set the viewport width to device width for mobile -->
+    <meta name="viewport" content="width=device-width" />
 
-    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
-    <!--[if lt IE 9]>
-    <script src="/theme/html5.js"></script>
-    <![endif]-->
+    <title>dword4</title>
 
-    <!-- Le styles -->
-    <link href="/theme/bootstrap.min.css" rel="stylesheet">
-    <link href="/theme/bootstrap.min.responsive.css" rel="stylesheet">
-    <link href="/theme/local.css" rel="stylesheet">
-    <link href="/theme/pygments.css" rel="stylesheet">
+    <link rel="stylesheet" href="/theme/css/normalize.css" />
+    <link rel="stylesheet" href="/theme/css/foundation.min.css" />
+    <link rel="stylesheet" href="/theme/css/style.css" />
+    <link rel="stylesheet" href="/theme/css/pygments.css" />	
+    <script src="/theme/js/custom.modernizr.js"></script>
 
-    <!-- counter.dev tracking -->
-    <script>if(!sessionStorage.getItem("_swa")&&document.referrer.indexOf(location.protocol+"//"+location.host)!== 0){fetch("https://counter.dev/track?"+new URLSearchParams({referrer:document.referrer,screen:screen.width+"x"+screen.height,user:"dword4",utcoffset:"-5"}))};sessionStorage.setItem("_swa","1");</script>
-    <!-- end conter.dev tracking -->
     <!-- So Firefox can bookmark->"abo this site" -->
 
 </head>
 
 <body>
 
-<div class="navbar">
-    <div class="navbar-inner">
-    <div class="container">
-
-         <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-             <span class="icon-bar"></span>
-             <span class="icon-bar"></span>
-             <span class="icon-bar"></span>
-         </a>
-
-        <a class="brand" href="">dword4</a>
-
-        <div class="nav-collapse">
-        <ul class="nav">
-            
-            <li><a href="/pages/about-me.html">About Me</a></li>
-        </ul>
-        </div>
-        
-    </div>
+<!-- Nav Bar -->
+<nav>
+<div class="top-bar">
+<div class="row">
+    <div class="large-9 large-centered columns">
+	    <h1><a href="">dword4</a></h1>
     </div>
 </div>
+</div>
 
-<div class="container">
-    <div class="content">
-    <div class="row">
+<!-- Show menu items and pages -->
+<div class="row">
+<div class="large-9 columns">
+    <ul class="button-group navigation">
 
-        <div class="span9">
-<ul>
-    <li><a href="/tag/aws.html">AWS</a></li>
-    <li><a href="/tag/cloudwatch.html">CloudWatch</a></li>
-    <li><a href="/tag/ec2.html">EC2</a></li>
-    <li><a href="/tag/monitoring.html">monitoring</a></li>
-    <li><a href="/tag/procstat.html">procstat</a></li>
+            <li><a href="/pages/about-me.html" class="button secondary small">About&nbsp;Me</a></li>
+    </ul>
+</div>
+</div>
+</nav>
+<!-- End Nav -->
+
+
+<!-- Main Page Content and Sidebar -->
+<div class="row">
+
+    <!-- Main Blog Content -->
+    <div class="large-9 columns">
+
+<ul class="circle">
+	<li><a href="/tag/apple.html">apple</a></li>
+	<ul class="square">
+	<li><a href="/apple-7th-gen-ipad-smart-cover-fix.html"><small>Apple 7th Gen iPad + Smart Cover&nbsp;Fix</small></li>
+	</ul>
+	<li><a href="/tag/automation.html">automation</a></li>
+	<ul class="square">
+	<li><a href="/simple-ci-chef.html"><small>Simple <span class="caps">CI</span> with&nbsp;Chef</small></li>
+	</ul>
+	<li><a href="/tag/aws.html">AWS</a></li>
+	<ul class="square">
+	<li><a href="/monitoring-cloudwatch-agent-procstat.html"><small>Monitoring on <span class="caps">AWS</span> with CloudWatch Agent and&nbsp;Procstat</small></li>
+	<li><a href="/reference-parent-resource-tf.html"><small>Terraform – Reference parent&nbsp;resources</small></li>
+	<li><a href="/aws-subnet-by-name.html"><small>Selecting an <span class="caps">AWS</span> subnet by name in&nbsp;Terraform</small></li>
+	</ul>
+	<li><a href="/tag/centos7.html">centos7</a></li>
+	<ul class="square">
+	<li><a href="/patching-centos-7-and-overcoming-problems.html"><small>Patching CentOS 7 (and overcoming&nbsp;problems)</small></li>
+	</ul>
+	<li><a href="/tag/chef.html">chef</a></li>
+	<ul class="square">
+	<li><a href="/simple-ci-chef.html"><small>Simple <span class="caps">CI</span> with&nbsp;Chef</small></li>
+	</ul>
+	<li><a href="/tag/ci.html">CI</a></li>
+	<ul class="square">
+	<li><a href="/simple-ci-chef.html"><small>Simple <span class="caps">CI</span> with&nbsp;Chef</small></li>
+	</ul>
+	<li><a href="/tag/cloud.html">cloud</a></li>
+	<ul class="square">
+	<li><a href="/reference-parent-resource-tf.html"><small>Terraform – Reference parent&nbsp;resources</small></li>
+	</ul>
+	<li><a href="/tag/cloudwatch.html">CloudWatch</a></li>
+	<ul class="square">
+	<li><a href="/monitoring-cloudwatch-agent-procstat.html"><small>Monitoring on <span class="caps">AWS</span> with CloudWatch Agent and&nbsp;Procstat</small></li>
+	</ul>
+	<li><a href="/tag/code.html">code</a></li>
+	<ul class="square">
+	<li><a href="/managing-growing-project.html"><small>Managing a Growing&nbsp;Project</small></li>
+	</ul>
+	<li><a href="/tag/devops.html">devops</a></li>
+	<ul class="square">
+	<li><a href="/simple-ci-chef.html"><small>Simple <span class="caps">CI</span> with&nbsp;Chef</small></li>
+	</ul>
+	<li><a href="/tag/ec2.html">EC2</a></li>
+	<ul class="square">
+	<li><a href="/monitoring-cloudwatch-agent-procstat.html"><small>Monitoring on <span class="caps">AWS</span> with CloudWatch Agent and&nbsp;Procstat</small></li>
+	</ul>
+	<li><a href="/tag/fix.html">fix</a></li>
+	<ul class="square">
+	<li><a href="/apple-7th-gen-ipad-smart-cover-fix.html"><small>Apple 7th Gen iPad + Smart Cover&nbsp;Fix</small></li>
+	</ul>
+	<li><a href="/tag/git.html">git</a></li>
+	<ul class="square">
+	<li><a href="/git-repo-list.html"><small>Quick Code: Repo&nbsp;List</small></li>
+	<li><a href="/simple-ci-chef.html"><small>Simple <span class="caps">CI</span> with&nbsp;Chef</small></li>
+	</ul>
+	<li><a href="/tag/hockey.html">hockey</a></li>
+	<ul class="square">
+	<li><a href="/managing-growing-project.html"><small>Managing a Growing&nbsp;Project</small></li>
+	</ul>
+	<li><a href="/tag/homelab.html">homelab</a></li>
+	<ul class="square">
+	<li><a href="/simple-icinga2-plugin.html"><small>Simple Icinga2&nbsp;Plugin</small></li>
+	<li><a href="/synology-post-mortem.html"><small>Homelab: Synology failure&nbsp;post-mortem</small></li>
+	</ul>
+	<li><a href="/tag/icinga.html">icinga</a></li>
+	<ul class="square">
+	<li><a href="/simple-icinga2-plugin.html"><small>Simple Icinga2&nbsp;Plugin</small></li>
+	</ul>
+	<li><a href="/tag/ios.html">ios</a></li>
+	<ul class="square">
+	<li><a href="/apple-7th-gen-ipad-smart-cover-fix.html"><small>Apple 7th Gen iPad + Smart Cover&nbsp;Fix</small></li>
+	</ul>
+	<li><a href="/tag/ipad.html">ipad</a></li>
+	<ul class="square">
+	<li><a href="/apple-7th-gen-ipad-smart-cover-fix.html"><small>Apple 7th Gen iPad + Smart Cover&nbsp;Fix</small></li>
+	</ul>
+	<li><a href="/tag/librenms.html">librenms</a></li>
+	<ul class="square">
+	<li><a href="/synology-post-mortem.html"><small>Homelab: Synology failure&nbsp;post-mortem</small></li>
+	</ul>
+	<li><a href="/tag/linux.html">linux</a></li>
+	<ul class="square">
+	<li><a href="/patching-centos-7-and-overcoming-problems.html"><small>Patching CentOS 7 (and overcoming&nbsp;problems)</small></li>
+	<li><a href="/simple-icinga2-plugin.html"><small>Simple Icinga2&nbsp;Plugin</small></li>
+	<li><a href="/synology-post-mortem.html"><small>Homelab: Synology failure&nbsp;post-mortem</small></li>
+	</ul>
+	<li><a href="/tag/monitoring.html">monitoring</a></li>
+	<ul class="square">
+	<li><a href="/monitoring-cloudwatch-agent-procstat.html"><small>Monitoring on <span class="caps">AWS</span> with CloudWatch Agent and&nbsp;Procstat</small></li>
+	<li><a href="/simple-icinga2-plugin.html"><small>Simple Icinga2&nbsp;Plugin</small></li>
+	<li><a href="/synology-post-mortem.html"><small>Homelab: Synology failure&nbsp;post-mortem</small></li>
+	</ul>
+	<li><a href="/tag/nhl.html">NHL</a></li>
+	<ul class="square">
+	<li><a href="/managing-growing-project.html"><small>Managing a Growing&nbsp;Project</small></li>
+	</ul>
+	<li><a href="/tag/nhl-api.html">NHL-api</a></li>
+	<ul class="square">
+	<li><a href="/managing-growing-project.html"><small>Managing a Growing&nbsp;Project</small></li>
+	</ul>
+	<li><a href="/tag/procstat.html">procstat</a></li>
+	<ul class="square">
+	<li><a href="/monitoring-cloudwatch-agent-procstat.html"><small>Monitoring on <span class="caps">AWS</span> with CloudWatch Agent and&nbsp;Procstat</small></li>
+	</ul>
+	<li><a href="/tag/programming.html">programming</a></li>
+	<ul class="square">
+	<li><a href="/managing-growing-project.html"><small>Managing a Growing&nbsp;Project</small></li>
+	<li><a href="/simple-icinga2-plugin.html"><small>Simple Icinga2&nbsp;Plugin</small></li>
+	</ul>
+	<li><a href="/tag/project-management.html">project-management</a></li>
+	<ul class="square">
+	<li><a href="/managing-growing-project.html"><small>Managing a Growing&nbsp;Project</small></li>
+	</ul>
+	<li><a href="/tag/python.html">python</a></li>
+	<ul class="square">
+	<li><a href="/git-repo-list.html"><small>Quick Code: Repo&nbsp;List</small></li>
+	</ul>
+	<li><a href="/tag/terraform.html">terraform</a></li>
+	<ul class="square">
+	<li><a href="/reference-parent-resource-tf.html"><small>Terraform – Reference parent&nbsp;resources</small></li>
+	<li><a href="/aws-subnet-by-name.html"><small>Selecting an <span class="caps">AWS</span> subnet by name in&nbsp;Terraform</small></li>
+	</ul>
+	<li><a href="/tag/xenserver.html">xenserver</a></li>
+	<ul class="square">
+	<li><a href="/synology-post-mortem.html"><small>Homelab: Synology failure&nbsp;post-mortem</small></li>
+	</ul>
 </ul>
-        </div>
-        
-        <div class="span3">
 
-            <div class="well" style="padding: 8px 0; background-color: #FBFBFB;">
-            <ul class="nav nav-list">
-                <li class="nav-header"> 
-                Site
-                </li>
-            
-                <li><a href="/archives.html">Archives</a>
-                <li><a href="/tags.html">Tags</a>
+    </div>
+    <!-- End Main Content -->
+
+    <!-- Sidebar -->
+    <aside class="large-3 columns">
+        <h5 class="sidebar-title">Site</h5>
+        <ul class="side-nav">
+            <li><a href="/archives.html">Archives</a>
+            <li><a href="/tags.html">Tags</a>
 
 
+        </ul>
+
+		
+        <h5 class="sidebar-title">Categories</h5>
+        <ul class="side-nav">
+            <li><a href="/category/automation.html">automation</a></li>
+            <li><a href="/category/cloud.html">cloud</a></li>
+            <li><a href="/category/cloud-aws.html">cloud-aws</a></li>
+            <li><a href="/category/fixes.html">fixes</a></li>
+            <li><a href="/category/general.html">general</a></li>
+            <li><a href="/category/homelab.html">Homelab</a></li>
+            <li><a href="/category/programming.html">programming</a></li>
+            <li><a href="/category/programming-cloud-git.html">programming, cloud, git</a></li>
+            <li><a href="/category/projects.html">projects</a></li>
+            <li><a href="/category/sysadmin.html">sysadmin</a></li>
+            <li><a href="/category/thoughts.html">thoughts</a></li>
+   
+        </ul>
+
+        <h5 class="sidebar-title">Links</h5>
+        <ul class="side-nav">
+            <li><a href="https://www.dazedpro.com/">DazedPro</a></li>
+            <li><a href="https://mpietruszka.com/">mikep</a></li>
+        </ul>
+		
+
+    </aside> <!-- End Sidebar -->
+
+</div> <!-- End Main Content and Sidebar -->
 
 
-            </ul>
+<!-- Footer -->
+<footer class="row">
+    <div class="large-12 columns">
+        <hr />
+        <div class="row">
+            <div class="large-6 columns">
+                <p>dword4 by dword4</p>
             </div>
-
-
-            <div class="well" style="padding: 8px 0; background-color: #FBFBFB;">
-            <ul class="nav nav-list">
-                <li class="nav-header"> 
-                Categories
-                </li>
-                
-                <li><a href="/category/cloud-aws.html">cloud-aws</a></li>
-                <li><a href="/category/programming.html">programming</a></li>
-                <li><a href="/category/projects.html">projects</a></li>
-                <li><a href="/category/thoughts.html">thoughts</a></li>
-                   
-            </ul>
             </div>
-
-
-            <div class="well" style="padding: 8px 0; background-color: #FBFBFB;">
-            <ul class="nav nav-list">
-                <li class="nav-header"> 
-                Links
-                </li>
-            
-                <li><a href="https://www.dazedpro.com/">DazedPro</a></li>
-                <li><a href="https://mpietruszka.com/">mikep</a></li>
-            </ul>
-            </div>
-
-
-
-        </div>  
-    </div>     </div> 
-<footer>
-<br />
-<p><a href="">dword4</a> &copy; dword4 2021</p>
+    </div>
 </footer>
-
-</div> <!-- /container -->
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-<script src="/theme/bootstrap-collapse.js"></script>
- 
-</body>
-</html>
