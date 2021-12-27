@@ -1,12 +1,13 @@
 AUTHOR = 'dword4'
 SITENAME = 'dword4'
-SITEURL = ''
+SITEURL = '/'
 
 PATH = 'content'
-THEME = 'tuxlite_tbs'
+THEME = 'tuxlite_zf'
 TIMEZONE = 'America/New_York'
 DEFAULT_LANG = 'en'
 
+TYPOGRIFY = True
 # Feed generation is usually not desired when developing
 FEED_ALL_ATOM = None
 CATEGORY_FEED_ATOM = None

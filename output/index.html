@@ -1,259 +1,334 @@
 <!DOCTYPE html>
-<html lang="en">
 <head>
-    <meta charset="utf-8">
+    <meta charset="utf-8" />
+    <!-- Set the viewport width to device width for mobile -->
+    <meta name="viewport" content="width=device-width" />
+
     <title>dword4</title>
-    <meta name="description" content="">
-    <meta name="author" content="dword4">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
-    <!--[if lt IE 9]>
-    <script src="/theme/html5.js"></script>
-    <![endif]-->
+    <link rel="stylesheet" href="/theme/css/normalize.css" />
+    <link rel="stylesheet" href="/theme/css/foundation.min.css" />
+    <link rel="stylesheet" href="/theme/css/style.css" />
+    <link rel="stylesheet" href="/theme/css/pygments.css" />	
+    <script src="/theme/js/custom.modernizr.js"></script>
 
-    <!-- Le styles -->
-    <link href="/theme/bootstrap.min.css" rel="stylesheet">
-    <link href="/theme/bootstrap.min.responsive.css" rel="stylesheet">
-    <link href="/theme/local.css" rel="stylesheet">
-    <link href="/theme/pygments.css" rel="stylesheet">
-
-    <!-- counter.dev tracking -->
-    <script>if(!sessionStorage.getItem("_swa")&&document.referrer.indexOf(location.protocol+"//"+location.host)!== 0){fetch("https://counter.dev/track?"+new URLSearchParams({referrer:document.referrer,screen:screen.width+"x"+screen.height,user:"dword4",utcoffset:"-5"}))};sessionStorage.setItem("_swa","1");</script>
-    <!-- end conter.dev tracking -->
     <!-- So Firefox can bookmark->"abo this site" -->
 
 </head>
 
 <body>
 
-<div class="navbar">
-    <div class="navbar-inner">
-    <div class="container">
-
-         <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-             <span class="icon-bar"></span>
-             <span class="icon-bar"></span>
-             <span class="icon-bar"></span>
-         </a>
-
-        <a class="brand" href="">dword4</a>
-
-        <div class="nav-collapse">
-        <ul class="nav">
-            
-            <li><a href="/pages/about-me.html">About Me</a></li>
-        </ul>
-        </div>
-        
-    </div>
+<!-- Nav Bar -->
+<nav>
+<div class="top-bar">
+<div class="row">
+    <div class="large-9 large-centered columns">
+	    <h1><a href="">dword4</a></h1>
     </div>
 </div>
+</div>
 
-<div class="container">
-    <div class="content">
-    <div class="row">
+<!-- Show menu items and pages -->
+<div class="row">
+<div class="large-9 columns">
+    <ul class="button-group navigation">
 
-        <div class="span9">
+            <li><a href="/pages/about-me.html" class="button secondary small">About&nbsp;Me</a></li>
+    </ul>
+</div>
+</div>
+</nav>
+<!-- End Nav -->
+
+
+<!-- Main Page Content and Sidebar -->
+<div class="row">
+
+    <!-- Main Blog Content -->
+    <div class="large-9 columns">
+        
         
 
-        
+            <article>
+                <a href="/taking-back-email.html"><h3 class="article-title">Taking Back Email - An&nbsp;Overview</h3></a>
+<h6 class="subheader" title="2021-12-17T00:00:00-05:00">Fri 17 December 2021
+</h6>
 
 
-    <div class='article'>
-        <div class="content-title">
-            <a href="/taking-back-email.html"><h1>Taking Back Email - An Overview</h1></a>
-Fri 17 December 2021
-
-by <a class="url fn" href="/author/dword4.html">dword4</a>
- 
-
-
- 
-        </div>
-        
-        <div><p><strong>So full disclosure I got this idea from a friend who has already done a lot of the leg work</strong></p>
-<p>One of the biggest ways we give away TONS of data is using email providers such as Gmail which 
+<p><strong>So full disclosure I got this idea from a friend who has already done a lot of the leg&nbsp;work</strong></p>
+<p>One of the biggest ways we give away <span class="caps">TONS</span> of data is using email providers such as Gmail which 
 outright data mine our entire inbox contents to build profiles on us.  While I no longer aspire
 to run a basement datacenter for fun there is a middle ground to be had I think.  In this case
 it would be utilizing a service such as Azure to do the hosting portion but keeping control of
-the assets and managing them myself (to a degree).</p>
-<p>The general idea is to setup an Azure AD Premium P2 instance (9$/month) for authentication and 
+the assets and managing them myself (to a&nbsp;degree).</p>
+<p>The general idea is to setup an Azure <span class="caps">AD</span> Premium P2 instance (9$/month) for authentication and 
 control and use Office 365 Business specifically for the email portion (5$/month).  With O365 
-business you currently get a 50GB mailbox, ability to use a custom domain (required for the AD
-portion I believe) and a 1TB OneDrive account.  Comparison wise it costs about 10$ a month to get 
-2TB of storage with Google to split between your Drive and Gmail account.</p>
-<p>Another perk of this path is that I can utilize the AD authentication to tie various apps into 
+business you currently get a <span class="caps">50GB</span> mailbox, ability to use a custom domain (required for the <span class="caps">AD</span>
+portion I believe) and a <span class="caps">1TB</span> OneDrive account.  Comparison wise it costs about 10$ a month to get 
+<span class="caps">2TB</span> of storage with Google to split between your Drive and Gmail&nbsp;account.</p>
+<p>Another perk of this path is that I can utilize the <span class="caps">AD</span> authentication to tie various apps into 
 a central authentication platform that I control.  This opens up a whole new realm of control
 and configuration to ensure that I can help keep my data safe and private, allowing for a degree 
 of control that otherwise would require a great deal more configuration work to self-host email 
-at home.</p>
+at&nbsp;home.</p>
 <p>The general idea here is to document the process as I go to help guide others who want to take 
 back some control of their data. That and it forces me to use Pelican more to update this so its
-a nice bonus.</p></div>
-        <hr />
+a nice&nbsp;bonus.</p><p class="subheader">Category: <a href="/category/thoughts.html">thoughts</a>
+
+</p>
+
+
+
+            </article>
+
+
+                <hr  class="gradient"/>
+
+
+        
+
+
+            <article>
+                <a href="/sunsetting-hockey-info.html"><h3 class="article-title">Sunsetting a&nbsp;Project</h3></a>
+<h6 class="subheader" title="2021-10-13T00:00:00-04:00">Wed 13 October 2021
+</h6>
+
+
+<p>ruminating on the end of a project and the path&nbsp;forward</p><p class="subheader">Category: <a href="/category/thoughts.html">thoughts</a>
+
+</p>
+
+
+
+                <a class="button radius secondary small right" href="/sunsetting-hockey-info.html">Read More</a>
+                <hr  class="gradient"/>
+            </article>
+
+        
+
+
+            <article>
+                <a href="/staircase-programming-challenge.html"><h3 class="article-title">Staircase&nbsp;Challenge</h3></a>
+<h6 class="subheader" title="2021-08-27T00:00:00-04:00">Fri 27 August 2021
+</h6>
+
+
+<p>a quick code blurb I wrote for an online&nbsp;challenge</p><p class="subheader">Category: <a href="/category/programming.html">programming</a>
+
+</p>
+
+
+
+                <a class="button radius secondary small right" href="/staircase-programming-challenge.html">Read More</a>
+                <hr  class="gradient"/>
+            </article>
+
+        
+
+
+            <article>
+                <a href="/clean-slate.html"><h3 class="article-title">Clean&nbsp;Slate</h3></a>
+<h6 class="subheader" title="2021-08-16T00:00:00-04:00">Mon 16 August 2021
+</h6>
+
+
+<p>some thoughts on starting&nbsp;over</p><p class="subheader">Category: <a href="/category/thoughts.html">thoughts</a>
+
+</p>
+
+
+
+                <a class="button radius secondary small right" href="/clean-slate.html">Read More</a>
+                <hr  class="gradient"/>
+            </article>
+
+        
+
+
+            <article>
+                <a href="/finding-data-NHL-API.html"><h3 class="article-title">Finding Data in the <span class="caps">NHL</span> <span class="caps">API</span></h3></a>
+<h6 class="subheader" title="2021-02-03T00:00:00-05:00">Wed 03 February 2021
+</h6>
+
+
+<p>How to find data in the <span class="caps">NHL</span> <span class="caps">API</span></p><p class="subheader">Category: <a href="/category/projects.html">projects</a>
+
+</p>
+
+
+
+                <a class="button radius secondary small right" href="/finding-data-NHL-API.html">Read More</a>
+                <hr  class="gradient"/>
+            </article>
+
+        
+
+
+            <article>
+                <a href="/paas-frustrations.html"><h3 class="article-title">PaaS&nbsp;Frustrations</h3></a>
+<h6 class="subheader" title="2021-02-03T00:00:00-05:00">Wed 03 February 2021
+</h6>
+
+
+<p>Working through a slightly obscure Gitlab&nbsp;problems</p><p class="subheader">Category: <a href="/category/programming-cloud-git.html">programming, cloud, git</a>
+
+</p>
+
+
+
+                <a class="button radius secondary small right" href="/paas-frustrations.html">Read More</a>
+                <hr  class="gradient"/>
+            </article>
+
+        
+
+
+            <article>
+                <a href="/monitoring-cloudwatch-agent-procstat.html"><h3 class="article-title">Monitoring on <span class="caps">AWS</span> with CloudWatch Agent and&nbsp;Procstat</h3></a>
+<h6 class="subheader" title="2020-08-26T00:00:00-04:00">Wed 26 August 2020
+</h6>
+
+
+<p>Install CloudWatch agent with procstat on an <span class="caps">EC2</span> instance and configure a metric alarm in&nbsp;CloudWatch</p><p class="subheader">Category: <a href="/category/cloud-aws.html">cloud-aws</a>
+
+    Tagged: 
+    <a href="/tag/aws.html">AWS </a>
+    <a href="/tag/cloudwatch.html">CloudWatch </a>
+    <a href="/tag/procstat.html">procstat </a>
+    <a href="/tag/ec2.html">EC2 </a>
+    <a href="/tag/monitoring.html">monitoring </a>
+</p>
+
+
+
+                <a class="button radius secondary small right" href="/monitoring-cloudwatch-agent-procstat.html">Read More</a>
+                <hr  class="gradient"/>
+            </article>
+
+        
+
+
+            <article>
+                <a href="/hockey-info-release-1.html"><h3 class="article-title">Hockey-Info Release&nbsp;v1.0</h3></a>
+<h6 class="subheader" title="2020-07-26T00:00:00-04:00">Sun 26 July 2020
+</h6>
+
+
+<p>The 1.0 release of&nbsp;Hockey-Info</p><p class="subheader">Category: <a href="/category/programming.html">programming</a>
+
+</p>
+
+
+
+                <a class="button radius secondary small right" href="/hockey-info-release-1.html">Read More</a>
+                <hr  class="gradient"/>
+            </article>
+
+        
+
+
+            <article>
+                <a href="/git-repo-list.html"><h3 class="article-title">Quick Code: Repo&nbsp;List</h3></a>
+<h6 class="subheader" title="2020-05-19T00:00:00-04:00">Tue 19 May 2020
+</h6>
+
+
+<p>Quick little bit of code to let you list all repos your currently logged in account can&nbsp;access</p><p class="subheader">Category: <a href="/category/programming.html">programming</a>
+
+    Tagged: 
+    <a href="/tag/git.html">git </a>
+    <a href="/tag/python.html">python </a>
+</p>
+
+
+
+                <a class="button radius secondary small right" href="/git-repo-list.html">Read More</a>
+                <hr  class="gradient"/>
+            </article>
+
+        
+
+
+            <article>
+                <a href="/reference-parent-resource-tf.html"><h3 class="article-title">Terraform – Reference parent&nbsp;resources</h3></a>
+<h6 class="subheader" title="2020-05-02T00:00:00-04:00">Sat 02 May 2020
+</h6>
+
+
+<p>How to reference a parent resource in&nbsp;Terraform</p><p class="subheader">Category: <a href="/category/cloud.html">cloud</a>
+
+    Tagged: 
+    <a href="/tag/aws.html">aws </a>
+    <a href="/tag/cloud.html">cloud </a>
+    <a href="/tag/terraform.html">terraform </a>
+</p>
+
+
+
+                <a class="button radius secondary small right" href="/reference-parent-resource-tf.html">Read More</a>
+                <hr  class="gradient"/>
+            </article>
+
+            <!-- /#posts-list -->
+<div class="pagination-centered">
+<h6 class="subheader">Page 1 of 2</h6>
+
+<p>
+
+        <a href="/index2.html">Next &raquo;</a>
+</p>
+</div>
+
     </div>
+    <!-- End Main Content -->
+
+    <!-- Sidebar -->
+    <aside class="large-3 columns">
+        <h5 class="sidebar-title">Site</h5>
+        <ul class="side-nav">
+            <li><a href="/archives.html">Archives</a>
+            <li><a href="/tags.html">Tags</a>
+
+
+        </ul>
+
+		
+        <h5 class="sidebar-title">Categories</h5>
+        <ul class="side-nav">
+            <li><a href="/category/automation.html">automation</a></li>
+            <li><a href="/category/cloud.html">cloud</a></li>
+            <li><a href="/category/cloud-aws.html">cloud-aws</a></li>
+            <li><a href="/category/fixes.html">fixes</a></li>
+            <li><a href="/category/general.html">general</a></li>
+            <li><a href="/category/homelab.html">Homelab</a></li>
+            <li><a href="/category/programming.html">programming</a></li>
+            <li><a href="/category/programming-cloud-git.html">programming, cloud, git</a></li>
+            <li><a href="/category/projects.html">projects</a></li>
+            <li><a href="/category/sysadmin.html">sysadmin</a></li>
+            <li><a href="/category/thoughts.html">thoughts</a></li>
+   
+        </ul>
+
+        <h5 class="sidebar-title">Links</h5>
+        <ul class="side-nav">
+            <li><a href="https://www.dazedpro.com/">DazedPro</a></li>
+            <li><a href="https://mpietruszka.com/">mikep</a></li>
+        </ul>
 		
 
- 
-        
+    </aside> <!-- End Sidebar -->
 
- 
-
-    <div class='article'>
-        <a href="/sunsetting-hockey-info.html"><h2>Sunsetting a Project</h2></a>
-        <div class= "well small"> Wed 13 October 2021
-
-by <a class="url fn" href="/author/dword4.html">dword4</a>
- 
+</div> <!-- End Main Content and Sidebar -->
 
 
- </div>
-        <div class="summary"><p>ruminating on the end of a project and the path forward</p> <a class="btn btn-info xsmall" href="/sunsetting-hockey-info.html">read more</a></div>
-    </div>	
-				
-
- 
-        
-
- 
-
-    <div class='article'>
-        <a href="/staircase-programming-challenge.html"><h2>Staircase Challenge</h2></a>
-        <div class= "well small"> Fri 27 August 2021
-
-by <a class="url fn" href="/author/dword4.html">dword4</a>
- 
-
-
- </div>
-        <div class="summary"><p>a quick code blurb I wrote for an online challenge</p> <a class="btn btn-info xsmall" href="/staircase-programming-challenge.html">read more</a></div>
-    </div>	
-				
-
- 
-        
-
- 
-
-    <div class='article'>
-        <a href="/clean-slate.html"><h2>Clean Slate</h2></a>
-        <div class= "well small"> Mon 16 August 2021
-
-by <a class="url fn" href="/author/dword4.html">dword4</a>
- 
-
-
- </div>
-        <div class="summary"><p>some thoughts on starting over</p> <a class="btn btn-info xsmall" href="/clean-slate.html">read more</a></div>
-    </div>	
-				
-
- 
-        
-
- 
-
-    <div class='article'>
-        <a href="/finding-data-NHL-API.html"><h2>Finding Data in the NHL API</h2></a>
-        <div class= "well small"> Wed 03 February 2021
-
-by <a class="url fn" href="/author/dword4.html">dword4</a>
- 
-
-
- </div>
-        <div class="summary"><p>How to find data in the NHL API</p> <a class="btn btn-info xsmall" href="/finding-data-NHL-API.html">read more</a></div>
-    </div>	
-				
-
- 
-        
-
- 
-
-    <div class='article'>
-        <a href="/monitoring-cloudwatch-agent-procstat.html"><h2>Monitoring on AWS with CloudWatch Agent and Procstat</h2></a>
-        <div class= "well small"> Wed 26 August 2020
-
-by <a class="url fn" href="/author/dword4.html">dword4</a>
- 
-
-
- </div>
-        <div class="summary"><p>Install CloudWatch agent with procstat on an EC2 instance and configure a metric alarm in CloudWatch</p> <a class="btn btn-info xsmall" href="/monitoring-cloudwatch-agent-procstat.html">read more</a></div>
-    </div>	
-				
-<div class="pagination">
-<ul>
-    <li class="prev disabled"><a href="#">&larr; Previous</a></li>
-
-    <li class="active"><a href="/index.html">1</a></li>
-
-    <li class="next disabled"><a href="#">&rarr; Next</a></li>
-
-</ul>
-</div>
- 
-  
-        </div>
-        
-        <div class="span3">
-
-            <div class="well" style="padding: 8px 0; background-color: #FBFBFB;">
-            <ul class="nav nav-list">
-                <li class="nav-header"> 
-                Site
-                </li>
-            
-                <li><a href="/archives.html">Archives</a>
-                <li><a href="/tags.html">Tags</a>
-
-
-
-
-            </ul>
+<!-- Footer -->
+<footer class="row">
+    <div class="large-12 columns">
+        <hr />
+        <div class="row">
+            <div class="large-6 columns">
+                <p>dword4 by dword4</p>
             </div>
-
-
-            <div class="well" style="padding: 8px 0; background-color: #FBFBFB;">
-            <ul class="nav nav-list">
-                <li class="nav-header"> 
-                Categories
-                </li>
-                
-                <li><a href="/category/cloud-aws.html">cloud-aws</a></li>
-                <li><a href="/category/programming.html">programming</a></li>
-                <li><a href="/category/projects.html">projects</a></li>
-                <li><a href="/category/thoughts.html">thoughts</a></li>
-                   
-            </ul>
             </div>
-
-
-            <div class="well" style="padding: 8px 0; background-color: #FBFBFB;">
-            <ul class="nav nav-list">
-                <li class="nav-header"> 
-                Links
-                </li>
-            
-                <li><a href="https://www.dazedpro.com/">DazedPro</a></li>
-                <li><a href="https://mpietruszka.com/">mikep</a></li>
-            </ul>
-            </div>
-
-
-
-        </div>  
-    </div>     </div> 
-<footer>
-<br />
-<p><a href="">dword4</a> &copy; dword4 2021</p>
+    </div>
 </footer>
-
-</div> <!-- /container -->
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-<script src="/theme/bootstrap-collapse.js"></script>
- 
-</body>
-</html>

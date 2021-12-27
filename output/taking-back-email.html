@@ -1,152 +1,138 @@
 <!DOCTYPE html>
-<html lang="en">
 <head>
-    <meta charset="utf-8">
-    <title>dword4 - Taking Back Email - An Overview</title>
-    <meta name="description" content="">
-    <meta name="author" content="dword4">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8" />
+    <!-- Set the viewport width to device width for mobile -->
+    <meta name="viewport" content="width=device-width" />
 
-    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
-    <!--[if lt IE 9]>
-    <script src="/theme/html5.js"></script>
-    <![endif]-->
+    <title>Taking Back Email - An Overview</title>
 
-    <!-- Le styles -->
-    <link href="/theme/bootstrap.min.css" rel="stylesheet">
-    <link href="/theme/bootstrap.min.responsive.css" rel="stylesheet">
-    <link href="/theme/local.css" rel="stylesheet">
-    <link href="/theme/pygments.css" rel="stylesheet">
+    <link rel="stylesheet" href="/theme/css/normalize.css" />
+    <link rel="stylesheet" href="/theme/css/foundation.min.css" />
+    <link rel="stylesheet" href="/theme/css/style.css" />
+    <link rel="stylesheet" href="/theme/css/pygments.css" />	
+    <script src="/theme/js/custom.modernizr.js"></script>
 
-    <!-- counter.dev tracking -->
-    <script>if(!sessionStorage.getItem("_swa")&&document.referrer.indexOf(location.protocol+"//"+location.host)!== 0){fetch("https://counter.dev/track?"+new URLSearchParams({referrer:document.referrer,screen:screen.width+"x"+screen.height,user:"dword4",utcoffset:"-5"}))};sessionStorage.setItem("_swa","1");</script>
-    <!-- end conter.dev tracking -->
     <!-- So Firefox can bookmark->"abo this site" -->
 
 </head>
 
 <body>
 
-<div class="navbar">
-    <div class="navbar-inner">
-    <div class="container">
-
-         <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-             <span class="icon-bar"></span>
-             <span class="icon-bar"></span>
-             <span class="icon-bar"></span>
-         </a>
-
-        <a class="brand" href="">dword4</a>
-
-        <div class="nav-collapse">
-        <ul class="nav">
-            
-            <li><a href="/pages/about-me.html">About Me</a></li>
-        </ul>
-        </div>
-        
-    </div>
+<!-- Nav Bar -->
+<nav>
+<div class="top-bar">
+<div class="row">
+    <div class="large-9 large-centered columns">
+	    <h1><a href="">dword4</a></h1>
     </div>
 </div>
+</div>
 
-<div class="container">
-    <div class="content">
-    <div class="row">
+<!-- Show menu items and pages -->
+<div class="row">
+<div class="large-9 columns">
+    <ul class="button-group navigation">
 
-        <div class="span9">
-    <div class='article'>
-        <div class="content-title">
-            <h1>Taking Back Email - An Overview</h1>
-Fri 17 December 2021
-
-by <a class="url fn" href="/author/dword4.html">dword4</a>
- 
+            <li><a href="/pages/about-me.html" class="button secondary small">About&nbsp;Me</a></li>
+    </ul>
+</div>
+</div>
+</nav>
+<!-- End Nav -->
 
 
-        </div>
-	
-        <div><p><strong>So full disclosure I got this idea from a friend who has already done a lot of the leg work</strong></p>
-<p>One of the biggest ways we give away TONS of data is using email providers such as Gmail which 
+<!-- Main Page Content and Sidebar -->
+<div class="row">
+
+    <!-- Main Blog Content -->
+    <div class="large-9 columns">
+<article>
+    <header>
+        <h3 class="article-title"><a href="/taking-back-email.html" rel="bookmark"
+        title="Permalink to Taking Back Email - An Overview">Taking Back Email - An&nbsp;Overview</a></h3>
+    </header>
+
+<h6 class="subheader" title="2021-12-17T00:00:00-05:00">Fri 17 December 2021
+</h6>
+
+
+    <p><strong>So full disclosure I got this idea from a friend who has already done a lot of the leg&nbsp;work</strong></p>
+<p>One of the biggest ways we give away <span class="caps">TONS</span> of data is using email providers such as Gmail which 
 outright data mine our entire inbox contents to build profiles on us.  While I no longer aspire
 to run a basement datacenter for fun there is a middle ground to be had I think.  In this case
 it would be utilizing a service such as Azure to do the hosting portion but keeping control of
-the assets and managing them myself (to a degree).</p>
-<p>The general idea is to setup an Azure AD Premium P2 instance (9$/month) for authentication and 
+the assets and managing them myself (to a&nbsp;degree).</p>
+<p>The general idea is to setup an Azure <span class="caps">AD</span> Premium P2 instance (9$/month) for authentication and 
 control and use Office 365 Business specifically for the email portion (5$/month).  With O365 
-business you currently get a 50GB mailbox, ability to use a custom domain (required for the AD
-portion I believe) and a 1TB OneDrive account.  Comparison wise it costs about 10$ a month to get 
-2TB of storage with Google to split between your Drive and Gmail account.</p>
-<p>Another perk of this path is that I can utilize the AD authentication to tie various apps into 
+business you currently get a <span class="caps">50GB</span> mailbox, ability to use a custom domain (required for the <span class="caps">AD</span>
+portion I believe) and a <span class="caps">1TB</span> OneDrive account.  Comparison wise it costs about 10$ a month to get 
+<span class="caps">2TB</span> of storage with Google to split between your Drive and Gmail&nbsp;account.</p>
+<p>Another perk of this path is that I can utilize the <span class="caps">AD</span> authentication to tie various apps into 
 a central authentication platform that I control.  This opens up a whole new realm of control
 and configuration to ensure that I can help keep my data safe and private, allowing for a degree 
 of control that otherwise would require a great deal more configuration work to self-host email 
-at home.</p>
+at&nbsp;home.</p>
 <p>The general idea here is to document the process as I go to help guide others who want to take 
 back some control of their data. That and it forces me to use Pelican more to update this so its
-a nice bonus.</p></div>
-	
-        <hr>
+a nice&nbsp;bonus.</p>
+<p class="subheader">Category: <a href="/category/thoughts.html">thoughts</a>
 
+</p>
+
+
+
+
+</article>
     </div>
-        </div>
-        
-        <div class="span3">
+    <!-- End Main Content -->
 
-            <div class="well" style="padding: 8px 0; background-color: #FBFBFB;">
-            <ul class="nav nav-list">
-                <li class="nav-header"> 
-                Site
-                </li>
-            
-                <li><a href="/archives.html">Archives</a>
-                <li><a href="/tags.html">Tags</a>
+    <!-- Sidebar -->
+    <aside class="large-3 columns">
+        <h5 class="sidebar-title">Site</h5>
+        <ul class="side-nav">
+            <li><a href="/archives.html">Archives</a>
+            <li><a href="/tags.html">Tags</a>
 
 
+        </ul>
+
+		
+        <h5 class="sidebar-title">Categories</h5>
+        <ul class="side-nav">
+            <li><a href="/category/automation.html">automation</a></li>
+            <li><a href="/category/cloud.html">cloud</a></li>
+            <li><a href="/category/cloud-aws.html">cloud-aws</a></li>
+            <li><a href="/category/fixes.html">fixes</a></li>
+            <li><a href="/category/general.html">general</a></li>
+            <li><a href="/category/homelab.html">Homelab</a></li>
+            <li><a href="/category/programming.html">programming</a></li>
+            <li><a href="/category/programming-cloud-git.html">programming, cloud, git</a></li>
+            <li><a href="/category/projects.html">projects</a></li>
+            <li><a href="/category/sysadmin.html">sysadmin</a></li>
+            <li><a href="/category/thoughts.html">thoughts</a></li>
+   
+        </ul>
+
+        <h5 class="sidebar-title">Links</h5>
+        <ul class="side-nav">
+            <li><a href="https://www.dazedpro.com/">DazedPro</a></li>
+            <li><a href="https://mpietruszka.com/">mikep</a></li>
+        </ul>
+		
+
+    </aside> <!-- End Sidebar -->
+
+</div> <!-- End Main Content and Sidebar -->
 
 
-            </ul>
+<!-- Footer -->
+<footer class="row">
+    <div class="large-12 columns">
+        <hr />
+        <div class="row">
+            <div class="large-6 columns">
+                <p>dword4 by dword4</p>
             </div>
-
-
-            <div class="well" style="padding: 8px 0; background-color: #FBFBFB;">
-            <ul class="nav nav-list">
-                <li class="nav-header"> 
-                Categories
-                </li>
-                
-                <li><a href="/category/cloud-aws.html">cloud-aws</a></li>
-                <li><a href="/category/programming.html">programming</a></li>
-                <li><a href="/category/projects.html">projects</a></li>
-                <li><a href="/category/thoughts.html">thoughts</a></li>
-                   
-            </ul>
             </div>
-
-
-            <div class="well" style="padding: 8px 0; background-color: #FBFBFB;">
-            <ul class="nav nav-list">
-                <li class="nav-header"> 
-                Links
-                </li>
-            
-                <li><a href="https://www.dazedpro.com/">DazedPro</a></li>
-                <li><a href="https://mpietruszka.com/">mikep</a></li>
-            </ul>
-            </div>
-
-
-
-        </div>  
-    </div>     </div> 
-<footer>
-<br />
-<p><a href="">dword4</a> &copy; dword4 2021</p>
+    </div>
 </footer>
-
-</div> <!-- /container -->
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-<script src="/theme/bootstrap-collapse.js"></script>
- 
-</body>
-</html>
