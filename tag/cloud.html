@@ -13,8 +13,9 @@
     <script src="https://dword4.github.io/theme/js/custom.modernizr.js"></script>
 
     <!-- So Firefox can bookmark->"abo this site" -->
-    <!-- counter.dev analtyics -->
-    <script>if(!sessionStorage.getItem("_swa")&&document.referrer.indexOf(location.protocol+"//"+location.host)!== 0){fetch("https://counter.dev/track?"+new URLSearchParams({referrer:document.referrer,screen:screen.width+"x"+screen.height,user:"dword4",utcoffset:"-5"}))};sessionStorage.setItem("_swa","1");</script>
+    <!-- counter.dev analytics -->
+        <script>if(!sessionStorage.getItem("_swa")&&document.referrer.indexOf(location.protocol+"//"+location.host)!== 0){fetch("https://counter.dev/track?"+new URLSearchParams({referrer:document.referrer,screen:screen.width+"x"+screen.height,user:"dword4",utcoffset:"-5"}))};sessionStorage.setItem("_swa","1");</script>
+
 </head>
 
 <body>
@@ -67,41 +68,41 @@ $ pwd
 </code></pre></div>
 
 <p>First lets look at what should be in the top level main.tf file, the substance of which is not super important other than to have a rough idea of what you&nbsp;want/need</p>
-<div class="highlight"><pre><span></span><code><span class="kr">provider</span> <span class="nv">&quot;aws&quot;</span> <span class="p">{</span>
-  <span class="na">region</span> <span class="o">=</span> <span class="s2">&quot;us-east-2&quot;</span>
-  <span class="na">profile</span> <span class="o">=</span> <span class="s2">&quot;lab-profile&quot;</span>
-<span class="p">}</span>
+<div class="highlight"><pre><span></span><code><span class="kr">provider</span><span class="w"> </span><span class="nv">&quot;aws&quot;</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="na">region</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;us-east-2&quot;</span><span class="w"></span>
+<span class="w">  </span><span class="na">profile</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;lab-profile&quot;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
 
-<span class="nb">terraform</span> <span class="p">{</span>
-  <span class="kr">backend</span> <span class="nv">&quot;s3&quot;</span> <span class="p">{</span><span class="err">}</span>
+<span class="nb">terraform</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="kr">backend</span><span class="w"> </span><span class="nv">&quot;s3&quot;</span><span class="w"> </span><span class="p">{}</span><span class="w"></span>
 <span class="p">}</span><span class="c1"></span>
 
 <span class="c1"># lets create an ECS cluster</span>
 
-<span class="kr">resource</span> <span class="nc">&quot;aws_ecs_cluster&quot;</span> <span class="nv">&quot;goats&quot;</span> <span class="p">{</span>
-  <span class="na">name</span> <span class="o">=</span> <span class="s2">&quot;goat-herd&quot;</span>
-<span class="p">}</span>
+<span class="kr">resource</span><span class="w"> </span><span class="nc">&quot;aws_ecs_cluster&quot;</span><span class="w"> </span><span class="nv">&quot;goats&quot;</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="na">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;goat-herd&quot;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
 
-<span class="kr">output</span> <span class="nv">&quot;ecs_cluster_id&quot;</span> <span class="p">{</span>
-  <span class="na">value</span> <span class="o">=</span> <span class="nv">aws_ecs_cluster.goats.id</span>
-<span class="p">}</span>
+<span class="kr">output</span><span class="w"> </span><span class="nv">&quot;ecs_cluster_id&quot;</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="na">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">aws_ecs_cluster.goats.id</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
 </code></pre></div>
 
 <p>What this does simply is create an <span class="caps">ECS</span> cluster with the name &#8220;goat-herd&#8221; in us-east-2 and then outputs ecs_cluster_id which contains the <span class="caps">ID</span> of the cluster. While we don&#8217;t necessarily need the value outputted visually to us, we need the output because it makes the data available to other modules including child objects. Now lets take a look at what should be in&nbsp;Child/main.tf</p>
-<div class="highlight"><pre><span></span><code><span class="kr">provider</span> <span class="nv">&quot;aws&quot;</span> <span class="p">{</span>
-  <span class="na">region</span> <span class="o">=</span> <span class="s2">&quot;us-east-2&quot;</span>
-  <span class="na">profile</span> <span class="o">=</span> <span class="s2">&quot;lab-profile&quot;</span>
-<span class="p">}</span>
+<div class="highlight"><pre><span></span><code><span class="kr">provider</span><span class="w"> </span><span class="nv">&quot;aws&quot;</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="na">region</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;us-east-2&quot;</span><span class="w"></span>
+<span class="w">  </span><span class="na">profile</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;lab-profile&quot;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
 
-<span class="nb">terraform</span> <span class="p">{</span>
-  <span class="kr">backend</span> <span class="nv">&quot;s3&quot;</span> <span class="p">{</span><span class="err">}</span>
-<span class="p">}</span>
-<span class="kr">module</span> <span class="nv">&quot;res&quot;</span> <span class="p">{</span>
-  <span class="na">source</span> <span class="o">=</span> <span class="s2">&quot;../../Terraform&quot;</span>
-<span class="p">}</span>
-<span class="kr">output</span> <span class="nv">&quot;our_cluster_id&quot;</span> <span class="p">{</span>
-  <span class="na">value</span> <span class="o">=</span> <span class="s2">&quot;${module.res.ecs_cluster_id}&quot;</span>
-<span class="p">}</span>
+<span class="nb">terraform</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="kr">backend</span><span class="w"> </span><span class="nv">&quot;s3&quot;</span><span class="w"> </span><span class="p">{}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+<span class="kr">module</span><span class="w"> </span><span class="nv">&quot;res&quot;</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="na">source</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;../../Terraform&quot;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+<span class="kr">output</span><span class="w"> </span><span class="nv">&quot;our_cluster_id&quot;</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="na">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;${module.res.ecs_cluster_id}&quot;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
 </code></pre></div>
 
 <p>What is going on in this file is that it creates a module called res and sources it from the parent directory where the other main.tf file resides. This allows us to reference the module and the outputs it houses, enabling us to access the ecs_cluster_id value and use it within other resources as&nbsp;necessary.</p><p class="subheader">Category: <a href="https://dword4.github.io/category/cloud.html">cloud</a>

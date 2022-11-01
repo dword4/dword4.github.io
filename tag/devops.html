@@ -13,8 +13,9 @@
     <script src="https://dword4.github.io/theme/js/custom.modernizr.js"></script>
 
     <!-- So Firefox can bookmark->"abo this site" -->
-    <!-- counter.dev analtyics -->
-    <script>if(!sessionStorage.getItem("_swa")&&document.referrer.indexOf(location.protocol+"//"+location.host)!== 0){fetch("https://counter.dev/track?"+new URLSearchParams({referrer:document.referrer,screen:screen.width+"x"+screen.height,user:"dword4",utcoffset:"-5"}))};sessionStorage.setItem("_swa","1");</script>
+    <!-- counter.dev analytics -->
+        <script>if(!sessionStorage.getItem("_swa")&&document.referrer.indexOf(location.protocol+"//"+location.host)!== 0){fetch("https://counter.dev/track?"+new URLSearchParams({referrer:document.referrer,screen:screen.width+"x"+screen.height,user:"dword4",utcoffset:"-5"}))};sessionStorage.setItem("_swa","1");</script>
+
 </head>
 
 <body>
@@ -78,46 +79,46 @@
 </code></pre></div>
 
 <p>Once we have the recipe we need a role to tell it what to&nbsp;do.</p>
-<div class="highlight"><pre><span></span><code><span class="p">{</span>
-   <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;repo-update&quot;</span><span class="p">,</span>
-   <span class="nt">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;update chef from time to time&quot;</span><span class="p">,</span>
-   <span class="nt">&quot;json_class&quot;</span><span class="p">:</span> <span class="s2">&quot;Chef::Role&quot;</span><span class="p">,</span>
-   <span class="nt">&quot;default_attributes&quot;</span><span class="p">:</span> <span class="p">{</span>
-     <span class="nt">&quot;chef_client&quot;</span><span class="p">:</span> <span class="p">{</span>
-       <span class="nt">&quot;interval&quot;</span><span class="p">:</span> <span class="mi">1800</span><span class="p">,</span>
-       <span class="nt">&quot;splay&quot;</span><span class="p">:</span> <span class="mi">60</span>
-     <span class="p">}</span>
-   <span class="p">},</span>
-   <span class="nt">&quot;override_attributes&quot;</span><span class="p">:</span> <span class="p">{</span>
-   <span class="p">},</span>
-   <span class="nt">&quot;chef_type&quot;</span><span class="p">:</span> <span class="s2">&quot;role&quot;</span><span class="p">,</span>
-   <span class="nt">&quot;run_list&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;recipe[chef-client::default]&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;recipe[chef-client::delete_validation]&quot;</span>
-   <span class="p">],</span>
-   <span class="nt">&quot;env_run_lists&quot;</span><span class="p">:</span> <span class="p">{</span>
-   <span class="p">}</span>
-<span class="p">}</span>
+<div class="highlight"><pre><span></span><code><span class="p">{</span><span class="w"></span>
+<span class="w">   </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;repo-update&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">   </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;update chef from time to time&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">   </span><span class="nt">&quot;json_class&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Chef::Role&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">   </span><span class="nt">&quot;default_attributes&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">     </span><span class="nt">&quot;chef_client&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">       </span><span class="nt">&quot;interval&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1800</span><span class="p">,</span><span class="w"></span>
+<span class="w">       </span><span class="nt">&quot;splay&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">60</span><span class="w"></span>
+<span class="w">     </span><span class="p">}</span><span class="w"></span>
+<span class="w">   </span><span class="p">},</span><span class="w"></span>
+<span class="w">   </span><span class="nt">&quot;override_attributes&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">   </span><span class="p">},</span><span class="w"></span>
+<span class="w">   </span><span class="nt">&quot;chef_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;role&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">   </span><span class="nt">&quot;run_list&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;recipe[chef-client::default]&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="s2">&quot;recipe[chef-client::delete_validation]&quot;</span><span class="w"></span>
+<span class="w">   </span><span class="p">],</span><span class="w"></span>
+<span class="w">   </span><span class="nt">&quot;env_run_lists&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">   </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
 </code></pre></div>
 
 <p>Create the role with <code># knife role from file repo-update.json</code>  (or whatever you named the file to create the role&nbsp;from).</p>
 <p>Now all that is left is to assign the role to the node so use <code>#knife node edit itsj-cheftest.itscum.local</code> and assign the role and repo to the node we&nbsp;want</p>
-<div class="highlight"><pre><span></span><code><span class="p">{</span>
-  <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;itsj-cheftest.itscum.local&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;chef_environment&quot;</span><span class="p">:</span> <span class="s2">&quot;_default&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;normal&quot;</span><span class="p">:</span> <span class="p">{</span>
-    <span class="nt">&quot;tags&quot;</span><span class="p">:</span> <span class="p">[</span>
+<div class="highlight"><pre><span></span><code><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;itsj-cheftest.itscum.local&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;chef_environment&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;_default&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;normal&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;tags&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
 
-    <span class="p">]</span>
-  <span class="p">},</span>
-  <span class="nt">&quot;policy_name&quot;</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
-  <span class="nt">&quot;policy_group&quot;</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
-  <span class="nt">&quot;run_list&quot;</span><span class="p">:</span> <span class="p">[</span>
-    <span class="s2">&quot;recipe[nginx]&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;recipe[repo]&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;role[repo-update]&quot;</span>
-<span class="p">]</span>
+<span class="w">    </span><span class="p">]</span><span class="w"></span>
+<span class="w">  </span><span class="p">},</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;policy_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;policy_group&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;run_list&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
+<span class="w">    </span><span class="s2">&quot;recipe[nginx]&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="s2">&quot;recipe[repo]&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="s2">&quot;role[repo-update]&quot;</span><span class="w"></span>
+<span class="p">]</span><span class="w"></span>
 
-<span class="p">}</span>
+<span class="p">}</span><span class="w"></span>
 </code></pre></div>
 
 <p>That is enough to get it working, you can kick back and watch it with <code>while :; do knife status 'role:repo-update' run-list; sleep 120; done</code> and wait to see it run in about 30 minutes based on the interval and splay values.  Speaking of which Interval is pretty self explanatory, but Splay not-so-much; Splay is used keep a bunch of nodes from all running at once basically so it doesn&#8217;t overwhelm a system that they might be checking into or otherwise digitally&nbsp;assaulting.</p><p class="subheader">Category: <a href="https://dword4.github.io/category/automation.html">automation</a>

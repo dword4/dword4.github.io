@@ -13,8 +13,9 @@
     <script src="https://dword4.github.io/theme/js/custom.modernizr.js"></script>
 
     <!-- So Firefox can bookmark->"abo this site" -->
-    <!-- counter.dev analtyics -->
-    <script>if(!sessionStorage.getItem("_swa")&&document.referrer.indexOf(location.protocol+"//"+location.host)!== 0){fetch("https://counter.dev/track?"+new URLSearchParams({referrer:document.referrer,screen:screen.width+"x"+screen.height,user:"dword4",utcoffset:"-5"}))};sessionStorage.setItem("_swa","1");</script>
+    <!-- counter.dev analytics -->
+        <script>if(!sessionStorage.getItem("_swa")&&document.referrer.indexOf(location.protocol+"//"+location.host)!== 0){fetch("https://counter.dev/track?"+new URLSearchParams({referrer:document.referrer,screen:screen.width+"x"+screen.height,user:"dword4",utcoffset:"-5"}))};sessionStorage.setItem("_swa","1");</script>
+
 </head>
 
 <body>
@@ -208,10 +209,10 @@
 
 <hr>
 <p>So I was working on patching some of my Icinga infrastructure at work, and it seems that sometimes libyajl breaks things, as illustrated&nbsp;below</p>
-<div class="highlight"><pre><span></span><code><span class="n">root</span><span class="nv">@icingasatellite</span> <span class="o">~</span><span class="err">]</span><span class="c1"># yum update</span>
- <span class="n">Loaded</span> <span class="k">plugins</span><span class="o">:</span> <span class="n">fastestmirror</span><span class="p">,</span> <span class="n">rhnplugin</span>
- <span class="n">This</span> <span class="k">system</span> <span class="k">is</span> <span class="n">receiving</span> <span class="n">updates</span> <span class="k">from</span> <span class="n">RHN</span> <span class="n">Classic</span> <span class="k">or</span> <span class="n">Red</span> <span class="n">Hat</span> <span class="n">Satellite</span><span class="p">.</span>
- <span class="n">Loading</span> <span class="n">mirror</span> <span class="n">speeds</span> <span class="k">from</span> <span class="n">cached</span> <span class="n">hostfile …</span></code></pre></div><p class="subheader">Category: <a href="https://dword4.github.io/category/sysadmin.html">sysadmin</a>
+<div class="highlight"><pre><span></span><code><span class="n">root</span><span class="nv">@icingasatellite</span><span class="w"> </span><span class="o">~</span><span class="err">]</span><span class="c1"># yum update</span><span class="w"></span>
+<span class="w"> </span><span class="n">Loaded</span><span class="w"> </span><span class="k">plugins</span><span class="o">:</span><span class="w"> </span><span class="n">fastestmirror</span><span class="p">,</span><span class="w"> </span><span class="n">rhnplugin</span><span class="w"></span>
+<span class="w"> </span><span class="n">This</span><span class="w"> </span><span class="k">system</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">receiving</span><span class="w"> </span><span class="n">updates</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">RHN</span><span class="w"> </span><span class="n">Classic</span><span class="w"> </span><span class="k">or</span><span class="w"> </span><span class="n">Red</span><span class="w"> </span><span class="n">Hat</span><span class="w"> </span><span class="n">Satellite</span><span class="p">.</span><span class="w"></span>
+<span class="w"> </span><span class="n">Loading</span><span class="w"> </span><span class="n">mirror</span><span class="w"> </span><span class="n">speeds</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">cached</span><span class="w"> </span><span class="n">hostfile …</span></code></pre></div><p class="subheader">Category: <a href="https://dword4.github.io/category/sysadmin.html">sysadmin</a>
 
     Tagged: 
     <a href="https://dword4.github.io/tag/linux.html">linux </a>

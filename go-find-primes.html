@@ -13,8 +13,9 @@
     <script src="https://dword4.github.io/theme/js/custom.modernizr.js"></script>
 
     <!-- So Firefox can bookmark->"abo this site" -->
-    <!-- counter.dev analtyics -->
-    <script>if(!sessionStorage.getItem("_swa")&&document.referrer.indexOf(location.protocol+"//"+location.host)!== 0){fetch("https://counter.dev/track?"+new URLSearchParams({referrer:document.referrer,screen:screen.width+"x"+screen.height,user:"dword4",utcoffset:"-5"}))};sessionStorage.setItem("_swa","1");</script>
+    <!-- counter.dev analytics -->
+        <script>if(!sessionStorage.getItem("_swa")&&document.referrer.indexOf(location.protocol+"//"+location.host)!== 0){fetch("https://counter.dev/track?"+new URLSearchParams({referrer:document.referrer,screen:screen.width+"x"+screen.height,user:"dword4",utcoffset:"-5"}))};sessionStorage.setItem("_swa","1");</script>
+
 </head>
 
 <body>
@@ -59,30 +60,30 @@
 
     <hr>
 <p>so a few friends keep bugging me that i need to learn their wonderful hipster language go, finally i relented this evening and poked around in it for about 45 minutes to create my tried and true primes code that i can almost do in my sleep now. its ugly and nowhere near as fast as i had it running in c++ back in the day but its kinda cool that i could get it done in about an hour from first writing a line of code in go. i honestly don&#8217;t know if i will ever use the language as a main language in any projects but its the first time i have touched a compiled language in probably the better part of 5 years, these days i do about 105% of my things in python or bash when there are command line tools to do most of what i&nbsp;want.</p>
-<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="s">&quot;fmt&quot;</span>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="s">&quot;fmt&quot;</span><span class="w"></span>
 
-<span class="kd">func</span> <span class="nx">main</span><span class="p">()</span> <span class="p">{</span>
-        <span class="kd">var</span> <span class="nx">limit</span> <span class="kt">int</span> <span class="p">=</span> <span class="mi">10000</span>
-        <span class="k">for</span> <span class="nx">j</span> <span class="o">:=</span> <span class="mi">2</span><span class="p">;</span> <span class="nx">j</span> <span class="o">&amp;</span><span class="nx">lt</span><span class="p">;=</span> <span class="nx">limit</span><span class="p">;</span> <span class="nx">j</span><span class="o">++</span> <span class="p">{</span>
-                <span class="k">if</span> <span class="nx">j</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">{</span>
-                        <span class="c1">// not prime, we care not!</span>
-                <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-                        <span class="c1">// lets do the test loop thing</span>
-                        <span class="kd">var</span> <span class="nx">slimit</span> <span class="kt">int</span> <span class="p">=</span> <span class="nx">j</span> <span class="o">/</span> <span class="mi">2</span>
+<span class="kd">func</span><span class="w"> </span><span class="nx">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="kd">var</span><span class="w"> </span><span class="nx">limit</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">10000</span><span class="w"></span>
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="nx">j</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span><span class="w"> </span><span class="nx">j</span><span class="w"> </span><span class="o">&amp;</span><span class="nx">lt</span><span class="p">;=</span><span class="w"> </span><span class="nx">limit</span><span class="p">;</span><span class="w"> </span><span class="nx">j</span><span class="o">++</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="nx">j</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">                        </span><span class="c1">// not prime, we care not!</span><span class="w"></span>
+<span class="w">                </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">                        </span><span class="c1">// lets do the test loop thing</span><span class="w"></span>
+<span class="w">                        </span><span class="kd">var</span><span class="w"> </span><span class="nx">slimit</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nx">j</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">2</span><span class="w"></span>
 
-                        <span class="kd">var</span> <span class="nx">multiples</span> <span class="kt">int</span> <span class="p">=</span> <span class="mi">0</span>
-                        <span class="k">for</span> <span class="nx">jj</span> <span class="o">:=</span> <span class="mi">1</span><span class="p">;</span> <span class="nx">jj</span> <span class="o">&amp;</span><span class="nx">lt</span><span class="p">;=</span> <span class="nx">slimit</span><span class="p">;</span> <span class="nx">jj</span><span class="o">++</span> <span class="p">{</span>
-                                <span class="k">if</span> <span class="nx">j</span> <span class="o">%</span> <span class="nx">jj</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">{</span>
-                                        <span class="nx">multiples</span><span class="o">++</span>
-                                <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-                                        <span class="c1">// no multiples here boss</span>
-                                <span class="p">}</span>
-                        <span class="p">}</span>
-                        <span class="k">if</span> <span class="nx">multiples</span> <span class="o">==</span> <span class="mi">1</span> <span class="p">{</span>
-                                <span class="nx">fmt</span><span class="p">.</span><span class="nb">println</span><span class="p">(</span><span class="nx">j</span><span class="p">,</span> <span class="s">&quot;is probably a prime&quot;</span><span class="p">)</span>
-                        <span class="p">}</span>
-                <span class="p">}</span>
-        <span class="p">}</span>
+<span class="w">                        </span><span class="kd">var</span><span class="w"> </span><span class="nx">multiples</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">0</span><span class="w"></span>
+<span class="w">                        </span><span class="k">for</span><span class="w"> </span><span class="nx">jj</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="nx">jj</span><span class="w"> </span><span class="o">&amp;</span><span class="nx">lt</span><span class="p">;=</span><span class="w"> </span><span class="nx">slimit</span><span class="p">;</span><span class="w"> </span><span class="nx">jj</span><span class="o">++</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">                                </span><span class="k">if</span><span class="w"> </span><span class="nx">j</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="nx">jj</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">                                        </span><span class="nx">multiples</span><span class="o">++</span><span class="w"></span>
+<span class="w">                                </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">                                        </span><span class="c1">// no multiples here boss</span><span class="w"></span>
+<span class="w">                                </span><span class="p">}</span><span class="w"></span>
+<span class="w">                        </span><span class="p">}</span><span class="w"></span>
+<span class="w">                        </span><span class="k">if</span><span class="w"> </span><span class="nx">multiples</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">                                </span><span class="nx">fmt</span><span class="p">.</span><span class="nb">println</span><span class="p">(</span><span class="nx">j</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;is probably a prime&quot;</span><span class="p">)</span><span class="w"></span>
+<span class="w">                        </span><span class="p">}</span><span class="w"></span>
+<span class="w">                </span><span class="p">}</span><span class="w"></span>
+<span class="w">        </span><span class="p">}</span><span class="w"></span>
 </code></pre></div>
 <p class="subheader">Category: <a href="https://dword4.github.io/category/programming.html">programming</a>
 

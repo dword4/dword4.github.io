@@ -13,8 +13,9 @@
     <script src="https://dword4.github.io/theme/js/custom.modernizr.js"></script>
 
     <!-- So Firefox can bookmark->"abo this site" -->
-    <!-- counter.dev analtyics -->
-    <script>if(!sessionStorage.getItem("_swa")&&document.referrer.indexOf(location.protocol+"//"+location.host)!== 0){fetch("https://counter.dev/track?"+new URLSearchParams({referrer:document.referrer,screen:screen.width+"x"+screen.height,user:"dword4",utcoffset:"-5"}))};sessionStorage.setItem("_swa","1");</script>
+    <!-- counter.dev analytics -->
+        <script>if(!sessionStorage.getItem("_swa")&&document.referrer.indexOf(location.protocol+"//"+location.host)!== 0){fetch("https://counter.dev/track?"+new URLSearchParams({referrer:document.referrer,screen:screen.width+"x"+screen.height,user:"dword4",utcoffset:"-5"}))};sessionStorage.setItem("_swa","1");</script>
+
 </head>
 
 <body>
@@ -58,29 +59,29 @@
 
 
     <p>One of my recent challenges has been to write tf code to select existing <a href="https://www.terraform.io/docs/providers/aws/d/subnet.html">subnets</a> and use them in new blocks of code (specifically in this case to create a Directory, Workspaces and add a few Security Group entries). Since I am relatively new to using Terraform to do this it took far longer to figure out than I would care to say and I figured it would be best to document what finally worked and had the concept click for me in my&nbsp;mind. </p>
-<div class="highlight"><pre><span></span><code><span class="kr">provider</span> <span class="nv">&quot;aws&quot;</span> <span class="p">{</span>
-  <span class="na">region</span> <span class="o">=</span> <span class="s2">&quot;us-east-1&quot;</span>
-<span class="p">}</span>
-<span class="kr">variable</span> <span class="nv">&quot;subnet_name&quot;</span> <span class="p">{</span>
-  <span class="na">default</span> <span class="o">=</span> <span class="s2">&quot;workspaces-private-us-east-1c&quot;</span>
-<span class="p">}</span>
-<span class="kr">data</span> <span class="nc">&quot;aws_subnet&quot;</span> <span class="nv">&quot;selected&quot;</span> <span class="p">{</span>
-  <span class="nb">filter</span> <span class="p">{</span>
-    <span class="na">name</span> <span class="o">=</span> <span class="s2">&quot;tag:Name&quot;</span>
-    <span class="na">values</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;${var.subnet_name}&quot;</span><span class="p">]</span>
-  <span class="p">}</span>
-<span class="p">}</span>
+<div class="highlight"><pre><span></span><code><span class="kr">provider</span><span class="w"> </span><span class="nv">&quot;aws&quot;</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="na">region</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;us-east-1&quot;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+<span class="kr">variable</span><span class="w"> </span><span class="nv">&quot;subnet_name&quot;</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="na">default</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;workspaces-private-us-east-1c&quot;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+<span class="kr">data</span><span class="w"> </span><span class="nc">&quot;aws_subnet&quot;</span><span class="w"> </span><span class="nv">&quot;selected&quot;</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="nb">filter</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="na">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;tag:Name&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="na">values</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;${var.subnet_name}&quot;</span><span class="p">]</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
 
-<span class="kr">output</span> <span class="nv">&quot;vpcid&quot;</span> <span class="p">{</span>
-  <span class="na">value</span> <span class="o">=</span> <span class="s2">&quot;${data.aws_subnet.selected.vpc_id}&quot;</span>
-<span class="p">}</span>
+<span class="kr">output</span><span class="w"> </span><span class="nv">&quot;vpcid&quot;</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="na">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;${data.aws_subnet.selected.vpc_id}&quot;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
 
-<span class="kr">output</span> <span class="nv">&quot;subnet_name&quot;</span> <span class="p">{</span>
-  <span class="na">value</span> <span class="o">=</span> <span class="s2">&quot;${var.subnet_name}&quot;</span>
-<span class="p">}</span>
-<span class="kr">output</span> <span class="nv">&quot;subnet_id&quot;</span> <span class="p">{</span>
-  <span class="na">value</span> <span class="o">=</span> <span class="s2">&quot;${data.aws_subnet.selected.id}&quot;</span>
-<span class="p">}</span>
+<span class="kr">output</span><span class="w"> </span><span class="nv">&quot;subnet_name&quot;</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="na">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;${var.subnet_name}&quot;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+<span class="kr">output</span><span class="w"> </span><span class="nv">&quot;subnet_id&quot;</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="na">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;${data.aws_subnet.selected.id}&quot;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
 </code></pre></div>
 
 <p>This will look up the named subnet &#8220;workspaces-private-us-east-1c&#8221; and obtain not only the <span class="caps">VPC</span> <span class="caps">ID</span> associated with it but the unique subnet id as well, the output should look something like the below sample provided the name you are looking up is&nbsp;unique</p>

@@ -13,8 +13,9 @@
     <script src="https://dword4.github.io/theme/js/custom.modernizr.js"></script>
 
     <!-- So Firefox can bookmark->"abo this site" -->
-    <!-- counter.dev analtyics -->
-    <script>if(!sessionStorage.getItem("_swa")&&document.referrer.indexOf(location.protocol+"//"+location.host)!== 0){fetch("https://counter.dev/track?"+new URLSearchParams({referrer:document.referrer,screen:screen.width+"x"+screen.height,user:"dword4",utcoffset:"-5"}))};sessionStorage.setItem("_swa","1");</script>
+    <!-- counter.dev analytics -->
+        <script>if(!sessionStorage.getItem("_swa")&&document.referrer.indexOf(location.protocol+"//"+location.host)!== 0){fetch("https://counter.dev/track?"+new URLSearchParams({referrer:document.referrer,screen:screen.width+"x"+screen.height,user:"dword4",utcoffset:"-5"}))};sessionStorage.setItem("_swa","1");</script>
+
 </head>
 
 <body>
@@ -59,11 +60,11 @@
 
     <hr>
 <p>So I have been looking all over for how to make this happen and finally figured it out, preserving it for anybody else who wants to kick off a curl in a salt state to say add something into monitoring or begin another process via an <span class="caps">API</span>&nbsp;call</p>
-<div class="highlight"><pre><span></span><code><span class="err">#</span> <span class="nt">this</span> <span class="nt">will</span> <span class="nt">perform</span> <span class="nt">a</span> <span class="nt">curl</span> <span class="nt">on</span> <span class="nt">the</span> <span class="nt">target</span> <span class="nt">minion</span>
-<span class="nt">do_a_curl</span><span class="o">:</span>
-  <span class="nt">cmd</span><span class="p">.</span><span class="nc">run</span><span class="o">:</span>
-    <span class="nt">-</span> <span class="nt">name</span><span class="o">:</span> <span class="o">&amp;</span><span class="nt">gt</span><span class="o">;</span><span class="nt">-</span>
-        <span class="nt">curl</span> <span class="nt">-X</span> <span class="nt">POST</span> <span class="nt">-d</span> <span class="s1">&#39;{&quot;hostname&quot;:&quot;192.168.1.65&quot;,&quot;version&quot;:&quot;v2c&quot;,&quot;community&quot;:&quot;public&quot;}&#39;</span> <span class="nt">-H</span> <span class="s1">&#39;X-Auth-Token: 286755fad04869ca523320acce0dc6a4&#39;</span> <span class="s2">&quot;http://192.168.1.85/api/v0/devices&quot;</span>
+<div class="highlight"><pre><span></span><code><span class="err">#</span><span class="w"> </span><span class="nt">this</span><span class="w"> </span><span class="nt">will</span><span class="w"> </span><span class="nt">perform</span><span class="w"> </span><span class="nt">a</span><span class="w"> </span><span class="nt">curl</span><span class="w"> </span><span class="nt">on</span><span class="w"> </span><span class="nt">the</span><span class="w"> </span><span class="nt">target</span><span class="w"> </span><span class="nt">minion</span><span class="w"></span>
+<span class="nt">do_a_curl</span><span class="o">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">cmd</span><span class="p">.</span><span class="nc">run</span><span class="o">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">-</span><span class="w"> </span><span class="nt">name</span><span class="o">:</span><span class="w"> </span><span class="o">&amp;</span><span class="nt">gt</span><span class="o">;</span><span class="nt">-</span><span class="w"></span>
+<span class="w">        </span><span class="nt">curl</span><span class="w"> </span><span class="nt">-X</span><span class="w"> </span><span class="nt">POST</span><span class="w"> </span><span class="nt">-d</span><span class="w"> </span><span class="s1">&#39;{&quot;hostname&quot;:&quot;192.168.1.65&quot;,&quot;version&quot;:&quot;v2c&quot;,&quot;community&quot;:&quot;public&quot;}&#39;</span><span class="w"> </span><span class="nt">-H</span><span class="w"> </span><span class="s1">&#39;X-Auth-Token: 286755fad04869ca523320acce0dc6a4&#39;</span><span class="w"> </span><span class="s2">&quot;http://192.168.1.85/api/v0/devices&quot;</span><span class="w"></span>
 </code></pre></div>
 
 <p>Right now this is just using testing data from my lab, but as long as you enclose all the salient data in &#8216; or &#8221; it should be&nbsp;fine</p>
