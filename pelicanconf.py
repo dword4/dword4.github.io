@@ -3,7 +3,7 @@ SITENAME = 'dword4'
 SITEURL = 'https://dword4.github.io'
 
 PATH = 'content'
-THEME = 'tuxlite_zf'
+THEME = '/home/dhynes/pelican-themes/tuxlite_zf'
 TIMEZONE = 'America/New_York'
 DEFAULT_LANG = 'en'
 
