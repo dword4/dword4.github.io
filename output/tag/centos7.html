@@ -6,15 +6,16 @@
 
     <title>dword4 - centos7</title>
 
-    <link rel="stylesheet" href="https://dword4.github.io/theme/css/normalize.css" />
-    <link rel="stylesheet" href="https://dword4.github.io/theme/css/foundation.min.css" />
-    <link rel="stylesheet" href="https://dword4.github.io/theme/css/style.css" />
-    <link rel="stylesheet" href="https://dword4.github.io/theme/css/pygments.css" />	
-    <script src="https://dword4.github.io/theme/js/custom.modernizr.js"></script>
+    <link rel="stylesheet" href="../theme/css/normalize.css" />
+    <link rel="stylesheet" href="../theme/css/foundation.min.css" />
+    <link rel="stylesheet" href="../theme/css/style.css" />
+    <link rel="stylesheet" href="../theme/css/pygments.css" />	
+    <script src="../theme/js/custom.modernizr.js"></script>
 
     <!-- So Firefox can bookmark->"abo this site" -->
-    <!-- counter.dev analtyics -->
-    <script>if(!sessionStorage.getItem("_swa")&&document.referrer.indexOf(location.protocol+"//"+location.host)!== 0){fetch("https://counter.dev/track?"+new URLSearchParams({referrer:document.referrer,screen:screen.width+"x"+screen.height,user:"dword4",utcoffset:"-5"}))};sessionStorage.setItem("_swa","1");</script>
+    <!-- counter.dev analytics -->
+        <script>if(!sessionStorage.getItem("_swa")&&document.referrer.indexOf(location.protocol+"//"+location.host)!== 0){fetch("https://counter.dev/track?"+new URLSearchParams({referrer:document.referrer,screen:screen.width+"x"+screen.height,user:"dword4",utcoffset:"-5"}))};sessionStorage.setItem("_swa","1");</script>
+
 </head>
 
 <body>
@@ -24,7 +25,7 @@
 <div class="top-bar">
 <div class="row">
     <div class="large-9 large-centered columns">
-	    <h1><a href="https://dword4.github.io">dword4</a></h1>
+	    <h1><a href="..">dword4</a></h1>
     </div>
 </div>
 </div>
@@ -34,7 +35,7 @@
 <div class="large-9 columns">
     <ul class="button-group navigation">
 
-            <li><a href="https://dword4.github.io/pages/about-me.html" class="button secondary small">About&nbsp;Me</a></li>
+            <li><a href="../pages/about-me.html" class="button secondary small">About&nbsp;Me</a></li>
     </ul>
 </div>
 </div>
@@ -51,55 +52,55 @@
         
 
             <article>
-                <a href="https://dword4.github.io/patching-centos-7-and-overcoming-problems.html"><h3 class="article-title">Patching CentOS 7 (and overcoming&nbsp;problems)</h3></a>
+                <a href="../patching-centos-7-and-overcoming-problems.html"><h3 class="article-title">Patching CentOS 7 (and overcoming&nbsp;problems)</h3></a>
 <h6 class="subheader" title="2019-06-19T00:00:00-04:00">Wed 19 June 2019
 </h6>
 
 
 <hr>
 <p>So I was working on patching some of my Icinga infrastructure at work, and it seems that sometimes libyajl breaks things, as illustrated&nbsp;below</p>
-<div class="highlight"><pre><span></span><code><span class="n">root</span><span class="nv">@icingasatellite</span> <span class="o">~</span><span class="err">]</span><span class="c1"># yum update</span>
- <span class="n">Loaded</span> <span class="k">plugins</span><span class="o">:</span> <span class="n">fastestmirror</span><span class="p">,</span> <span class="n">rhnplugin</span>
- <span class="n">This</span> <span class="k">system</span> <span class="k">is</span> <span class="n">receiving</span> <span class="n">updates</span> <span class="k">from</span> <span class="n">RHN</span> <span class="n">Classic</span> <span class="k">or</span> <span class="n">Red</span> <span class="n">Hat</span> <span class="n">Satellite</span><span class="p">.</span>
- <span class="n">Loading</span> <span class="n">mirror</span> <span class="n">speeds</span> <span class="k">from</span> <span class="n">cached</span> <span class="n">hostfile</span><span class="n n-Quoted">`</span>
+<div class="highlight"><pre><span></span><code><span class="n">root</span><span class="nv">@icingasatellite</span><span class="w"> </span><span class="o">~</span><span class="err">]</span><span class="c1"># yum update</span><span class="w"></span>
+<span class="w"> </span><span class="n">Loaded</span><span class="w"> </span><span class="k">plugins</span><span class="o">:</span><span class="w"> </span><span class="n">fastestmirror</span><span class="p">,</span><span class="w"> </span><span class="n">rhnplugin</span><span class="w"></span>
+<span class="w"> </span><span class="n">This</span><span class="w"> </span><span class="k">system</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">receiving</span><span class="w"> </span><span class="n">updates</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">RHN</span><span class="w"> </span><span class="n">Classic</span><span class="w"> </span><span class="k">or</span><span class="w"> </span><span class="n">Red</span><span class="w"> </span><span class="n">Hat</span><span class="w"> </span><span class="n">Satellite</span><span class="p">.</span><span class="w"></span>
+<span class="w"> </span><span class="n">Loading</span><span class="w"> </span><span class="n">mirror</span><span class="w"> </span><span class="n">speeds</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">cached</span><span class="w"> </span><span class="n">hostfile</span><span class="n n-Quoted">`</span>
 
-<span class="n n-Quoted">  * `</span><span class="n">epel</span><span class="o">:</span> <span class="n">mirror</span><span class="p">.</span><span class="n">optus</span><span class="p">.</span><span class="n">net</span>
- <span class="n">Resolving</span> <span class="n">Dependencies</span>
- <span class="o">--&gt;</span> <span class="n">Running</span> <span class="k">transaction</span> <span class="k">check</span>
- <span class="o">---&gt;</span> <span class="n">Package</span> <span class="n">icinga2</span><span class="p">.</span><span class="n">x86_64</span> <span class="mi">0</span><span class="o">:</span><span class="mf">2.10.4</span><span class="o">-</span><span class="mf">1.</span><span class="n">el7</span><span class="p">.</span><span class="n">icinga</span> <span class="n">will</span> <span class="n">be</span> <span class="n">updated</span>
- <span class="o">---&gt;</span> <span class="n">Package</span> <span class="n">icinga2</span><span class="p">.</span><span class="n">x86_64</span> <span class="mi">0</span><span class="o">:</span><span class="mf">2.10.5</span><span class="o">-</span><span class="mf">1.</span><span class="n">el7</span><span class="p">.</span><span class="n">icinga</span> <span class="n">will</span> <span class="n">be</span> <span class="n">an</span> <span class="k">update</span>
- <span class="o">---&gt;</span> <span class="n">Package</span> <span class="n">icinga2</span><span class="o">-</span><span class="n">bin</span><span class="p">.</span><span class="n">x86_64</span> <span class="mi">0</span><span class="o">:</span><span class="mf">2.10.4</span><span class="o">-</span><span class="mf">1.</span><span class="n">el7</span><span class="p">.</span><span class="n">icinga</span> <span class="n">will</span> <span class="n">be</span> <span class="n">updated</span>
- <span class="o">---&gt;</span> <span class="n">Package</span> <span class="n">icinga2</span><span class="o">-</span><span class="n">bin</span><span class="p">.</span><span class="n">x86_64</span> <span class="mi">0</span><span class="o">:</span><span class="mf">2.10.5</span><span class="o">-</span><span class="mf">1.</span><span class="n">el7</span><span class="p">.</span><span class="n">icinga</span> <span class="n">will</span> <span class="n">be</span> <span class="n">an</span> <span class="k">update</span>
- <span class="o">--&gt;</span> <span class="n">Processing</span> <span class="n">Dependency</span><span class="o">:</span> <span class="n">libyajl</span><span class="p">.</span><span class="n">so</span><span class="mf">.2</span><span class="p">()(</span><span class="n">64bit</span><span class="p">)</span> <span class="k">for</span> <span class="n">package</span><span class="o">:</span> <span class="n">icinga2</span><span class="o">-</span><span class="n">bin</span><span class="o">-</span><span class="mf">2.10.5</span><span class="o">-</span><span class="mf">1.</span><span class="n">el7</span><span class="p">.</span><span class="n">icinga</span><span class="p">.</span><span class="n">x86_64</span>
- <span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="k">call</span> <span class="k">last</span><span class="p">)</span><span class="o">:</span>
- <span class="k">File</span> <span class="s2">&quot;/bin/yum&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">29</span><span class="p">,</span> <span class="k">in</span> 
- <span class="n">yummain</span><span class="p">.</span><span class="n">user_main</span><span class="p">(</span><span class="n">sys</span><span class="p">.</span><span class="n">argv</span><span class="err">[</span><span class="mi">1</span><span class="o">:</span><span class="err">]</span><span class="p">,</span> <span class="n">exit_code</span><span class="o">=</span><span class="no">True</span><span class="p">)</span>
- <span class="k">File</span> <span class="s2">&quot;/usr/share/yum-cli/yummain.py&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">375</span><span class="p">,</span> <span class="k">in</span> <span class="n">user_main</span>
- <span class="n">errcode</span> <span class="o">=</span> <span class="n">main</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
- <span class="k">File</span> <span class="s2">&quot;/usr/share/yum-cli/yummain.py&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">239</span><span class="p">,</span> <span class="k">in</span> <span class="n">main</span>
- <span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">resultmsgs</span><span class="p">)</span> <span class="o">=</span> <span class="n">base</span><span class="p">.</span><span class="n">buildTransaction</span><span class="p">()</span>
- <span class="k">File</span> <span class="s2">&quot;/usr/lib/python2.7/site-packages/yum/`**`init`**`.py&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">1198</span><span class="p">,</span> <span class="k">in</span> <span class="n">buildTransaction</span>
- <span class="p">(</span><span class="n">rescode</span><span class="p">,</span> <span class="n">restring</span><span class="p">)</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">resolveDeps</span><span class="p">()</span>
- <span class="k">File</span> <span class="s2">&quot;/usr/lib/python2.7/site-packages/yum/depsolve.py&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">893</span><span class="p">,</span> <span class="k">in</span> <span class="n">resolveDeps</span>
- <span class="n">CheckDeps</span><span class="p">,</span> <span class="n">checkinstalls</span><span class="p">,</span> <span class="n">checkremoves</span><span class="p">,</span> <span class="n">missing</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">_resolveRequires</span><span class="p">(</span><span class="k">errors</span><span class="p">)</span>
- <span class="k">File</span> <span class="s2">&quot;/usr/lib/python2.7/site-packages/yum/depsolve.py&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">1025</span><span class="p">,</span> <span class="k">in</span> <span class="n">_resolveRequires</span>
- <span class="p">(</span><span class="n">checkdep</span><span class="p">,</span> <span class="n">missing</span><span class="p">,</span> <span class="n">errormsgs</span><span class="p">)</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">_processReq</span><span class="p">(</span><span class="n">po</span><span class="p">,</span> <span class="n">dep</span><span class="p">)</span>
- <span class="k">File</span> <span class="s2">&quot;/usr/lib/python2.7/site-packages/yum/depsolve.py&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">350</span><span class="p">,</span> <span class="k">in</span> <span class="n">_processReq</span>
- <span class="n">CheckDeps</span><span class="p">,</span> <span class="n">missingdep</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">_requiringFromTransaction</span><span class="p">(</span><span class="n">po</span><span class="p">,</span> <span class="n">requirement</span><span class="p">,</span> <span class="n">errormsgs</span><span class="p">)</span>
- <span class="k">File</span> <span class="s2">&quot;/usr/lib/python2.7/site-packages/yum/depsolve.py&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">680</span><span class="p">,</span> <span class="k">in</span> <span class="n">_requiringFromTransaction</span>
- <span class="n">rel</span><span class="o">=</span><span class="n">pkg</span><span class="p">.</span><span class="n">rel</span><span class="p">)</span>
- <span class="k">File</span> <span class="s2">&quot;/usr/lib/python2.7/site-packages/yum/`**`init`**`.py&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">5280</span><span class="p">,</span> <span class="k">in</span> <span class="k">update</span>
- <span class="n">availpkgs</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">_compare_providers</span><span class="p">(</span><span class="n">availpkgs</span><span class="p">,</span> <span class="n">requiringPo</span><span class="p">)</span>
- <span class="k">File</span> <span class="s2">&quot;/usr/lib/python2.7/site-packages/yum/depsolve.py&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">1648</span><span class="p">,</span> <span class="k">in</span> <span class="n">_compare_providers</span>
- <span class="n">bestnum</span> <span class="o">=</span> <span class="nf">max</span><span class="p">(</span><span class="n">pkgresults</span><span class="p">.</span><span class="k">values</span><span class="p">())</span>
- <span class="n">ValueError</span><span class="o">:</span> <span class="nf">max</span><span class="p">()</span> <span class="n">arg</span> <span class="k">is</span> <span class="n">an</span> <span class="k">empty</span> <span class="n">sequence</span>
+<span class="n n-Quoted">  * `</span><span class="n">epel</span><span class="o">:</span><span class="w"> </span><span class="n">mirror</span><span class="p">.</span><span class="n">optus</span><span class="p">.</span><span class="n">net</span><span class="w"></span>
+<span class="w"> </span><span class="n">Resolving</span><span class="w"> </span><span class="n">Dependencies</span><span class="w"></span>
+<span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Running</span><span class="w"> </span><span class="k">transaction</span><span class="w"> </span><span class="k">check</span><span class="w"></span>
+<span class="w"> </span><span class="o">---&gt;</span><span class="w"> </span><span class="n">Package</span><span class="w"> </span><span class="n">icinga2</span><span class="p">.</span><span class="n">x86_64</span><span class="w"> </span><span class="mi">0</span><span class="o">:</span><span class="mf">2.10.4</span><span class="o">-</span><span class="mf">1.</span><span class="n">el7</span><span class="p">.</span><span class="n">icinga</span><span class="w"> </span><span class="n">will</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">updated</span><span class="w"></span>
+<span class="w"> </span><span class="o">---&gt;</span><span class="w"> </span><span class="n">Package</span><span class="w"> </span><span class="n">icinga2</span><span class="p">.</span><span class="n">x86_64</span><span class="w"> </span><span class="mi">0</span><span class="o">:</span><span class="mf">2.10.5</span><span class="o">-</span><span class="mf">1.</span><span class="n">el7</span><span class="p">.</span><span class="n">icinga</span><span class="w"> </span><span class="n">will</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">an</span><span class="w"> </span><span class="k">update</span><span class="w"></span>
+<span class="w"> </span><span class="o">---&gt;</span><span class="w"> </span><span class="n">Package</span><span class="w"> </span><span class="n">icinga2</span><span class="o">-</span><span class="n">bin</span><span class="p">.</span><span class="n">x86_64</span><span class="w"> </span><span class="mi">0</span><span class="o">:</span><span class="mf">2.10.4</span><span class="o">-</span><span class="mf">1.</span><span class="n">el7</span><span class="p">.</span><span class="n">icinga</span><span class="w"> </span><span class="n">will</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">updated</span><span class="w"></span>
+<span class="w"> </span><span class="o">---&gt;</span><span class="w"> </span><span class="n">Package</span><span class="w"> </span><span class="n">icinga2</span><span class="o">-</span><span class="n">bin</span><span class="p">.</span><span class="n">x86_64</span><span class="w"> </span><span class="mi">0</span><span class="o">:</span><span class="mf">2.10.5</span><span class="o">-</span><span class="mf">1.</span><span class="n">el7</span><span class="p">.</span><span class="n">icinga</span><span class="w"> </span><span class="n">will</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">an</span><span class="w"> </span><span class="k">update</span><span class="w"></span>
+<span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Processing</span><span class="w"> </span><span class="n">Dependency</span><span class="o">:</span><span class="w"> </span><span class="n">libyajl</span><span class="p">.</span><span class="n">so</span><span class="mf">.2</span><span class="p">()(</span><span class="n">64bit</span><span class="p">)</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">package</span><span class="o">:</span><span class="w"> </span><span class="n">icinga2</span><span class="o">-</span><span class="n">bin</span><span class="o">-</span><span class="mf">2.10.5</span><span class="o">-</span><span class="mf">1.</span><span class="n">el7</span><span class="p">.</span><span class="n">icinga</span><span class="p">.</span><span class="n">x86_64</span><span class="w"></span>
+<span class="w"> </span><span class="n">Traceback</span><span class="w"> </span><span class="p">(</span><span class="n">most</span><span class="w"> </span><span class="n">recent</span><span class="w"> </span><span class="k">call</span><span class="w"> </span><span class="k">last</span><span class="p">)</span><span class="o">:</span><span class="w"></span>
+<span class="w"> </span><span class="k">File</span><span class="w"> </span><span class="s2">&quot;/bin/yum&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">line</span><span class="w"> </span><span class="mi">29</span><span class="p">,</span><span class="w"> </span><span class="k">in</span><span class="w"> </span>
+<span class="w"> </span><span class="n">yummain</span><span class="p">.</span><span class="n">user_main</span><span class="p">(</span><span class="n">sys</span><span class="p">.</span><span class="n">argv</span><span class="err">[</span><span class="mi">1</span><span class="o">:</span><span class="err">]</span><span class="p">,</span><span class="w"> </span><span class="n">exit_code</span><span class="o">=</span><span class="no">True</span><span class="p">)</span><span class="w"></span>
+<span class="w"> </span><span class="k">File</span><span class="w"> </span><span class="s2">&quot;/usr/share/yum-cli/yummain.py&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">line</span><span class="w"> </span><span class="mi">375</span><span class="p">,</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">user_main</span><span class="w"></span>
+<span class="w"> </span><span class="n">errcode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">main</span><span class="p">(</span><span class="n">args</span><span class="p">)</span><span class="w"></span>
+<span class="w"> </span><span class="k">File</span><span class="w"> </span><span class="s2">&quot;/usr/share/yum-cli/yummain.py&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">line</span><span class="w"> </span><span class="mi">239</span><span class="p">,</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">main</span><span class="w"></span>
+<span class="w"> </span><span class="p">(</span><span class="n">result</span><span class="p">,</span><span class="w"> </span><span class="n">resultmsgs</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">base</span><span class="p">.</span><span class="n">buildTransaction</span><span class="p">()</span><span class="w"></span>
+<span class="w"> </span><span class="k">File</span><span class="w"> </span><span class="s2">&quot;/usr/lib/python2.7/site-packages/yum/`**`init`**`.py&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">line</span><span class="w"> </span><span class="mi">1198</span><span class="p">,</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">buildTransaction</span><span class="w"></span>
+<span class="w"> </span><span class="p">(</span><span class="n">rescode</span><span class="p">,</span><span class="w"> </span><span class="n">restring</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">self</span><span class="p">.</span><span class="n">resolveDeps</span><span class="p">()</span><span class="w"></span>
+<span class="w"> </span><span class="k">File</span><span class="w"> </span><span class="s2">&quot;/usr/lib/python2.7/site-packages/yum/depsolve.py&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">line</span><span class="w"> </span><span class="mi">893</span><span class="p">,</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">resolveDeps</span><span class="w"></span>
+<span class="w"> </span><span class="n">CheckDeps</span><span class="p">,</span><span class="w"> </span><span class="n">checkinstalls</span><span class="p">,</span><span class="w"> </span><span class="n">checkremoves</span><span class="p">,</span><span class="w"> </span><span class="n">missing</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">self</span><span class="p">.</span><span class="n">_resolveRequires</span><span class="p">(</span><span class="k">errors</span><span class="p">)</span><span class="w"></span>
+<span class="w"> </span><span class="k">File</span><span class="w"> </span><span class="s2">&quot;/usr/lib/python2.7/site-packages/yum/depsolve.py&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">line</span><span class="w"> </span><span class="mi">1025</span><span class="p">,</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">_resolveRequires</span><span class="w"></span>
+<span class="w"> </span><span class="p">(</span><span class="n">checkdep</span><span class="p">,</span><span class="w"> </span><span class="n">missing</span><span class="p">,</span><span class="w"> </span><span class="n">errormsgs</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">self</span><span class="p">.</span><span class="n">_processReq</span><span class="p">(</span><span class="n">po</span><span class="p">,</span><span class="w"> </span><span class="n">dep</span><span class="p">)</span><span class="w"></span>
+<span class="w"> </span><span class="k">File</span><span class="w"> </span><span class="s2">&quot;/usr/lib/python2.7/site-packages/yum/depsolve.py&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">line</span><span class="w"> </span><span class="mi">350</span><span class="p">,</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">_processReq</span><span class="w"></span>
+<span class="w"> </span><span class="n">CheckDeps</span><span class="p">,</span><span class="w"> </span><span class="n">missingdep</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">self</span><span class="p">.</span><span class="n">_requiringFromTransaction</span><span class="p">(</span><span class="n">po</span><span class="p">,</span><span class="w"> </span><span class="n">requirement</span><span class="p">,</span><span class="w"> </span><span class="n">errormsgs</span><span class="p">)</span><span class="w"></span>
+<span class="w"> </span><span class="k">File</span><span class="w"> </span><span class="s2">&quot;/usr/lib/python2.7/site-packages/yum/depsolve.py&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">line</span><span class="w"> </span><span class="mi">680</span><span class="p">,</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">_requiringFromTransaction</span><span class="w"></span>
+<span class="w"> </span><span class="n">rel</span><span class="o">=</span><span class="n">pkg</span><span class="p">.</span><span class="n">rel</span><span class="p">)</span><span class="w"></span>
+<span class="w"> </span><span class="k">File</span><span class="w"> </span><span class="s2">&quot;/usr/lib/python2.7/site-packages/yum/`**`init`**`.py&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">line</span><span class="w"> </span><span class="mi">5280</span><span class="p">,</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="k">update</span><span class="w"></span>
+<span class="w"> </span><span class="n">availpkgs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">self</span><span class="p">.</span><span class="n">_compare_providers</span><span class="p">(</span><span class="n">availpkgs</span><span class="p">,</span><span class="w"> </span><span class="n">requiringPo</span><span class="p">)</span><span class="w"></span>
+<span class="w"> </span><span class="k">File</span><span class="w"> </span><span class="s2">&quot;/usr/lib/python2.7/site-packages/yum/depsolve.py&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">line</span><span class="w"> </span><span class="mi">1648</span><span class="p">,</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">_compare_providers</span><span class="w"></span>
+<span class="w"> </span><span class="n">bestnum</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">max</span><span class="p">(</span><span class="n">pkgresults</span><span class="p">.</span><span class="k">values</span><span class="p">())</span><span class="w"></span>
+<span class="w"> </span><span class="n">ValueError</span><span class="o">:</span><span class="w"> </span><span class="nf">max</span><span class="p">()</span><span class="w"> </span><span class="n">arg</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">an</span><span class="w"> </span><span class="k">empty</span><span class="w"> </span><span class="n">sequence</span><span class="w"></span>
 </code></pre></div>
 
-<p>Turns out the secret is simply to install yaljl and yajal-devel and then I can patch successfully, really surprised nobody else out there has run into this yet but its the second time in a month I have had it happen when&nbsp;patching.</p><p class="subheader">Category: <a href="https://dword4.github.io/category/sysadmin.html">sysadmin</a>
+<p>Turns out the secret is simply to install yaljl and yajal-devel and then I can patch successfully, really surprised nobody else out there has run into this yet but its the second time in a month I have had it happen when&nbsp;patching.</p><p class="subheader">Category: <a href="../category/sysadmin.html">sysadmin</a>
 
     Tagged: 
-    <a href="https://dword4.github.io/tag/linux.html">linux </a>
-    <a href="https://dword4.github.io/tag/centos7.html">centos7 </a>
+    <a href="../tag/linux.html">linux </a>
+    <a href="../tag/centos7.html">centos7 </a>
 </p>
 
 
@@ -125,8 +126,8 @@
     <aside class="large-3 columns">
         <h5 class="sidebar-title">Site</h5>
         <ul class="side-nav">
-            <li><a href="https://dword4.github.io/archives.html">Archives</a>
-            <li><a href="https://dword4.github.io/tags.html">Tags</a>
+            <li><a href="../archives.html">Archives</a>
+            <li><a href="../tags.html">Tags</a>
 
 
         </ul>
@@ -134,17 +135,17 @@
 		
         <h5 class="sidebar-title">Categories</h5>
         <ul class="side-nav">
-            <li><a href="https://dword4.github.io/category/automation.html">automation</a></li>
-            <li><a href="https://dword4.github.io/category/cloud.html">cloud</a></li>
-            <li><a href="https://dword4.github.io/category/cloud-aws.html">cloud-aws</a></li>
-            <li><a href="https://dword4.github.io/category/fixes.html">fixes</a></li>
-            <li><a href="https://dword4.github.io/category/general.html">general</a></li>
-            <li><a href="https://dword4.github.io/category/homelab.html">Homelab</a></li>
-            <li><a href="https://dword4.github.io/category/programming.html">programming</a></li>
-            <li><a href="https://dword4.github.io/category/programming-cloud-git.html">programming, cloud, git</a></li>
-            <li><a href="https://dword4.github.io/category/projects.html">projects</a></li>
-            <li><a href="https://dword4.github.io/category/sysadmin.html">sysadmin</a></li>
-            <li><a href="https://dword4.github.io/category/thoughts.html">thoughts</a></li>
+            <li><a href="../category/automation.html">automation</a></li>
+            <li><a href="../category/cloud.html">cloud</a></li>
+            <li><a href="../category/cloud-aws.html">cloud-aws</a></li>
+            <li><a href="../category/fixes.html">fixes</a></li>
+            <li><a href="../category/general.html">general</a></li>
+            <li><a href="../category/homelab.html">Homelab</a></li>
+            <li><a href="../category/programming.html">programming</a></li>
+            <li><a href="../category/programming-cloud-git.html">programming, cloud, git</a></li>
+            <li><a href="../category/projects.html">projects</a></li>
+            <li><a href="../category/sysadmin.html">sysadmin</a></li>
+            <li><a href="../category/thoughts.html">thoughts</a></li>
    
         </ul>
 
