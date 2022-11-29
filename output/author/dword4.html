@@ -53,15 +53,15 @@
         
 
             <article>
-                <a href="https://dword4.github.io/updating-again.html"><h3 class="article-title">Updating this&nbsp;again</h3></a>
-<h6 class="subheader" title="2022-11-01T00:00:00-04:00">Tue 01 November 2022
+                <a href="https://dword4.github.io/optimizing-cicd-pipelines.html"><h3 class="article-title">Optimizing Gitlab <span class="caps">CI</span>/<span class="caps">CD</span>&nbsp;Pipelines</h3></a>
+<h6 class="subheader" title="2022-11-29T00:00:00-05:00">Tue 29 November 2022
 </h6>
 
 
-<p>Finally got around to setting everything back up again to push updates, one day I will just write something to auto-update when I push, but until then I guess
-I am left with following my own notes when I want to publish content again.  Currently working on a few neat side projects including a friendly python plugin system
-for chat bots (ie discord, slack, matrix, etc).  Its super early on that project however so its not even ready for a demo yet but its been a learning experience every 
-step of the way so far which is&nbsp;great.</p><p class="subheader">Category: <a href="https://dword4.github.io/category/thoughts.html">thoughts</a>
+<h2>Alpine&nbsp;Containers</h2>
+<p>They compile so much from source that it really slows it down when you start with a vanilla container each run of your pipeline.  In my case the solution was to build a new container with a bunch of the compiled dependencies built. Prior to that pipelines even when failing would take an average of 12 minutes to reach&nbsp;failure.</p>
+<p>![[Pasted image&nbsp;20221108092908.png]]</p>
+<p>Afterwards a successful test run takes about a minute, with the brunt of the time sink being pushed off to a separate repo for building the image.  On that side its about 48 minutes to generate the image however having it take place in an entirely is worth it for the saved time on rapid&nbsp;re-testing.</p><p class="subheader">Category: <a href="https://dword4.github.io/category/programming.html">programming</a>
 
 </p>
 
@@ -72,6 +72,25 @@ step of the way so far which is&nbsp;great.</p><p class="subheader">Category: <a
 
                 <hr  class="gradient"/>
 
+
+        
+
+
+            <article>
+                <a href="https://dword4.github.io/updating-again.html"><h3 class="article-title">Updating this&nbsp;again</h3></a>
+<h6 class="subheader" title="2022-11-01T00:00:00-04:00">Tue 01 November 2022
+</h6>
+
+
+<p>trying to get back in the habit of regular&nbsp;updates</p><p class="subheader">Category: <a href="https://dword4.github.io/category/thoughts.html">thoughts</a>
+
+</p>
+
+
+
+                <a class="button radius secondary small right" href="https://dword4.github.io/updating-again.html">Read More</a>
+                <hr  class="gradient"/>
+            </article>
 
         
 
@@ -231,31 +250,13 @@ step of the way so far which is&nbsp;great.</p><p class="subheader">Category: <a
                 <hr  class="gradient"/>
             </article>
 
-        
-
-
-            <article>
-                <a href="https://dword4.github.io/hockey-info-release-1.html"><h3 class="article-title">Hockey-Info Release&nbsp;v1.0</h3></a>
-<h6 class="subheader" title="2020-07-26T00:00:00-04:00">Sun 26 July 2020
-</h6>
-
-
-<p>The 1.0 release of&nbsp;Hockey-Info</p><p class="subheader">Category: <a href="https://dword4.github.io/category/programming.html">programming</a>
-
-</p>
-
-
-
-                <a class="button radius secondary small right" href="https://dword4.github.io/hockey-info-release-1.html">Read More</a>
-                <hr  class="gradient"/>
-            </article>
-
             <!-- /#posts-list -->
 <div class="pagination-centered">
-<h6 class="subheader">Page 1 of 1</h6>
+<h6 class="subheader">Page 1 of 2</h6>
 
 <p>
 
+        <a href="https://dword4.github.io/author/dword42.html">Next &raquo;</a>
 </p>
 </div>
 
