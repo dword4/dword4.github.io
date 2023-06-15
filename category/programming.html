@@ -53,15 +53,50 @@
         
 
             <article>
-                <a href="https://dword4.github.io/optimizing-cicd-pipelines.html"><h3 class="article-title">Optimizing Gitlab <span class="caps">CI</span>/<span class="caps">CD</span>&nbsp;Pipelines</h3></a>
-<h6 class="subheader" title="2022-11-29T00:00:00-05:00">Tue 29 November 2022
+                <a href="https://dword4.github.io/aws-switch-vault-jenkins.html"><h3 class="article-title"><span class="caps">AWS</span> Account Switching with Vault in&nbsp;Jenkins</h3></a>
+<h6 class="subheader" title="2023-06-15T00:00:00-04:00">Thu 15 June 2023
 </h6>
 
 
-<h2>Alpine&nbsp;Containers</h2>
-<p>They compile so much from source that it really slows it down when you start with a vanilla container each run of your pipeline.  In my case the solution was to build a new container with a bunch of the compiled dependencies built. Prior to that pipelines even when failing would take an average of 12 minutes to reach&nbsp;failure.</p>
-<p><img alt="gitlab-stats.png" src="images/gitlab-stats.png"></p>
-<p>Afterwards a successful test run takes about a minute, with the brunt of the time sink being pushed off to a separate repo for building the image.  On that side its about 48 minutes to generate the image however having it take place in an entirely is worth it for the saved time on rapid&nbsp;re-testing.</p><p class="subheader">Category: <a href="https://dword4.github.io/category/programming.html">programming</a>
+<h2>Problem</h2>
+<p>I ran into an issue recently where some of my automation that cycles through <span class="caps">AWS</span> accounts and runs code
+against each accounts resources broke. It would become sticky to the account that we intially connected
+to Vault and never switch when using `vault read aws/something/else. We worked on trying to use curl calls
+and other various workarounds but nothing seemed to&nbsp;work.</p>
+<h2>Eventual&nbsp;Solution</h2>
+<p>After a few days of working on things off and on I decided to just hammer out a custom function in Groovy
+that would handle the account switching for us. Fastforward like 100+ commits and Jenkins runs later and I 
+finally got something that worked for&nbsp;switching.</p>
+<div class="highlight"><pre><span></span><code><span class="n">def</span><span class="w"> </span><span class="n">vaultAWS</span><span class="p">(</span><span class="n">account_level</span><span class="p">,</span><span class="w"> </span><span class="n">account_team</span><span class="p">)</span><span class="w"> </span><span class="err">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="n">vaultQuery</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ss">&quot;aws/$account_level/$account_team/sts/admin&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="k">print</span><span class="w"> </span><span class="ss">&quot;testing: $vaultQuery&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="k">try</span><span class="w"> </span><span class="err">{</span><span class="w"></span>
+<span class="w">        </span><span class="n">def</span><span class="w"> </span><span class="n">vaultOutput</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sh</span><span class="p">(</span><span class="nl">returnStdout</span><span class="p">:</span><span class="w"> </span><span class="k">true</span><span class="p">,</span><span class="w"> </span><span class="nl">script</span><span class="p">:</span><span class="w"> </span><span class="ss">&quot;vault read $vaultQuery&quot;</span><span class="p">).</span><span class="k">trim</span><span class="p">()</span><span class="w"></span>
+<span class="w">        </span><span class="n">def</span><span class="w"> </span><span class="n">keyValuePairs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">[</span><span class="n">:</span><span class="o">]</span><span class="w"></span>
+<span class="w">        </span><span class="n">vaultOutput</span><span class="p">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;\n&#39;</span><span class="p">).</span><span class="k">each</span><span class="w"> </span><span class="err">{</span><span class="w"> </span><span class="n">line</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"></span>
+<span class="w">            </span><span class="n">def</span><span class="w"> </span><span class="p">(</span><span class="k">key</span><span class="p">,</span><span class="w"> </span><span class="k">value</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">line</span><span class="p">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">).</span><span class="k">collect</span><span class="w"> </span><span class="err">{</span><span class="w"> </span><span class="n">it</span><span class="p">.</span><span class="k">trim</span><span class="p">()</span><span class="w"> </span><span class="err">}</span><span class="w"></span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="k">key</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s1">&#39;access_key&#39;</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="k">key</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s1">&#39;secret_key&#39;</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="k">key</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s1">&#39;security_token&#39;</span><span class="p">)</span><span class="err">{</span><span class="w"></span>
+<span class="w">                </span><span class="n">keyValuePairs</span><span class="o">[</span><span class="n">key</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">value</span><span class="w"></span>
+<span class="w">            </span><span class="err">}</span><span class="w"></span>
+<span class="w">        </span><span class="err">}</span><span class="w"></span>
+<span class="w">        </span><span class="o">//</span><span class="w"> </span><span class="k">set</span><span class="w"> </span><span class="n">env</span><span class="w"> </span><span class="n">variables</span><span class="w"></span>
+<span class="w">        </span><span class="n">env</span><span class="p">.</span><span class="n">AWS_ACCESS_KEY_ID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">keyValuePairs</span><span class="o">[</span><span class="n">&#39;access_key&#39;</span><span class="o">]</span><span class="w"></span>
+<span class="w">        </span><span class="n">env</span><span class="p">.</span><span class="n">AWS_SECRET_ACCESS_KEY</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">keyValuePairs</span><span class="o">[</span><span class="n">&#39;secret_key&#39;</span><span class="o">]</span><span class="w"></span>
+<span class="w">        </span><span class="n">env</span><span class="p">.</span><span class="n">AWS_SESSION_TOKEN</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">keyValuePairs</span><span class="o">[</span><span class="n">&#39;security_token&#39;</span><span class="o">]</span><span class="w"></span>
+<span class="w">    </span><span class="err">}</span><span class="w"> </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="k">Exception</span><span class="w"> </span><span class="n">e</span><span class="p">)</span><span class="w"> </span><span class="err">{</span><span class="w"></span>
+<span class="w">        </span><span class="n">println</span><span class="w"> </span><span class="ss">&quot;Something went wrong&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="err">}</span><span class="w"></span>
+
+<span class="err">}</span><span class="w"></span>
+</code></pre></div>
+
+<p>This let me loop through our lists of accounts and run a basic test to make sure I could actually
+see the resources in the <span class="caps">AWS</span> account. Unfortunately I found additional problems (like an entire set
+of accounts were simply <em>poof</em> gone) but the code worked exactly as I had hoped. Further research lead
+me to the use of @Grab to pull from git repos for code so ideally this can be pulled remotely instead
+of manually pasted into every single Jenkins job we end up using it in. Of course by the time I get all
+that worked out we are going to start the joyful process of moving out automated jobs from Jenkins to 
+Gitlab <span class="caps">CI</span>/<span class="caps">CD</span></p><p class="subheader">Category: <a href="https://dword4.github.io/category/programming.html">programming</a>
 
 </p>
 
@@ -72,6 +107,25 @@
 
                 <hr  class="gradient"/>
 
+
+        
+
+
+            <article>
+                <a href="https://dword4.github.io/optimizing-cicd-pipelines.html"><h3 class="article-title">Optimizing Gitlab <span class="caps">CI</span>/<span class="caps">CD</span>&nbsp;Pipelines</h3></a>
+<h6 class="subheader" title="2022-11-29T00:00:00-05:00">Tue 29 November 2022
+</h6>
+
+
+<p>collecting my efforts on making my pipelines more&nbsp;streamlined</p><p class="subheader">Category: <a href="https://dword4.github.io/category/programming.html">programming</a>
+
+</p>
+
+
+
+                <a class="button radius secondary small right" href="https://dword4.github.io/optimizing-cicd-pipelines.html">Read More</a>
+                <hr  class="gradient"/>
+            </article>
 
         
 
