@@ -53,51 +53,30 @@
         
 
             <article>
-                <a href="https://dword4.github.io/aws-switch-vault-jenkins.html"><h3 class="article-title"><span class="caps">AWS</span> Account Switching with Vault in&nbsp;Jenkins</h3></a>
-<h6 class="subheader" title="2023-06-15T00:00:00-04:00">Thu 15 June 2023
+                <a href="https://dword4.github.io/ci-headaches.html"><h3 class="article-title"><span class="caps">CI</span>&nbsp;Headaches</h3></a>
+<h6 class="subheader" title="2025-03-17T00:00:00-04:00">Mon 17 March 2025
 </h6>
 
 
-<h2>Problem</h2>
-<p>I ran into an issue recently where some of my automation that cycles through <span class="caps">AWS</span> accounts and runs code
-against each accounts resources broke. It would become sticky to the account that we intially connected
-to Vault and never switch when using `vault read aws/something/else. We worked on trying to use curl calls
-and other various workarounds but nothing seemed to&nbsp;work.</p>
-<h2>Eventual&nbsp;Solution</h2>
-<p>After a few days of working on things off and on I decided to just hammer out a custom function in Groovy
-that would handle the account switching for us. Fastforward like 100+ commits and Jenkins runs later and I 
-finally got something that worked for&nbsp;switching.</p>
-<div class="highlight"><pre><span></span><code><span class="n">def</span><span class="w"> </span><span class="n">vaultAWS</span><span class="p">(</span><span class="n">account_level</span><span class="p">,</span><span class="w"> </span><span class="n">account_team</span><span class="p">)</span><span class="w"> </span><span class="err">{</span><span class="w"></span>
-<span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="n">vaultQuery</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ss">&quot;aws/$account_level/$account_team/sts/admin&quot;</span><span class="w"></span>
-<span class="w">    </span><span class="k">print</span><span class="w"> </span><span class="ss">&quot;testing: $vaultQuery&quot;</span><span class="w"></span>
-<span class="w">    </span><span class="k">try</span><span class="w"> </span><span class="err">{</span><span class="w"></span>
-<span class="w">        </span><span class="n">def</span><span class="w"> </span><span class="n">vaultOutput</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sh</span><span class="p">(</span><span class="nl">returnStdout</span><span class="p">:</span><span class="w"> </span><span class="k">true</span><span class="p">,</span><span class="w"> </span><span class="nl">script</span><span class="p">:</span><span class="w"> </span><span class="ss">&quot;vault read $vaultQuery&quot;</span><span class="p">).</span><span class="k">trim</span><span class="p">()</span><span class="w"></span>
-<span class="w">        </span><span class="n">def</span><span class="w"> </span><span class="n">keyValuePairs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">[</span><span class="n">:</span><span class="o">]</span><span class="w"></span>
-<span class="w">        </span><span class="n">vaultOutput</span><span class="p">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;\n&#39;</span><span class="p">).</span><span class="k">each</span><span class="w"> </span><span class="err">{</span><span class="w"> </span><span class="n">line</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"></span>
-<span class="w">            </span><span class="n">def</span><span class="w"> </span><span class="p">(</span><span class="k">key</span><span class="p">,</span><span class="w"> </span><span class="k">value</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">line</span><span class="p">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">).</span><span class="k">collect</span><span class="w"> </span><span class="err">{</span><span class="w"> </span><span class="n">it</span><span class="p">.</span><span class="k">trim</span><span class="p">()</span><span class="w"> </span><span class="err">}</span><span class="w"></span>
-<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="k">key</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s1">&#39;access_key&#39;</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="k">key</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s1">&#39;secret_key&#39;</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="k">key</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s1">&#39;security_token&#39;</span><span class="p">)</span><span class="err">{</span><span class="w"></span>
-<span class="w">                </span><span class="n">keyValuePairs</span><span class="o">[</span><span class="n">key</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">value</span><span class="w"></span>
-<span class="w">            </span><span class="err">}</span><span class="w"></span>
-<span class="w">        </span><span class="err">}</span><span class="w"></span>
-<span class="w">        </span><span class="o">//</span><span class="w"> </span><span class="k">set</span><span class="w"> </span><span class="n">env</span><span class="w"> </span><span class="n">variables</span><span class="w"></span>
-<span class="w">        </span><span class="n">env</span><span class="p">.</span><span class="n">AWS_ACCESS_KEY_ID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">keyValuePairs</span><span class="o">[</span><span class="n">&#39;access_key&#39;</span><span class="o">]</span><span class="w"></span>
-<span class="w">        </span><span class="n">env</span><span class="p">.</span><span class="n">AWS_SECRET_ACCESS_KEY</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">keyValuePairs</span><span class="o">[</span><span class="n">&#39;secret_key&#39;</span><span class="o">]</span><span class="w"></span>
-<span class="w">        </span><span class="n">env</span><span class="p">.</span><span class="n">AWS_SESSION_TOKEN</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">keyValuePairs</span><span class="o">[</span><span class="n">&#39;security_token&#39;</span><span class="o">]</span><span class="w"></span>
-<span class="w">    </span><span class="err">}</span><span class="w"> </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="k">Exception</span><span class="w"> </span><span class="n">e</span><span class="p">)</span><span class="w"> </span><span class="err">{</span><span class="w"></span>
-<span class="w">        </span><span class="n">println</span><span class="w"> </span><span class="ss">&quot;Something went wrong&quot;</span><span class="w"></span>
-<span class="w">    </span><span class="err">}</span><span class="w"></span>
+<!-- PELICAN_BEGIN_SUMMARY -->
 
-<span class="err">}</span><span class="w"></span>
-</code></pre></div>
+<h2>Artifacts and&nbsp;Caches</h2>
+<p>I have a rather large terraform project with multiple modules and I was working on adding a new one that would ultimately add some alarms. The terraform itself wasnt overly complex, the real pain came when I realized at scale I would be kicking off 181 jobs at once in the apply&nbsp;stage. </p>
+<p>Kicking off the full 181 jobs at once caused an almost immediate crawl in the runner that got the unfortunate luck of the draw, utlimately leading to a bunch of timeouts pulling down the job plan artifats.  I started diging into the logs, wondering why my shiny and bright new terraform was not producing the magic I expected from it.  I looked at the first job in the stack and right off the bat I saw it was pulling down a <span class="caps">TON</span> of artifacts, but that makes sense I have a lot of them right?  Checked another and saw the same thing, and another, and then as I hopped through more of the jobs I started seeing messages that indicated I was being ratelimited by&nbsp;Gitlab.</p>
+<p>Keeping an old school calculator on my desk I punched in the math to figure out just how many calls for artifacts I could be generating at once (since it was all happening with <code>parallel:</code>) and realized the headache I was in for: 181 jobs each pulling 181 artifacts at once works out to be 32,761 artifact pulls.  This was definitely not going to work so I hit the search engines and LLMs and landed on caching as an alternative to pass my plan files between&nbsp;stages.</p>
+<p>In the movies this would be a montage spot, burn several hours and water bottles full of caffine and the cache option was proving to be no better. It would fail to update the cache seemingly at random and then the apply runs wouldnt find the plans the expected to be there. At this point I was beyond annoyed with it all and decided to say screw it and go back to the old ways. I reverted back to using artifacts (way easier than the first go-round for some reason) and commentd out all but 10 items in my list. The computer gods were smiling on me at that point (or maybe laughing) and decided to bless me with success across the&nbsp;board.</p>
+<p>After the tediuous 10-at-a-time process was done and everything checked out I went back to documentation searching and saw suggestions to use something other than gitlab for artifacts when you have very large workloads like what I had. The first suggestion was s3, which in hindsight would have been a fine alternative however I realized that the time to implement that would have slowed things down even&nbsp;further.</p>
+<p>What I truly wish Gitlab made possible would be intelligent fetching of artifacts so that I could specify what artifacts a job/stage needs and it <span class="caps">ONLY</span> gets those instead of everything under the sun. Unfortunately I don&#8217;t see that happening anytime soon (more likely masking in pipeline variables will land before something that useful&nbsp;does). </p>
+<h2>Deploys or&nbsp;Local?</h2>
+<p>Again in the context of work we have a slack bot we have been slowly building up over time with utility for the rest of the team. Initially it was just me working on it but once we added a 3rd person to my squad we decided to branch out and everyone took up tasks for it. Deployment for this was rather simple, I had it refined down enough to a docker-compose file that would stand up&nbsp;everything.</p>
+<p>Somewhere along the way we decided the bot needed to be a little more professional so it got moved over to <span class="caps">ECS</span> from the standalone <span class="caps">EC2</span> Docker server I stood up initially.  This worked great for quite a while, I could work on an update to the bot locally, run it with dev creds and test it a bunch then when ready send it along its way to the main branch and update with a quick docker-compose command and done. This unfortunately did not last for too long as we eventually pulled the dev instance into <span class="caps">ECS</span> as well, so now in order to test even the smallest code changes it requires a whole deploy&nbsp;pipeline. </p>
+<p>I realize its probably best to work this way for the sake of doing things in an industry acceptable way but it drives me crazy how much it slows down the process. First the pushes to the repo trigger a whole host of company mandated scans like secrets detection, dependency scanning and a few others I cant recall. Then you have tag the code, login to <span class="caps">AWS</span>, fiddle with task definitions and ultimately trigger a new deployment for the dev instance. Now imagine doing this every single time you make a change in code! Forgot a character or mis-typed a variable name? Yep time to do that whole&nbsp;process.  </p>
+<p>There has to be some kind of middle ground between wild west locally running things and a rigid and formalized process for something that ultimately is non-critical and just a handy tool to save a little bit of time? I wish I had a good answer for what that middle ground could or should be because the process as it stands really is a turn-off to putting in work adding new&nbsp;features.</p><p class="subheader">Category: <a href="https://dword4.github.io/category/devops.html">devops</a>
 
-<p>This let me loop through our lists of accounts and run a basic test to make sure I could actually
-see the resources in the <span class="caps">AWS</span> account. Unfortunately I found additional problems (like an entire set
-of accounts were simply <em>poof</em> gone) but the code worked exactly as I had hoped. Further research lead
-me to the use of @Grab to pull from git repos for code so ideally this can be pulled remotely instead
-of manually pasted into every single Jenkins job we end up using it in. Of course by the time I get all
-that worked out we are going to start the joyful process of moving out automated jobs from Jenkins to 
-Gitlab <span class="caps">CI</span>/<span class="caps">CD</span></p><p class="subheader">Category: <a href="https://dword4.github.io/category/programming.html">programming</a>
-
+    Tagged: 
+    <a href="https://dword4.github.io/tag/cicd.html">CI/CD </a>
+    <a href="https://dword4.github.io/tag/gitlab.html">Gitlab </a>
+    <a href="https://dword4.github.io/tag/devops.html">DevOps </a>
 </p>
 
 
@@ -107,6 +86,25 @@ Gitlab <span class="caps">CI</span>/<span class="caps">CD</span></p><p class="su
 
                 <hr  class="gradient"/>
 
+
+        
+
+
+            <article>
+                <a href="https://dword4.github.io/aws-switch-vault-jenkins.html"><h3 class="article-title"><span class="caps">AWS</span> Account Switching with Vault in&nbsp;Jenkins</h3></a>
+<h6 class="subheader" title="2023-06-15T00:00:00-04:00">Thu 15 June 2023
+</h6>
+
+
+<p>A workaround for <span class="caps">AWS</span> Account Switching with Vault in&nbsp;Jenkins</p><p class="subheader">Category: <a href="https://dword4.github.io/category/programming.html">programming</a>
+
+</p>
+
+
+
+                <a class="button radius secondary small right" href="https://dword4.github.io/aws-switch-vault-jenkins.html">Read More</a>
+                <hr  class="gradient"/>
+            </article>
 
         
 
@@ -260,25 +258,6 @@ Gitlab <span class="caps">CI</span>/<span class="caps">CD</span></p><p class="su
                 <hr  class="gradient"/>
             </article>
 
-        
-
-
-            <article>
-                <a href="https://dword4.github.io/paas-frustrations.html"><h3 class="article-title">PaaS&nbsp;Frustrations</h3></a>
-<h6 class="subheader" title="2021-02-03T00:00:00-05:00">Wed 03 February 2021
-</h6>
-
-
-<p>Working through a slightly obscure Gitlab&nbsp;problems</p><p class="subheader">Category: <a href="https://dword4.github.io/category/programming-cloud-git.html">programming, cloud, git</a>
-
-</p>
-
-
-
-                <a class="button radius secondary small right" href="https://dword4.github.io/paas-frustrations.html">Read More</a>
-                <hr  class="gradient"/>
-            </article>
-
             <!-- /#posts-list -->
 <div class="pagination-centered">
 <h6 class="subheader">Page 1 of 2</h6>
@@ -308,6 +287,7 @@ Gitlab <span class="caps">CI</span>/<span class="caps">CD</span></p><p class="su
             <li><a href="https://dword4.github.io/category/automation.html">automation</a></li>
             <li><a href="https://dword4.github.io/category/cloud.html">cloud</a></li>
             <li><a href="https://dword4.github.io/category/cloud-aws.html">cloud-aws</a></li>
+            <li><a href="https://dword4.github.io/category/devops.html">devops</a></li>
             <li><a href="https://dword4.github.io/category/fixes.html">fixes</a></li>
             <li><a href="https://dword4.github.io/category/general.html">general</a></li>
             <li><a href="https://dword4.github.io/category/homelab.html">Homelab</a></li>
