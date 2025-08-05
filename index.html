@@ -53,30 +53,79 @@
         
 
             <article>
-                <a href="https://dword4.github.io/ci-headaches.html"><h3 class="article-title"><span class="caps">CI</span>&nbsp;Headaches</h3></a>
-<h6 class="subheader" title="2025-03-17T00:00:00-04:00">Mon 17 March 2025
+                <a href="https://dword4.github.io/aws-terraform-bug.html"><h3 class="article-title">Terraform <span class="amp">&amp;</span> <span class="caps">AWS</span>&nbsp;Bug</h3></a>
+<h6 class="subheader" title="2025-07-14T00:00:00-04:00">Mon 14 July 2025
 </h6>
 
 
-<!-- PELICAN_BEGIN_SUMMARY -->
+<h3>Background</h3>
+<p>If you&#8217;re not a frequent <span class="caps">AWS</span> user, here&#8217;s some quick context: <span class="caps">AWS</span> Firewall Manager is a service that allows centralized management of <span class="caps">AWS</span> WAFs (Web Application Firewalls) across multiple accounts. It&#8217;s commonly used for enforcing global security policies like <span class="caps">IP</span> blocking rules. A few components are relevant to this&nbsp;issue:</p>
+<ul>
+<li>
+<p><strong><span class="caps">IP</span> Set</strong>: A named list of <span class="caps">CIDR</span>-notated <span class="caps">IP</span>&nbsp;addresses.</p>
+</li>
+<li>
+<p><strong>Rule Group</strong>: A collection of <span class="caps">IP</span> sets grouped together under a named rule with specified actions (e.g., allow,&nbsp;block).</p>
+</li>
+</ul>
+<p>As part of building out <span class="caps">WAF</span> controls, you might create several <span class="caps">IP</span> sets (e.g., for sanctioned countries or specific network ranges) and then reference them in rule&nbsp;groups.</p>
+<p>Here are some sample <span class="caps">IP</span> sets used for&nbsp;testing:</p>
+<div class="highlight"><pre><span></span><code>ip_sets = {
+  IP-Block = [
+    &quot;10.0.1.0/24&quot;,
+    &quot;10.2.0.0/24&quot;
+  ],
+  IP-Sloth = [
+    &quot;192.168.2.0/24&quot;,
+    &quot;192.168.3.0/24&quot;
+  ],
+  IP-Snake = [
+    &quot;172.22.0.32/32&quot;,
+    &quot;10.1.2.3/32&quot;
+  ]
+}
+</code></pre></div>
 
-<h2>Artifacts and&nbsp;Caches</h2>
-<p>I have a rather large terraform project with multiple modules and I was working on adding a new one that would ultimately add some alarms. The terraform itself wasnt overly complex, the real pain came when I realized at scale I would be kicking off 181 jobs at once in the apply&nbsp;stage. </p>
-<p>Kicking off the full 181 jobs at once caused an almost immediate crawl in the runner that got the unfortunate luck of the draw, utlimately leading to a bunch of timeouts pulling down the job plan artifats.  I started diging into the logs, wondering why my shiny and bright new terraform was not producing the magic I expected from it.  I looked at the first job in the stack and right off the bat I saw it was pulling down a <span class="caps">TON</span> of artifacts, but that makes sense I have a lot of them right?  Checked another and saw the same thing, and another, and then as I hopped through more of the jobs I started seeing messages that indicated I was being ratelimited by&nbsp;Gitlab.</p>
-<p>Keeping an old school calculator on my desk I punched in the math to figure out just how many calls for artifacts I could be generating at once (since it was all happening with <code>parallel:</code>) and realized the headache I was in for: 181 jobs each pulling 181 artifacts at once works out to be 32,761 artifact pulls.  This was definitely not going to work so I hit the search engines and LLMs and landed on caching as an alternative to pass my plan files between&nbsp;stages.</p>
-<p>In the movies this would be a montage spot, burn several hours and water bottles full of caffine and the cache option was proving to be no better. It would fail to update the cache seemingly at random and then the apply runs wouldnt find the plans the expected to be there. At this point I was beyond annoyed with it all and decided to say screw it and go back to the old ways. I reverted back to using artifacts (way easier than the first go-round for some reason) and commentd out all but 10 items in my list. The computer gods were smiling on me at that point (or maybe laughing) and decided to bless me with success across the&nbsp;board.</p>
-<p>After the tediuous 10-at-a-time process was done and everything checked out I went back to documentation searching and saw suggestions to use something other than gitlab for artifacts when you have very large workloads like what I had. The first suggestion was s3, which in hindsight would have been a fine alternative however I realized that the time to implement that would have slowed things down even&nbsp;further.</p>
-<p>What I truly wish Gitlab made possible would be intelligent fetching of artifacts so that I could specify what artifacts a job/stage needs and it <span class="caps">ONLY</span> gets those instead of everything under the sun. Unfortunately I don&#8217;t see that happening anytime soon (more likely masking in pipeline variables will land before something that useful&nbsp;does). </p>
-<h2>Deploys or&nbsp;Local?</h2>
-<p>Again in the context of work we have a slack bot we have been slowly building up over time with utility for the rest of the team. Initially it was just me working on it but once we added a 3rd person to my squad we decided to branch out and everyone took up tasks for it. Deployment for this was rather simple, I had it refined down enough to a docker-compose file that would stand up&nbsp;everything.</p>
-<p>Somewhere along the way we decided the bot needed to be a little more professional so it got moved over to <span class="caps">ECS</span> from the standalone <span class="caps">EC2</span> Docker server I stood up initially.  This worked great for quite a while, I could work on an update to the bot locally, run it with dev creds and test it a bunch then when ready send it along its way to the main branch and update with a quick docker-compose command and done. This unfortunately did not last for too long as we eventually pulled the dev instance into <span class="caps">ECS</span> as well, so now in order to test even the smallest code changes it requires a whole deploy&nbsp;pipeline. </p>
-<p>I realize its probably best to work this way for the sake of doing things in an industry acceptable way but it drives me crazy how much it slows down the process. First the pushes to the repo trigger a whole host of company mandated scans like secrets detection, dependency scanning and a few others I cant recall. Then you have tag the code, login to <span class="caps">AWS</span>, fiddle with task definitions and ultimately trigger a new deployment for the dev instance. Now imagine doing this every single time you make a change in code! Forgot a character or mis-typed a variable name? Yep time to do that whole&nbsp;process.  </p>
-<p>There has to be some kind of middle ground between wild west locally running things and a rigid and formalized process for something that ultimately is non-critical and just a handy tool to save a little bit of time? I wish I had a good answer for what that middle ground could or should be because the process as it stands really is a turn-off to putting in work adding new&nbsp;features.</p><p class="subheader">Category: <a href="https://dword4.github.io/category/devops.html">devops</a>
+<p>And here&#8217;s how they&#8217;re referenced in a rule&nbsp;group:</p>
+<div class="highlight"><pre><span></span><code>rule_groups = {
+  NetworkRuleGroup = [
+    {
+      name     = &quot;IP-Block&quot;,
+      priority = 0,
+      action   = &quot;block&quot;,
+      statement = {
+        ip_set_reference_statement = [&quot;IP-Block&quot;]
+      }
+    },
+    {
+      name     = &quot;IP-Allow&quot;,
+      priority = 1,
+      action   = &quot;allow&quot;,
+      statement = {
+        ip_set_reference_statement = [&quot;IP-Sloth&quot;, &quot;IP-Snake&quot;]
+      }
+    }
+  ]
+}
+</code></pre></div>
 
-    Tagged: 
-    <a href="https://dword4.github.io/tag/cicd.html">CI/CD </a>
-    <a href="https://dword4.github.io/tag/gitlab.html">Gitlab </a>
-    <a href="https://dword4.github.io/tag/devops.html">DevOps </a>
+<p>Pretty straightforward. These values live in a <code>tfvars</code> file, and Terraform uses some looping logic to construct the necessary&nbsp;resources.</p>
+<p>The configuration plans and applies cleanly—no issues there. The problem arises when modifying an existing <span class="caps">IP</span> set or rule group. Let&#8217;s say we want to remove the <code>IP-Sloth</code> set. You might expect that deleting it from the <code>tfvars</code> file would suffice. Not so&nbsp;fast.</p>
+<h3>The&nbsp;Problem</h3>
+<p>After removing <code>IP-Sloth</code> from the <code>tfvars</code> file, Terraform&#8217;s plan correctly reports that it will destroy one resource and modify another. So far, so good. But when applying the plan, Terraform attempts to destroy the <code>IP-Sloth</code> <span class="caps">IP</span> set <em>before</em> updating the rule group that references&nbsp;it.</p>
+<p>Naturally, this fails—Terraform can&#8217;t delete an <span class="caps">IP</span> set that&#8217;s still in use. The operation spins for a while and then throws an error about the resource being in&nbsp;use.</p>
+<p>This behavior is puzzling. When I ran a full <code>terraform destroy</code> in my lab environment, everything worked as expected. Terraform deleted the rule groups first and then the <span class="caps">IP</span>&nbsp;sets.</p>
+<p>To rule out version-specific issues, I tested with Terraform versions 1.9.7, 1.12.0, and 1.12.1. All exhibited the same&nbsp;behavior.</p>
+<p>This strongly suggests a dependency ordering bug in Terraform when updating resource graphs involving <span class="caps">WAF</span> <span class="caps">IP</span> sets and rule&nbsp;groups.</p>
+<h3>Solution</h3>
+<p>In order to cope with this issue it became necessary to create a much more cumbersome process for revising our <span class="caps">WAF</span> resources to be a multi-step hokey-pokey&nbsp;dance.</p>
+<ol>
+<li>Remove <span class="caps">IP</span> Sets from any Rule Groups that use&nbsp;them</li>
+<li>Commit, Push and&nbsp;Run</li>
+<li>Remove actual <span class="caps">IP</span> Set from&nbsp;tfvars</li>
+<li>Commit, Push and&nbsp;Run</li>
+</ol><p class="subheader">Category: <a href="https://dword4.github.io/category/programming.html">programming</a>
+
 </p>
 
 
@@ -86,6 +135,29 @@
 
                 <hr  class="gradient"/>
 
+
+        
+
+
+            <article>
+                <a href="https://dword4.github.io/ci-headaches.html"><h3 class="article-title"><span class="caps">CI</span>&nbsp;Headaches</h3></a>
+<h6 class="subheader" title="2025-03-17T00:00:00-04:00">Mon 17 March 2025
+</h6>
+
+
+<p>The longer I am in this space the more I find myself noticing shortcimings of software that just seems obvious to me. Recently the target of a lot of that feeling has beocme Gitlab which I use on a daily basis for work.  Particularly a lot of the things around their <span class="caps">CI</span>/<span class="caps">CD</span> Pipelines has lead to quite a bit of frustration and&nbsp;annoyance.</p><p class="subheader">Category: <a href="https://dword4.github.io/category/devops.html">devops</a>
+
+    Tagged: 
+    <a href="https://dword4.github.io/tag/cicd.html">CI/CD </a>
+    <a href="https://dword4.github.io/tag/gitlab.html">Gitlab </a>
+    <a href="https://dword4.github.io/tag/devops.html">DevOps </a>
+</p>
+
+
+
+                <a class="button radius secondary small right" href="https://dword4.github.io/ci-headaches.html">Read More</a>
+                <hr  class="gradient"/>
+            </article>
 
         
 
@@ -236,25 +308,6 @@
 
 
                 <a class="button radius secondary small right" href="https://dword4.github.io/clean-slate.html">Read More</a>
-                <hr  class="gradient"/>
-            </article>
-
-        
-
-
-            <article>
-                <a href="https://dword4.github.io/finding-data-NHL-API.html"><h3 class="article-title">Finding Data in the <span class="caps">NHL</span> <span class="caps">API</span></h3></a>
-<h6 class="subheader" title="2021-02-03T00:00:00-05:00">Wed 03 February 2021
-</h6>
-
-
-<p>How to find data in the <span class="caps">NHL</span> <span class="caps">API</span></p><p class="subheader">Category: <a href="https://dword4.github.io/category/projects.html">projects</a>
-
-</p>
-
-
-
-                <a class="button radius secondary small right" href="https://dword4.github.io/finding-data-NHL-API.html">Read More</a>
                 <hr  class="gradient"/>
             </article>
 
