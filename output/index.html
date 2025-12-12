@@ -53,78 +53,129 @@
         
 
             <article>
-                <a href="https://dword4.github.io/aws-terraform-bug.html"><h3 class="article-title">Terraform <span class="amp">&amp;</span> <span class="caps">AWS</span>&nbsp;Bug</h3></a>
-<h6 class="subheader" title="2025-07-14T00:00:00-04:00">Mon 14 July 2025
+                <a href="https://dword4.github.io/api-results-loop.html"><h3 class="article-title">Looping Unknown <span class="caps">API</span>&nbsp;Results</h3></a>
+<h6 class="subheader" title="2025-12-12T00:00:00-05:00">Fri 12 December 2025
 </h6>
 
 
-<h3>Background</h3>
-<p>If you&#8217;re not a frequent <span class="caps">AWS</span> user, here&#8217;s some quick context: <span class="caps">AWS</span> Firewall Manager is a service that allows centralized management of <span class="caps">AWS</span> WAFs (Web Application Firewalls) across multiple accounts. It&#8217;s commonly used for enforcing global security policies like <span class="caps">IP</span> blocking rules. A few components are relevant to this&nbsp;issue:</p>
-<ul>
-<li>
-<p><strong><span class="caps">IP</span> Set</strong>: A named list of <span class="caps">CIDR</span>-notated <span class="caps">IP</span>&nbsp;addresses.</p>
-</li>
-<li>
-<p><strong>Rule Group</strong>: A collection of <span class="caps">IP</span> sets grouped together under a named rule with specified actions (e.g., allow,&nbsp;block).</p>
-</li>
-</ul>
-<p>As part of building out <span class="caps">WAF</span> controls, you might create several <span class="caps">IP</span> sets (e.g., for sanctioned countries or specific network ranges) and then reference them in rule&nbsp;groups.</p>
-<p>Here are some sample <span class="caps">IP</span> sets used for&nbsp;testing:</p>
-<div class="highlight"><pre><span></span><code>ip_sets = {
-  IP-Block = [
-    &quot;10.0.1.0/24&quot;,
-    &quot;10.2.0.0/24&quot;
-  ],
-  IP-Sloth = [
-    &quot;192.168.2.0/24&quot;,
-    &quot;192.168.3.0/24&quot;
-  ],
-  IP-Snake = [
-    &quot;172.22.0.32/32&quot;,
-    &quot;10.1.2.3/32&quot;
-  ]
-}
+<p>ome APIs do not tell you how many results you have to work with, so you end up blindly looping until a failure which is not generally&nbsp;ideal. </p>
+<p><code>api/v1/projects</code> </p>
+<p>Take the endpoint above, lets say it takes two possible&nbsp;parameters</p>
+<p><code>size</code> which represents the number of results returned by the current call
+<code>offset</code> which means where in the unknown list of projects we want to start the retrieval of the <strong>size</strong> number of&nbsp;results</p>
+<p>So we would get a bunch of calls like&nbsp;this</p>
+<div class="highlight"><pre><span></span><code>api/v1/projects?size=20&amp;offset=0
+api/v1/projects?size=20&amp;offset=20
+api/v1/projects?size=20&amp;offset=40
+...
 </code></pre></div>
 
-<p>And here&#8217;s how they&#8217;re referenced in a rule&nbsp;group:</p>
-<div class="highlight"><pre><span></span><code>rule_groups = {
-  NetworkRuleGroup = [
-    {
-      name     = &quot;IP-Block&quot;,
-      priority = 0,
-      action   = &quot;block&quot;,
-      statement = {
-        ip_set_reference_statement = [&quot;IP-Block&quot;]
-      }
-    },
-    {
-      name     = &quot;IP-Allow&quot;,
-      priority = 1,
-      action   = &quot;allow&quot;,
-      statement = {
-        ip_set_reference_statement = [&quot;IP-Sloth&quot;, &quot;IP-Snake&quot;]
-      }
-    }
-  ]
-}
+<p>But we must remember we don&#8217;t <em>know</em> how many of these calls we may need to make without cheating and looking at say the web interface this <span class="caps">API</span> is used to build. To help simulate this experience I threw together a very rudimentery script to imitate the idea of an unknown sized list we can use to work&nbsp;against</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">random</span>
+
+<span class="n">MAX</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">300</span><span class="p">,</span> <span class="mi">500</span><span class="p">)</span>
+<span class="n">SIZE</span> <span class="o">=</span> <span class="mi">20</span>
+
+<span class="n">API</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">MAX</span><span class="p">):</span>
+<span class="n">API</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+    <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="n">i</span><span class="p">,</span>
+    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;Project </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;rulesets&quot;</span><span class="p">:</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;Ruleset </span><span class="si">{</span><span class="n">j</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">))],</span>
+    <span class="s2">&quot;rules&quot;</span><span class="p">:</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+
+<span class="p">})</span>
 </code></pre></div>
 
-<p>Pretty straightforward. These values live in a <code>tfvars</code> file, and Terraform uses some looping logic to construct the necessary&nbsp;resources.</p>
-<p>The configuration plans and applies cleanly—no issues there. The problem arises when modifying an existing <span class="caps">IP</span> set or rule group. Let&#8217;s say we want to remove the <code>IP-Sloth</code> set. You might expect that deleting it from the <code>tfvars</code> file would suffice. Not so&nbsp;fast.</p>
-<h3>The&nbsp;Problem</h3>
-<p>After removing <code>IP-Sloth</code> from the <code>tfvars</code> file, Terraform&#8217;s plan correctly reports that it will destroy one resource and modify another. So far, so good. But when applying the plan, Terraform attempts to destroy the <code>IP-Sloth</code> <span class="caps">IP</span> set <em>before</em> updating the rule group that references&nbsp;it.</p>
-<p>Naturally, this fails—Terraform can&#8217;t delete an <span class="caps">IP</span> set that&#8217;s still in use. The operation spins for a while and then throws an error about the resource being in&nbsp;use.</p>
-<p>This behavior is puzzling. When I ran a full <code>terraform destroy</code> in my lab environment, everything worked as expected. Terraform deleted the rule groups first and then the <span class="caps">IP</span>&nbsp;sets.</p>
-<p>To rule out version-specific issues, I tested with Terraform versions 1.9.7, 1.12.0, and 1.12.1. All exhibited the same&nbsp;behavior.</p>
-<p>This strongly suggests a dependency ordering bug in Terraform when updating resource graphs involving <span class="caps">WAF</span> <span class="caps">IP</span> sets and rule&nbsp;groups.</p>
-<h3>Solution</h3>
-<p>In order to cope with this issue it became necessary to create a much more cumbersome process for revising our <span class="caps">WAF</span> resources to be a multi-step hokey-pokey&nbsp;dance.</p>
-<ol>
-<li>Remove <span class="caps">IP</span> Sets from any Rule Groups that use&nbsp;them</li>
-<li>Commit, Push and&nbsp;Run</li>
-<li>Remove actual <span class="caps">IP</span> Set from&nbsp;tfvars</li>
-<li>Commit, Push and&nbsp;Run</li>
-</ol><p class="subheader">Category: <a href="https://dword4.github.io/category/programming.html">programming</a>
+<p>So this gives us a randomized list called <strong><span class="caps">API</span></strong> which we can work against to figure out a sensible looping strategy. Since we don&#8217;t know the size of <strong><span class="caps">API</span></strong> in theory, we cant use a for loop without some rather complex conditions, so lets try something much&nbsp;simpler.</p>
+<div class="highlight"><pre><span></span><code><span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+    <span class="c1"># loop contents</span>
+</code></pre></div>
+
+<p>While loops are ideal for this since we can just do a True/False loop because we either get data we can use from the <span class="caps">API</span> or we don&#8217;t, there is no other potential situation (minus obvious outliers like ratelimits, authentication failures, etc) we would occur that the loop needs to&nbsp;handle</p>
+<p>To facilitate this and make things more readable we need a function that will grab a chunk of results from <strong><span class="caps">API</span></strong> and return them, that way we can separate out logic a&nbsp;bit.</p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">grab_projects</span><span class="p">(</span><span class="n">offset</span><span class="p">,</span> <span class="n">size</span><span class="p">):</span>
+
+<span class="n">url_projects</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;https://some.api.host/api/v1/projects?limit=</span><span class="si">{</span><span class="n">size</span><span class="si">}</span><span class="s2">&amp;offset=</span><span class="si">{</span><span class="n">offset</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Fetching projects from </span><span class="si">{</span><span class="n">offset</span><span class="si">}</span><span class="s2"> to </span><span class="si">{</span><span class="n">offset</span> <span class="o">+</span> <span class="n">size</span><span class="si">}</span><span class="s2">, URL: </span><span class="si">{</span><span class="n">url_projects</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">subset</span> <span class="o">=</span> <span class="n">API</span><span class="p">[</span><span class="n">offset</span><span class="p">:</span><span class="n">offset</span> <span class="o">+</span> <span class="n">size</span><span class="p">]</span>
+
+<span class="k">return</span> <span class="n">subset</span>
+</code></pre></div>
+
+<p>So now we have a function that takes two inputs for size and offset, then returns us that chunk of results. If you were actually making <span class="caps">API</span> calls here is where you would slap some requests work and any error handling you may&nbsp;want.</p>
+<p>With that in place we can do the meat and potatoes of this loop, which looks something like&nbsp;this</p>
+<div class="highlight"><pre><span></span><code><span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+    <span class="n">set_of_projects</span> <span class="o">=</span> <span class="n">grab_projects</span><span class="p">(</span><span class="n">offset</span><span class="p">,</span> <span class="n">SIZE</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">set_of_projects</span><span class="p">:</span>
+        <span class="k">break</span>
+    <span class="n">batches</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">set_of_projects</span><span class="p">)</span>
+    <span class="n">offset</span> <span class="o">+=</span> <span class="n">SIZE</span>
+</code></pre></div>
+
+<p>This loops until there is a failure to set the variable <strong>set_of_projects</strong> from the return from grab_projects() so we don&#8217;t know how many times it will loop, only that there will eventually be and end and we stop looping when thats hit. In order to allow us to collect all of the information we have a list called <strong>batches</strong> to which we append <strong>set_of_projects</strong> on each iteration of the loop, then after we are done we can flatten it into something we can use elsewhere by using a list&nbsp;comprehension</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># flatten the list of lists</span>
+<span class="n">all_projects</span> <span class="o">=</span> <span class="p">[</span><span class="n">project</span> <span class="k">for</span> <span class="n">batch</span> <span class="ow">in</span> <span class="n">batches</span> <span class="k">for</span> <span class="n">project</span> <span class="ow">in</span> <span class="n">batch</span><span class="p">]</span>
+</code></pre></div>
+
+<p>When put together it looks like&nbsp;this </p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">random</span>
+
+<span class="n">MAX</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">300</span><span class="p">,</span> <span class="mi">500</span><span class="p">)</span>
+<span class="n">SIZE</span> <span class="o">=</span> <span class="mi">20</span>
+
+
+
+<span class="n">API</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">MAX</span><span class="p">):</span>
+    <span class="n">API</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+        <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="n">i</span><span class="p">,</span>
+        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;Project </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;rulesets&quot;</span><span class="p">:</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;Ruleset </span><span class="si">{</span><span class="n">j</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">))],</span>
+        <span class="s2">&quot;rules&quot;</span><span class="p">:</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="p">})</span>
+
+<span class="n">offset</span> <span class="o">=</span> <span class="mi">0</span>
+
+<span class="k">def</span> <span class="nf">grab_projects</span><span class="p">(</span><span class="n">offset</span><span class="p">,</span> <span class="n">size</span><span class="p">):</span>
+    <span class="n">url_projects</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;https://some.api.host/api/v1/projects?limit=</span><span class="si">{</span><span class="n">size</span><span class="si">}</span><span class="s2">&amp;offset=</span><span class="si">{</span><span class="n">offset</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Fetching projects from </span><span class="si">{</span><span class="n">offset</span><span class="si">}</span><span class="s2"> to </span><span class="si">{</span><span class="n">offset</span> <span class="o">+</span> <span class="n">size</span><span class="si">}</span><span class="s2">, URL: </span><span class="si">{</span><span class="n">url_projects</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">subset</span> <span class="o">=</span> <span class="n">API</span><span class="p">[</span><span class="n">offset</span><span class="p">:</span><span class="n">offset</span> <span class="o">+</span> <span class="n">size</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">subset</span>
+
+
+
+<span class="n">batches</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="n">all_projects</span> <span class="o">=</span> <span class="p">[]</span>
+
+
+
+<span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+    <span class="n">set_of_projects</span> <span class="o">=</span> <span class="n">grab_projects</span><span class="p">(</span><span class="n">offset</span><span class="p">,</span> <span class="n">SIZE</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">set_of_projects</span><span class="p">:</span>
+        <span class="k">break</span>
+
+    <span class="n">batches</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">set_of_projects</span><span class="p">)</span>
+    <span class="n">offset</span> <span class="o">+=</span> <span class="n">SIZE</span>
+
+
+
+<span class="c1"># flatten the list of lists</span>
+
+<span class="n">all_projects</span> <span class="o">=</span> <span class="p">[</span><span class="n">project</span> <span class="k">for</span> <span class="n">batch</span> <span class="ow">in</span> <span class="n">batches</span> <span class="k">for</span> <span class="n">project</span> <span class="ow">in</span> <span class="n">batch</span><span class="p">]</span>
+
+
+<span class="c1"># output from all_projects </span>
+<span class="k">for</span> <span class="n">project</span> <span class="ow">in</span> <span class="n">all_projects</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">project</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">],</span> <span class="n">project</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">],</span> <span class="n">project</span><span class="p">[</span><span class="s1">&#39;rulesets&#39;</span><span class="p">],</span> <span class="n">project</span><span class="p">[</span><span class="s1">&#39;rules&#39;</span><span class="p">])</span>
+</code></pre></div>
+
+<p>Now this at least gets you the results to work with and provides me a chance to show where you could go from here. If the <span class="caps">API</span> is particularly slow (which the one I was working with at the moment) then you don&#8217;t want to wait forever for this loop to do its thing. From here it would be worthwhile to make some changes to the script to define a temporary <span class="caps">MAX</span> of like say 200 if you are taking chunks of 20 results, run the code and benchmark it to see how long it takes for the 10 calls to return their&nbsp;results. </p>
+<p>Armed with some benchmark information (in my case it was 2 minutes to pull 430ish projects in chunks of 20, avg of like 5 seconds per call) its possible to apply some threading or other similar methodology to get the data set&nbsp;faster</p><p class="subheader">Category: <a href="https://dword4.github.io/category/programming.html">programming</a>
 
 </p>
 
@@ -135,6 +186,25 @@
 
                 <hr  class="gradient"/>
 
+
+        
+
+
+            <article>
+                <a href="https://dword4.github.io/aws-terraform-bug.html"><h3 class="article-title">Terraform <span class="amp">&amp;</span> <span class="caps">AWS</span>&nbsp;Bug</h3></a>
+<h6 class="subheader" title="2025-07-14T00:00:00-04:00">Mon 14 July 2025
+</h6>
+
+
+<p>Detailing a long-standing bug with Terraform and <span class="caps">AWS</span> regarding handling of deletion of&nbsp;resources</p><p class="subheader">Category: <a href="https://dword4.github.io/category/programming.html">programming</a>
+
+</p>
+
+
+
+                <a class="button radius secondary small right" href="https://dword4.github.io/aws-terraform-bug.html">Read More</a>
+                <hr  class="gradient"/>
+            </article>
 
         
 
@@ -289,25 +359,6 @@
 
 
                 <a class="button radius secondary small right" href="https://dword4.github.io/staircase-programming-challenge.html">Read More</a>
-                <hr  class="gradient"/>
-            </article>
-
-        
-
-
-            <article>
-                <a href="https://dword4.github.io/clean-slate.html"><h3 class="article-title">Clean&nbsp;Slate</h3></a>
-<h6 class="subheader" title="2021-08-16T00:00:00-04:00">Mon 16 August 2021
-</h6>
-
-
-<p>some thoughts on starting&nbsp;over</p><p class="subheader">Category: <a href="https://dword4.github.io/category/thoughts.html">thoughts</a>
-
-</p>
-
-
-
-                <a class="button radius secondary small right" href="https://dword4.github.io/clean-slate.html">Read More</a>
                 <hr  class="gradient"/>
             </article>
 
