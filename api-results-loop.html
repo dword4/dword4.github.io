@@ -4,7 +4,7 @@
     <!-- Set the viewport width to device width for mobile -->
     <meta name="viewport" content="width=device-width" />
 
-    <title>dword4 - programming</title>
+    <title>Looping Unknown API Results</title>
 
     <link rel="stylesheet" href="https://dword4.github.io/theme/css/normalize.css" />
     <link rel="stylesheet" href="https://dword4.github.io/theme/css/foundation.min.css" />
@@ -49,16 +49,17 @@
 
     <!-- Main Blog Content -->
     <div class="large-9 columns">
-        
-        
+<article>
+    <header>
+        <h3 class="article-title"><a href="https://dword4.github.io/api-results-loop.html" rel="bookmark"
+        title="Permalink to Looping Unknown API Results">Looping Unknown <span class="caps">API</span>&nbsp;Results</a></h3>
+    </header>
 
-            <article>
-                <a href="https://dword4.github.io/api-results-loop.html"><h3 class="article-title">Looping Unknown <span class="caps">API</span>&nbsp;Results</h3></a>
 <h6 class="subheader" title="2025-12-12T00:00:00-05:00">Fri 12 December 2025
 </h6>
 
 
-<p>ome APIs do not tell you how many results you have to work with, so you end up blindly looping until a failure which is not generally&nbsp;ideal. </p>
+    <p>ome APIs do not tell you how many results you have to work with, so you end up blindly looping until a failure which is not generally&nbsp;ideal. </p>
 <p><code>api/v1/projects</code> </p>
 <p>Take the endpoint above, lets say it takes two possible&nbsp;parameters</p>
 <p><code>size</code> which represents the number of results returned by the current call
@@ -175,189 +176,15 @@ api/v1/projects?size=20&amp;offset=40
 </code></pre></div>
 
 <p>Now this at least gets you the results to work with and provides me a chance to show where you could go from here. If the <span class="caps">API</span> is particularly slow (which the one I was working with at the moment) then you don&#8217;t want to wait forever for this loop to do its thing. From here it would be worthwhile to make some changes to the script to define a temporary <span class="caps">MAX</span> of like say 200 if you are taking chunks of 20 results, run the code and benchmark it to see how long it takes for the 10 calls to return their&nbsp;results. </p>
-<p>Armed with some benchmark information (in my case it was 2 minutes to pull 430ish projects in chunks of 20, avg of like 5 seconds per call) its possible to apply some threading or other similar methodology to get the data set&nbsp;faster</p><p class="subheader">Category: <a href="https://dword4.github.io/category/programming.html">programming</a>
+<p>Armed with some benchmark information (in my case it was 2 minutes to pull 430ish projects in chunks of 20, avg of like 5 seconds per call) its possible to apply some threading or other similar methodology to get the data set&nbsp;faster</p>
+<p class="subheader">Category: <a href="https://dword4.github.io/category/programming.html">programming</a>
 
 </p>
 
 
 
-            </article>
 
-
-                <hr  class="gradient"/>
-
-
-        
-
-
-            <article>
-                <a href="https://dword4.github.io/aws-terraform-bug.html"><h3 class="article-title">Terraform <span class="amp">&amp;</span> <span class="caps">AWS</span>&nbsp;Bug</h3></a>
-<h6 class="subheader" title="2025-07-14T00:00:00-04:00">Mon 14 July 2025
-</h6>
-
-
-<p>Detailing a long-standing bug with Terraform and <span class="caps">AWS</span> regarding handling of deletion of&nbsp;resources</p><p class="subheader">Category: <a href="https://dword4.github.io/category/programming.html">programming</a>
-
-</p>
-
-
-
-                <a class="button radius secondary small right" href="https://dword4.github.io/aws-terraform-bug.html">Read More</a>
-                <hr  class="gradient"/>
-            </article>
-
-        
-
-
-            <article>
-                <a href="https://dword4.github.io/aws-switch-vault-jenkins.html"><h3 class="article-title"><span class="caps">AWS</span> Account Switching with Vault in&nbsp;Jenkins</h3></a>
-<h6 class="subheader" title="2023-06-15T00:00:00-04:00">Thu 15 June 2023
-</h6>
-
-
-<p>A workaround for <span class="caps">AWS</span> Account Switching with Vault in&nbsp;Jenkins</p><p class="subheader">Category: <a href="https://dword4.github.io/category/programming.html">programming</a>
-
-</p>
-
-
-
-                <a class="button radius secondary small right" href="https://dword4.github.io/aws-switch-vault-jenkins.html">Read More</a>
-                <hr  class="gradient"/>
-            </article>
-
-        
-
-
-            <article>
-                <a href="https://dword4.github.io/optimizing-cicd-pipelines.html"><h3 class="article-title">Optimizing Gitlab <span class="caps">CI</span>/<span class="caps">CD</span>&nbsp;Pipelines</h3></a>
-<h6 class="subheader" title="2022-11-29T00:00:00-05:00">Tue 29 November 2022
-</h6>
-
-
-<p>collecting my efforts on making my pipelines more&nbsp;streamlined</p><p class="subheader">Category: <a href="https://dword4.github.io/category/programming.html">programming</a>
-
-</p>
-
-
-
-                <a class="button radius secondary small right" href="https://dword4.github.io/optimizing-cicd-pipelines.html">Read More</a>
-                <hr  class="gradient"/>
-            </article>
-
-        
-
-
-            <article>
-                <a href="https://dword4.github.io/staircase-programming-challenge.html"><h3 class="article-title">Staircase&nbsp;Challenge</h3></a>
-<h6 class="subheader" title="2021-08-27T00:00:00-04:00">Fri 27 August 2021
-</h6>
-
-
-<p>a quick code blurb I wrote for an online&nbsp;challenge</p><p class="subheader">Category: <a href="https://dword4.github.io/category/programming.html">programming</a>
-
-</p>
-
-
-
-                <a class="button radius secondary small right" href="https://dword4.github.io/staircase-programming-challenge.html">Read More</a>
-                <hr  class="gradient"/>
-            </article>
-
-        
-
-
-            <article>
-                <a href="https://dword4.github.io/hockey-info-release-1.html"><h3 class="article-title">Hockey-Info Release&nbsp;v1.0</h3></a>
-<h6 class="subheader" title="2020-07-26T00:00:00-04:00">Sun 26 July 2020
-</h6>
-
-
-<p>The 1.0 release of&nbsp;Hockey-Info</p><p class="subheader">Category: <a href="https://dword4.github.io/category/programming.html">programming</a>
-
-</p>
-
-
-
-                <a class="button radius secondary small right" href="https://dword4.github.io/hockey-info-release-1.html">Read More</a>
-                <hr  class="gradient"/>
-            </article>
-
-        
-
-
-            <article>
-                <a href="https://dword4.github.io/git-repo-list.html"><h3 class="article-title">Quick Code: Repo&nbsp;List</h3></a>
-<h6 class="subheader" title="2020-05-19T00:00:00-04:00">Tue 19 May 2020
-</h6>
-
-
-<p>Quick little bit of code to let you list all repos your currently logged in account can&nbsp;access</p><p class="subheader">Category: <a href="https://dword4.github.io/category/programming.html">programming</a>
-
-    Tagged: 
-    <a href="https://dword4.github.io/tag/git.html">git </a>
-    <a href="https://dword4.github.io/tag/python.html">python </a>
-</p>
-
-
-
-                <a class="button radius secondary small right" href="https://dword4.github.io/git-repo-list.html">Read More</a>
-                <hr  class="gradient"/>
-            </article>
-
-        
-
-
-            <article>
-                <a href="https://dword4.github.io/managing-growing-project.html"><h3 class="article-title">Managing a Growing&nbsp;Project</h3></a>
-<h6 class="subheader" title="2020-05-01T00:00:00-04:00">Fri 01 May 2020
-</h6>
-
-
-<p>Thoughts on managing a project as it grows more&nbsp;complex</p><p class="subheader">Category: <a href="https://dword4.github.io/category/programming.html">programming</a>
-
-    Tagged: 
-    <a href="https://dword4.github.io/tag/code.html">code </a>
-    <a href="https://dword4.github.io/tag/hockey.html">hockey </a>
-    <a href="https://dword4.github.io/tag/nhl.html">NHL </a>
-    <a href="https://dword4.github.io/tag/nhl-api.html">NHL-api </a>
-    <a href="https://dword4.github.io/tag/programming.html">programming </a>
-    <a href="https://dword4.github.io/tag/project-management.html">project-management </a>
-</p>
-
-
-
-                <a class="button radius secondary small right" href="https://dword4.github.io/managing-growing-project.html">Read More</a>
-                <hr  class="gradient"/>
-            </article>
-
-        
-
-
-            <article>
-                <a href="https://dword4.github.io/go-find-primes.html"><h3 class="article-title">go find some prime&nbsp;numbers!</h3></a>
-<h6 class="subheader" title="2015-11-09T00:00:00-05:00">Mon 09 November 2015
-</h6>
-
-
-<p>finding prime numbers with&nbsp;Go</p><p class="subheader">Category: <a href="https://dword4.github.io/category/programming.html">programming</a>
-
-</p>
-
-
-
-                <a class="button radius secondary small right" href="https://dword4.github.io/go-find-primes.html">Read More</a>
-                <hr  class="gradient"/>
-            </article>
-
-            <!-- /#posts-list -->
-<div class="pagination-centered">
-<h6 class="subheader">Page 1 of 1</h6>
-
-<p>
-
-</p>
-</div>
-
+</article>
     </div>
     <!-- End Main Content -->
 
