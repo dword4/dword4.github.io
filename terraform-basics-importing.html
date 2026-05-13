@@ -4,7 +4,7 @@
     <!-- Set the viewport width to device width for mobile -->
     <meta name="viewport" content="width=device-width" />
 
-    <title>dword4 - dword4</title>
+    <title>Terraform Basics - Importing Existing Resources</title>
 
     <link rel="stylesheet" href="https://dword4.github.io/theme/css/normalize.css" />
     <link rel="stylesheet" href="https://dword4.github.io/theme/css/foundation.min.css" />
@@ -49,16 +49,17 @@
 
     <!-- Main Blog Content -->
     <div class="large-9 columns">
-        
-        
+<article>
+    <header>
+        <h3 class="article-title"><a href="https://dword4.github.io/terraform-basics-importing.html" rel="bookmark"
+        title="Permalink to Terraform Basics - Importing Existing Resources">Terraform Basics - Importing Existing&nbsp;Resources</a></h3>
+    </header>
 
-            <article>
-                <a href="https://dword4.github.io/terraform-basics-importing.html"><h3 class="article-title">Terraform Basics - Importing Existing&nbsp;Resources</h3></a>
 <h6 class="subheader" title="2026-05-13T00:00:00-04:00">Wed 13 May 2026
 </h6>
 
 
-<p>So you have inherited some <span class="caps">AWS</span> resources that are not yet in Terraform, but its not feasible to completely rebuild them from scratch without a huge interruption to services. This is where importing comes into play, its not always the most elegant of processes but it helps avoid rebuilding things to get them into&nbsp;IaC.</p>
+    <p>So you have inherited some <span class="caps">AWS</span> resources that are not yet in Terraform, but its not feasible to completely rebuild them from scratch without a huge interruption to services. This is where importing comes into play, its not always the most elegant of processes but it helps avoid rebuilding things to get them into&nbsp;IaC.</p>
 <p>Lets say we have a <span class="caps">VPC</span> that already exists in <span class="caps">AWS</span></p>
 <div class="highlight"><pre><span></span><code>$&gt; aws ec2 describe-vpcs 
 {
@@ -220,203 +221,15 @@ Terraform has compared your real infrastructure against your configuration and f
 <span class="w">    </span><span class="p">}</span><span class="w"></span>
 
 <span class="nl">Plan:</span><span class="w"> </span><span class="mh">1</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">add</span><span class="p">,</span><span class="w"> </span><span class="mh">0</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">change</span><span class="p">,</span><span class="w"> </span><span class="mh">0</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">destroy</span><span class="p">.</span><span class="w"></span>
-</code></pre></div><p class="subheader">Category: <a href="https://dword4.github.io/category/programming.html">programming</a>
+</code></pre></div>
+<p class="subheader">Category: <a href="https://dword4.github.io/category/programming.html">programming</a>
 
 </p>
 
 
 
-            </article>
 
-
-                <hr  class="gradient"/>
-
-
-        
-
-
-            <article>
-                <a href="https://dword4.github.io/api-results-loop.html"><h3 class="article-title">Looping Unknown <span class="caps">API</span>&nbsp;Results</h3></a>
-<h6 class="subheader" title="2025-12-12T00:00:00-05:00">Fri 12 December 2025
-</h6>
-
-
-<p>Dealing with APIs that return unknown numbers of&nbsp;results</p><p class="subheader">Category: <a href="https://dword4.github.io/category/programming.html">programming</a>
-
-</p>
-
-
-
-                <a class="button radius secondary small right" href="https://dword4.github.io/api-results-loop.html">Read More</a>
-                <hr  class="gradient"/>
-            </article>
-
-        
-
-
-            <article>
-                <a href="https://dword4.github.io/aws-terraform-bug.html"><h3 class="article-title">Terraform <span class="amp">&amp;</span> <span class="caps">AWS</span>&nbsp;Bug</h3></a>
-<h6 class="subheader" title="2025-07-14T00:00:00-04:00">Mon 14 July 2025
-</h6>
-
-
-<p>Detailing a long-standing bug with Terraform and <span class="caps">AWS</span> regarding handling of deletion of&nbsp;resources</p><p class="subheader">Category: <a href="https://dword4.github.io/category/programming.html">programming</a>
-
-</p>
-
-
-
-                <a class="button radius secondary small right" href="https://dword4.github.io/aws-terraform-bug.html">Read More</a>
-                <hr  class="gradient"/>
-            </article>
-
-        
-
-
-            <article>
-                <a href="https://dword4.github.io/ci-headaches.html"><h3 class="article-title"><span class="caps">CI</span>&nbsp;Headaches</h3></a>
-<h6 class="subheader" title="2025-03-17T00:00:00-04:00">Mon 17 March 2025
-</h6>
-
-
-<p>The longer I am in this space the more I find myself noticing shortcimings of software that just seems obvious to me. Recently the target of a lot of that feeling has beocme Gitlab which I use on a daily basis for work.  Particularly a lot of the things around their <span class="caps">CI</span>/<span class="caps">CD</span> Pipelines has lead to quite a bit of frustration and&nbsp;annoyance.</p><p class="subheader">Category: <a href="https://dword4.github.io/category/devops.html">devops</a>
-
-    Tagged: 
-    <a href="https://dword4.github.io/tag/cicd.html">CI/CD </a>
-    <a href="https://dword4.github.io/tag/gitlab.html">Gitlab </a>
-    <a href="https://dword4.github.io/tag/devops.html">DevOps </a>
-</p>
-
-
-
-                <a class="button radius secondary small right" href="https://dword4.github.io/ci-headaches.html">Read More</a>
-                <hr  class="gradient"/>
-            </article>
-
-        
-
-
-            <article>
-                <a href="https://dword4.github.io/aws-switch-vault-jenkins.html"><h3 class="article-title"><span class="caps">AWS</span> Account Switching with Vault in&nbsp;Jenkins</h3></a>
-<h6 class="subheader" title="2023-06-15T00:00:00-04:00">Thu 15 June 2023
-</h6>
-
-
-<p>A workaround for <span class="caps">AWS</span> Account Switching with Vault in&nbsp;Jenkins</p><p class="subheader">Category: <a href="https://dword4.github.io/category/programming.html">programming</a>
-
-</p>
-
-
-
-                <a class="button radius secondary small right" href="https://dword4.github.io/aws-switch-vault-jenkins.html">Read More</a>
-                <hr  class="gradient"/>
-            </article>
-
-        
-
-
-            <article>
-                <a href="https://dword4.github.io/optimizing-cicd-pipelines.html"><h3 class="article-title">Optimizing Gitlab <span class="caps">CI</span>/<span class="caps">CD</span>&nbsp;Pipelines</h3></a>
-<h6 class="subheader" title="2022-11-29T00:00:00-05:00">Tue 29 November 2022
-</h6>
-
-
-<p>collecting my efforts on making my pipelines more&nbsp;streamlined</p><p class="subheader">Category: <a href="https://dword4.github.io/category/programming.html">programming</a>
-
-</p>
-
-
-
-                <a class="button radius secondary small right" href="https://dword4.github.io/optimizing-cicd-pipelines.html">Read More</a>
-                <hr  class="gradient"/>
-            </article>
-
-        
-
-
-            <article>
-                <a href="https://dword4.github.io/updating-again.html"><h3 class="article-title">Updating this&nbsp;again</h3></a>
-<h6 class="subheader" title="2022-11-01T00:00:00-04:00">Tue 01 November 2022
-</h6>
-
-
-<p>trying to get back in the habit of regular&nbsp;updates</p><p class="subheader">Category: <a href="https://dword4.github.io/category/thoughts.html">thoughts</a>
-
-</p>
-
-
-
-                <a class="button radius secondary small right" href="https://dword4.github.io/updating-again.html">Read More</a>
-                <hr  class="gradient"/>
-            </article>
-
-        
-
-
-            <article>
-                <a href="https://dword4.github.io/taking-back-email-update1.html"><h3 class="article-title">Taking Back Email - Update&nbsp;1</h3></a>
-<h6 class="subheader" title="2022-05-01T00:00:00-04:00">Sun 01 May 2022
-</h6>
-
-
-<p>first update to taking back email&nbsp;project</p><p class="subheader">Category: <a href="https://dword4.github.io/category/thoughts.html">thoughts</a>
-
-</p>
-
-
-
-                <a class="button radius secondary small right" href="https://dword4.github.io/taking-back-email-update1.html">Read More</a>
-                <hr  class="gradient"/>
-            </article>
-
-        
-
-
-            <article>
-                <a href="https://dword4.github.io/taking-back-email.html"><h3 class="article-title">Taking Back Email - An&nbsp;Overview</h3></a>
-<h6 class="subheader" title="2021-12-17T00:00:00-05:00">Fri 17 December 2021
-</h6>
-
-
-<p>a quick overview of how to take back&nbsp;email</p><p class="subheader">Category: <a href="https://dword4.github.io/category/thoughts.html">thoughts</a>
-
-</p>
-
-
-
-                <a class="button radius secondary small right" href="https://dword4.github.io/taking-back-email.html">Read More</a>
-                <hr  class="gradient"/>
-            </article>
-
-        
-
-
-            <article>
-                <a href="https://dword4.github.io/sunsetting-hockey-info.html"><h3 class="article-title">Sunsetting a&nbsp;Project</h3></a>
-<h6 class="subheader" title="2021-10-13T00:00:00-04:00">Wed 13 October 2021
-</h6>
-
-
-<p>ruminating on the end of a project and the path&nbsp;forward</p><p class="subheader">Category: <a href="https://dword4.github.io/category/thoughts.html">thoughts</a>
-
-</p>
-
-
-
-                <a class="button radius secondary small right" href="https://dword4.github.io/sunsetting-hockey-info.html">Read More</a>
-                <hr  class="gradient"/>
-            </article>
-
-            <!-- /#posts-list -->
-<div class="pagination-centered">
-<h6 class="subheader">Page 1 of 2</h6>
-
-<p>
-
-        <a href="https://dword4.github.io/author/dword42.html">Next &raquo;</a>
-</p>
-</div>
-
+</article>
     </div>
     <!-- End Main Content -->
 
