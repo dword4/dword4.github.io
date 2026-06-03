@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Terraform Basics - Importing Existing Resources — dword4</title>
+
+<meta name="description" content="Very basic introduction to importing existing AWS resources" />
+<meta property="og:title" content="Terraform Basics - Importing Existing Resources" />
+<meta property="og:type" content="article" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://dword4.github.io/theme/css/main.css" />
+  <link rel="stylesheet" href="https://dword4.github.io/theme/css/pygments.css" />
+
+
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container">
+      <div class="site-title"><a href="https://dword4.github.io/">dword4</a></div>
+      <nav class="site-nav" aria-label="Main navigation">
+        <a href="https://dword4.github.io/">Posts</a>
+        <a href="https://dword4.github.io/pages/about-me.html">About</a>
+        <a href="https://dword4.github.io/archives.html">Archive</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="container">
+<article>
+  <header class="article-header">
+    <h1 class="article-title">Terraform Basics - Importing Existing&nbsp;Resources</h1>
+    <div class="article-meta">
+      <time datetime="2026-05-13T00:00:00-04:00">May 13, 2026</time>
+      <span class="dot">&middot;</span>
+      <a href="https://dword4.github.io/category/programming.html">programming</a>
+      <span class="dot">&middot;</span>
+      <span>dword4</span>
+    </div>
+  </header>
+
+  <div class="article-body">
+    <p>So you have inherited some <span class="caps">AWS</span> resources that are not yet in Terraform, but its not feasible to completely rebuild them from scratch without a huge interruption to services. This is where importing comes into play, its not always the most elegant of processes but it helps avoid rebuilding things to get them into&nbsp;IaC.</p>
+<p>Lets say we have a <span class="caps">VPC</span> that already exists in <span class="caps">AWS</span></p>
+<div class="highlight"><pre><span></span><code>$&gt;<span class="w"> </span>aws<span class="w"> </span>ec2<span class="w"> </span>describe-vpcs<span class="w"> </span>
+<span class="o">{</span>
+<span class="w">    </span><span class="s2">&quot;Vpcs&quot;</span>:<span class="w"> </span><span class="o">[</span>
+<span class="w">        </span><span class="o">{</span>
+<span class="w">            </span><span class="s2">&quot;OwnerId&quot;</span>:<span class="w"> </span><span class="s2">&quot;123456789012&quot;</span>,
+<span class="w">            </span><span class="s2">&quot;InstanceTenancy&quot;</span>:<span class="w"> </span><span class="s2">&quot;default&quot;</span>,
+<span class="w">            </span><span class="s2">&quot;CidrBlockAssociationSet&quot;</span>:<span class="w"> </span><span class="o">[</span>
+<span class="w">                </span><span class="o">{</span>
+<span class="w">                    </span><span class="s2">&quot;AssociationId&quot;</span>:<span class="w"> </span><span class="s2">&quot;vpc-cidr-assoc-00000000&quot;</span>,
+<span class="w">                    </span><span class="s2">&quot;CidrBlock&quot;</span>:<span class="w"> </span><span class="s2">&quot;172.31.0.0/16&quot;</span>,
+<span class="w">                    </span><span class="s2">&quot;CidrBlockState&quot;</span>:<span class="w"> </span><span class="o">{</span>
+<span class="w">                        </span><span class="s2">&quot;State&quot;</span>:<span class="w"> </span><span class="s2">&quot;associated&quot;</span>
+<span class="w">                    </span><span class="o">}</span>
+<span class="w">                </span><span class="o">}</span>
+<span class="w">            </span><span class="o">]</span>,
+<span class="w">            </span><span class="s2">&quot;IsDefault&quot;</span>:<span class="w"> </span>true,
+<span class="w">            </span><span class="s2">&quot;Tags&quot;</span>:<span class="w"> </span><span class="o">[]</span>,
+<span class="w">            </span><span class="s2">&quot;VpcId&quot;</span>:<span class="w"> </span><span class="s2">&quot;vpc-00000000&quot;</span>,
+<span class="w">            </span><span class="s2">&quot;State&quot;</span>:<span class="w"> </span><span class="s2">&quot;available&quot;</span>,
+<span class="w">            </span><span class="s2">&quot;CidrBlock&quot;</span>:<span class="w"> </span><span class="s2">&quot;172.31.0.0/16&quot;</span>,
+<span class="w">            </span><span class="s2">&quot;DhcpOptionsId&quot;</span>:<span class="w"> </span><span class="s2">&quot;dopt-00000000&quot;</span>
+<span class="w">        </span><span class="o">}</span>
+<span class="w">    </span><span class="o">]</span>
+<span class="o">}</span>
+</code></pre></div>
+
+<p>In order to do an import our code first has to have a very loose idea of what we are going to import, so lets setup for that in our main.tf file. We will assume safely that you have already run terraform init to setup&nbsp;everything.</p>
+<div class="highlight"><pre><span></span><code>resource<span class="w"> </span><span class="s2">&quot;aws_vpc&quot;</span><span class="w"> </span><span class="s2">&quot;test_vpc&quot;</span><span class="w"> </span><span class="o">{</span>
+<span class="w">    </span><span class="c1"># imported resource</span>
+<span class="o">}</span>
+</code></pre></div>
+
+<p>If you were to run an init and plan on this it would want to create the resource named test-vpc, however we dont want to create anything we want to import. Remember the VpcId from earlier when we looked at the available VPCs? We need to use that with import, it should look like&nbsp;this</p>
+<div class="highlight"><pre><span></span><code>$&gt;<span class="w"> </span>terraform<span class="w"> </span>import<span class="w"> </span>aws_vpc.test_vpc<span class="w"> </span>vpc-00000000
+aws_vpc.test_vpc:<span class="w"> </span>Importing<span class="w"> </span>from<span class="w"> </span>ID<span class="w"> </span><span class="s2">&quot;vpc-00000000&quot;</span>...
+aws_vpc.test_vpc:<span class="w"> </span>Import<span class="w"> </span>prepared!
+<span class="w">  </span>Prepared<span class="w"> </span>aws_vpc<span class="w"> </span><span class="k">for</span><span class="w"> </span>import
+aws_vpc.test_vpc:<span class="w"> </span>Refreshing<span class="w"> </span>state...<span class="w"> </span><span class="o">[</span><span class="nv">id</span><span class="o">=</span>vpc-00000000<span class="o">]</span>
+
+Import<span class="w"> </span>successful!
+</code></pre></div>
+
+<p>The resources that were imported are shown above. These resources are now in
+your Terraform state and will henceforth be managed by&nbsp;Terraform.</p>
+<p>If you look at the main.tf it still looks the same, nothing special about it but if we look at the actual terraform state we now see the test_vpc resource we&nbsp;imported.</p>
+<div class="highlight"><pre><span></span><code>$&gt;<span class="w"> </span>terraform<span class="w"> </span>state<span class="w"> </span>list
+aws_vpc.test_vpc
+</code></pre></div>
+
+<p>And to look at the contents of that&nbsp;resource</p>
+<div class="highlight"><pre><span></span><code>$&gt;<span class="w"> </span>terraform<span class="w"> </span>state<span class="w"> </span>show<span class="w"> </span>aws_vpc.test_vpc
+<span class="c1"># aws_vpc.test_vpc:</span>
+resource<span class="w"> </span><span class="s2">&quot;aws_vpc&quot;</span><span class="w"> </span><span class="s2">&quot;test_vpc&quot;</span><span class="w"> </span><span class="o">{</span>
+<span class="w">    </span><span class="nv">arn</span><span class="w">                                  </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;arn:aws:ec2:us-east-1:123456789012:vpc/vpc-00000000&quot;</span>
+<span class="w">    </span><span class="nv">assign_generated_ipv6_cidr_block</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span>
+<span class="w">    </span><span class="nv">cidr_block</span><span class="w">                           </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;172.31.0.0/16&quot;</span>
+<span class="w">    </span><span class="nv">default_network_acl_id</span><span class="w">               </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;acl-00000000&quot;</span>
+<span class="w">    </span><span class="nv">default_route_table_id</span><span class="w">               </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;rtb-00000000&quot;</span>
+<span class="w">    </span><span class="nv">default_security_group_id</span><span class="w">            </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;sg-00000000&quot;</span>
+<span class="w">    </span><span class="nv">dhcp_options_id</span><span class="w">                      </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;dopt-00000000&quot;</span>
+<span class="w">    </span><span class="nv">enable_dns_hostnames</span><span class="w">                 </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span>
+<span class="w">    </span><span class="nv">enable_dns_support</span><span class="w">                   </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span>
+<span class="w">    </span><span class="nv">enable_network_address_usage_metrics</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span>
+<span class="w">    </span><span class="nv">id</span><span class="w">                                   </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;vpc-00000000&quot;</span>
+<span class="w">    </span><span class="nv">instance_tenancy</span><span class="w">                     </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;default&quot;</span>
+<span class="w">    </span><span class="nv">ipv6_association_id</span><span class="w">                  </span><span class="o">=</span><span class="w"> </span>null
+<span class="w">    </span><span class="nv">ipv6_cidr_block</span><span class="w">                      </span><span class="o">=</span><span class="w"> </span>null
+<span class="w">    </span><span class="nv">ipv6_cidr_block_network_border_group</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>null
+<span class="w">    </span><span class="nv">ipv6_ipam_pool_id</span><span class="w">                    </span><span class="o">=</span><span class="w"> </span>null
+<span class="w">    </span><span class="nv">ipv6_netmask_length</span><span class="w">                  </span><span class="o">=</span><span class="w"> </span><span class="m">0</span>
+<span class="w">    </span><span class="nv">main_route_table_id</span><span class="w">                  </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;rtb-00000000&quot;</span>
+<span class="w">    </span><span class="nv">owner_id</span><span class="w">                             </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;123456789012&quot;</span>
+<span class="w">    </span><span class="nv">region</span><span class="w">                               </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;us-east-1&quot;</span>
+<span class="w">    </span><span class="nv">tags</span><span class="w">                                 </span><span class="o">=</span><span class="w"> </span><span class="o">{}</span>
+<span class="w">    </span><span class="nv">tags_all</span><span class="w">                             </span><span class="o">=</span><span class="w"> </span><span class="o">{}</span>
+<span class="o">}</span>
+</code></pre></div>
+
+<p>Now to get our main.tf to be more reasonable and show us some of the thing configured about the <span class="caps">VPC</span> we have to move the contents of that resource from the state file into main.tf which should look like the below. You may notice that some values are not brought over like arn, id, tags_all and a bunch of default_ items, the rule here is if its something that would be automatically decided based on the result of applying (aka not available until the vpc is created) then those values do not belong in main.tf and terraform will tell you as much if you run a plan with the values present in the file. Depending on the resource imported this can result in a little trial-and-error to find out what all is not&nbsp;needed.</p>
+<div class="highlight"><pre><span></span><code>resource<span class="w"> </span><span class="s2">&quot;aws_vpc&quot;</span><span class="w"> </span><span class="s2">&quot;test_vpc&quot;</span><span class="w"> </span><span class="o">{</span>
+<span class="w">    </span><span class="nv">assign_generated_ipv6_cidr_block</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span>
+<span class="w">    </span><span class="nv">cidr_block</span><span class="w">                           </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;172.31.0.0/16&quot;</span>
+<span class="w">    </span><span class="nv">enable_dns_hostnames</span><span class="w">                 </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span>
+<span class="w">    </span><span class="nv">enable_dns_support</span><span class="w">                   </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span>
+<span class="w">    </span><span class="nv">enable_network_address_usage_metrics</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span>
+<span class="w">    </span><span class="nv">instance_tenancy</span><span class="w">                     </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;default&quot;</span>
+<span class="w">    </span><span class="nv">region</span><span class="w">                               </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;us-east-1&quot;</span>
+<span class="w">    </span><span class="nv">tags</span><span class="w">                                 </span><span class="o">=</span><span class="w"> </span><span class="o">{}</span>
+<span class="o">}</span>
+</code></pre></div>
+
+<p>Once you have all the non-needed items removed from the terraform code you plan should come back looking clean like the output&nbsp;below</p>
+<div class="highlight"><pre><span></span><code>$&gt;<span class="w"> </span>terraform<span class="w"> </span>plan
+aws_vpc.test_vpc:<span class="w"> </span>Refreshing<span class="w"> </span>state...<span class="w"> </span><span class="o">[</span><span class="nv">id</span><span class="o">=</span>vpc-00000000<span class="o">]</span>
+
+No<span class="w"> </span>changes.<span class="w"> </span>Your<span class="w"> </span>infrastructure<span class="w"> </span>matches<span class="w"> </span>the<span class="w"> </span>configuration.
+
+Terraform<span class="w"> </span>has<span class="w"> </span>compared<span class="w"> </span>your<span class="w"> </span>real<span class="w"> </span>infrastructure<span class="w"> </span>against<span class="w"> </span>your<span class="w"> </span>configuration<span class="w"> </span>and<span class="w"> </span>found<span class="w"> </span>no<span class="w"> </span>differences,<span class="w"> </span>so<span class="w"> </span>no<span class="w"> </span>changes<span class="w"> </span>are<span class="w"> </span>needed.
+</code></pre></div>
+
+<p>From here we can add resources, such as a subnet and the code treats it as if the item was always present in the&nbsp;state</p>
+<div class="highlight"><pre><span></span><code>$&gt;<span class="w"> </span>cat<span class="w"> </span>main.tf
+resource<span class="w"> </span><span class="s2">&quot;aws_vpc&quot;</span><span class="w"> </span><span class="s2">&quot;test_vpc&quot;</span><span class="w"> </span><span class="o">{</span>
+<span class="w">    </span><span class="nv">assign_generated_ipv6_cidr_block</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span>
+<span class="w">    </span><span class="nv">cidr_block</span><span class="w">                           </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;172.31.0.0/16&quot;</span>
+<span class="w">    </span><span class="nv">enable_dns_hostnames</span><span class="w">                 </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span>
+<span class="w">    </span><span class="nv">enable_dns_support</span><span class="w">                   </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span>
+<span class="w">    </span><span class="nv">enable_network_address_usage_metrics</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span>
+<span class="w">    </span><span class="nv">instance_tenancy</span><span class="w">                     </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;default&quot;</span>
+<span class="w">    </span><span class="nv">region</span><span class="w">                               </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;us-east-1&quot;</span>
+<span class="w">    </span><span class="nv">tags</span><span class="w">                                 </span><span class="o">=</span><span class="w"> </span><span class="o">{}</span>
+<span class="o">}</span>
+
+resource<span class="w"> </span><span class="s2">&quot;aws_subnet&quot;</span><span class="w"> </span><span class="s2">&quot;test_subnet&quot;</span><span class="w"> </span><span class="o">{</span>
+<span class="w">    </span><span class="nv">vpc_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>aws_vpc.test_vpc.id
+<span class="w">    </span><span class="nv">cidr_block</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;172.31.1.0/24&quot;</span>
+<span class="w">    </span><span class="nv">availability_zone</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;us-east-1a&quot;</span>
+<span class="w">    </span><span class="nv">map_public_ip_on_launch</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span>
+
+<span class="w">    </span><span class="nv">tags</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">{</span>
+<span class="w">        </span><span class="nv">Name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;test_subnet&quot;</span>
+<span class="w">    </span><span class="o">}</span>
+<span class="o">}</span>
+
+$&gt;<span class="w"> </span>terraform<span class="w"> </span>plan
+aws_vpc.test_vpc:<span class="w"> </span>Refreshing<span class="w"> </span>state...<span class="w"> </span><span class="o">[</span><span class="nv">id</span><span class="o">=</span>vpc-00000000<span class="o">]</span>
+
+Terraform<span class="w"> </span>used<span class="w"> </span>the<span class="w"> </span>selected<span class="w"> </span>providers<span class="w"> </span>to<span class="w"> </span>generate<span class="w"> </span>the<span class="w"> </span>following<span class="w"> </span>execution<span class="w"> </span>plan.<span class="w"> </span>Resource<span class="w"> </span>actions<span class="w"> </span>are<span class="w"> </span>indicated<span class="w"> </span>with<span class="w"> </span>the<span class="w"> </span>following<span class="w"> </span>symbols:
+<span class="w">  </span>+<span class="w"> </span>create
+
+Terraform<span class="w"> </span>will<span class="w"> </span>perform<span class="w"> </span>the<span class="w"> </span>following<span class="w"> </span>actions:
+
+<span class="w">  </span><span class="c1"># aws_subnet.test_subnet will be created</span>
+<span class="w">  </span>+<span class="w"> </span>resource<span class="w"> </span><span class="s2">&quot;aws_subnet&quot;</span><span class="w"> </span><span class="s2">&quot;test_subnet&quot;</span><span class="w"> </span><span class="o">{</span>
+<span class="w">      </span>+<span class="w"> </span><span class="nv">arn</span><span class="w">                                            </span><span class="o">=</span><span class="w"> </span><span class="o">(</span>known<span class="w"> </span>after<span class="w"> </span>apply<span class="o">)</span>
+<span class="w">      </span>+<span class="w"> </span><span class="nv">assign_ipv6_address_on_creation</span><span class="w">                </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span>
+<span class="w">      </span>+<span class="w"> </span><span class="nv">availability_zone</span><span class="w">                              </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;us-east-1a&quot;</span>
+<span class="w">      </span>+<span class="w"> </span><span class="nv">availability_zone_id</span><span class="w">                           </span><span class="o">=</span><span class="w"> </span><span class="o">(</span>known<span class="w"> </span>after<span class="w"> </span>apply<span class="o">)</span>
+<span class="w">      </span>+<span class="w"> </span><span class="nv">cidr_block</span><span class="w">                                     </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;172.31.1.0/24&quot;</span>
+<span class="w">      </span>+<span class="w"> </span><span class="nv">enable_dns64</span><span class="w">                                   </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span>
+<span class="w">      </span>+<span class="w"> </span><span class="nv">enable_resource_name_dns_a_record_on_launch</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span>
+<span class="w">      </span>+<span class="w"> </span><span class="nv">enable_resource_name_dns_aaaa_record_on_launch</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span>
+<span class="w">      </span>+<span class="w"> </span><span class="nv">id</span><span class="w">                                             </span><span class="o">=</span><span class="w"> </span><span class="o">(</span>known<span class="w"> </span>after<span class="w"> </span>apply<span class="o">)</span>
+<span class="w">      </span>+<span class="w"> </span><span class="nv">ipv6_cidr_block</span><span class="w">                                </span><span class="o">=</span><span class="w"> </span><span class="o">(</span>known<span class="w"> </span>after<span class="w"> </span>apply<span class="o">)</span>
+<span class="w">      </span>+<span class="w"> </span><span class="nv">ipv6_cidr_block_association_id</span><span class="w">                 </span><span class="o">=</span><span class="w"> </span><span class="o">(</span>known<span class="w"> </span>after<span class="w"> </span>apply<span class="o">)</span>
+<span class="w">      </span>+<span class="w"> </span><span class="nv">ipv6_native</span><span class="w">                                    </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span>
+<span class="w">      </span>+<span class="w"> </span><span class="nv">map_public_ip_on_launch</span><span class="w">                        </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span>
+<span class="w">      </span>+<span class="w"> </span><span class="nv">owner_id</span><span class="w">                                       </span><span class="o">=</span><span class="w"> </span><span class="o">(</span>known<span class="w"> </span>after<span class="w"> </span>apply<span class="o">)</span>
+<span class="w">      </span>+<span class="w"> </span><span class="nv">private_dns_hostname_type_on_launch</span><span class="w">            </span><span class="o">=</span><span class="w"> </span><span class="o">(</span>known<span class="w"> </span>after<span class="w"> </span>apply<span class="o">)</span>
+<span class="w">      </span>+<span class="w"> </span><span class="nv">region</span><span class="w">                                         </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;us-east-1&quot;</span>
+<span class="w">      </span>+<span class="w"> </span><span class="nv">tags</span><span class="w">                                           </span><span class="o">=</span><span class="w"> </span><span class="o">{</span>
+<span class="w">          </span>+<span class="w"> </span><span class="s2">&quot;Name&quot;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;test_subnet&quot;</span>
+<span class="w">        </span><span class="o">}</span>
+<span class="w">      </span>+<span class="w"> </span><span class="nv">tags_all</span><span class="w">                                       </span><span class="o">=</span><span class="w"> </span><span class="o">{</span>
+<span class="w">          </span>+<span class="w"> </span><span class="s2">&quot;Name&quot;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;test_subnet&quot;</span>
+<span class="w">        </span><span class="o">}</span>
+<span class="w">      </span>+<span class="w"> </span><span class="nv">vpc_id</span><span class="w">                                         </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;vpc-00000000&quot;</span>
+<span class="w">    </span><span class="o">}</span>
+
+Plan:<span class="w"> </span><span class="m">1</span><span class="w"> </span>to<span class="w"> </span>add,<span class="w"> </span><span class="m">0</span><span class="w"> </span>to<span class="w"> </span>change,<span class="w"> </span><span class="m">0</span><span class="w"> </span>to<span class="w"> </span>destroy.
+</code></pre></div>
+  </div>
+
+</article>
+
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      &copy;  dword4
+    </div>
+  </footer>
+
+</body>
+</html>

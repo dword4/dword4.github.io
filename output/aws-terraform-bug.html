@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Terraform & AWS Bug — dword4</title>
+
+<meta name="description" content="Detailing a long-standing bug with Terraform and AWS regarding handling of deletion of resources" />
+<meta property="og:title" content="Terraform & AWS Bug" />
+<meta property="og:type" content="article" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://dword4.github.io/theme/css/main.css" />
+  <link rel="stylesheet" href="https://dword4.github.io/theme/css/pygments.css" />
+
+
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container">
+      <div class="site-title"><a href="https://dword4.github.io/">dword4</a></div>
+      <nav class="site-nav" aria-label="Main navigation">
+        <a href="https://dword4.github.io/">Posts</a>
+        <a href="https://dword4.github.io/pages/about-me.html">About</a>
+        <a href="https://dword4.github.io/archives.html">Archive</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="container">
+<article>
+  <header class="article-header">
+    <h1 class="article-title">Terraform <span class="amp">&amp;</span> <span class="caps">AWS</span>&nbsp;Bug</h1>
+    <div class="article-meta">
+      <time datetime="2025-07-14T00:00:00-04:00">July 14, 2025</time>
+      <span class="dot">&middot;</span>
+      <a href="https://dword4.github.io/category/programming.html">programming</a>
+      <span class="dot">&middot;</span>
+      <span>dword4</span>
+    </div>
+  </header>
+
+  <div class="article-body">
+    <h3>Background</h3>
+<p>If you&#8217;re not a frequent <span class="caps">AWS</span> user, here&#8217;s some quick context: <span class="caps">AWS</span> Firewall Manager is a service that allows centralized management of <span class="caps">AWS</span> WAFs (Web Application Firewalls) across multiple accounts. It&#8217;s commonly used for enforcing global security policies like <span class="caps">IP</span> blocking rules. A few components are relevant to this&nbsp;issue:</p>
+<ul>
+<li>
+<p><strong><span class="caps">IP</span> Set</strong>: A named list of <span class="caps">CIDR</span>-notated <span class="caps">IP</span>&nbsp;addresses.</p>
+</li>
+<li>
+<p><strong>Rule Group</strong>: A collection of <span class="caps">IP</span> sets grouped together under a named rule with specified actions (e.g., allow,&nbsp;block).</p>
+</li>
+</ul>
+<p>As part of building out <span class="caps">WAF</span> controls, you might create several <span class="caps">IP</span> sets (e.g., for sanctioned countries or specific network ranges) and then reference them in rule&nbsp;groups.</p>
+<p>Here are some sample <span class="caps">IP</span> sets used for&nbsp;testing:</p>
+<div class="highlight"><pre><span></span><code>ip_sets = {
+  IP-Block = [
+    &quot;10.0.1.0/24&quot;,
+    &quot;10.2.0.0/24&quot;
+  ],
+  IP-Sloth = [
+    &quot;192.168.2.0/24&quot;,
+    &quot;192.168.3.0/24&quot;
+  ],
+  IP-Snake = [
+    &quot;172.22.0.32/32&quot;,
+    &quot;10.1.2.3/32&quot;
+  ]
+}
+</code></pre></div>
+
+<p>And here&#8217;s how they&#8217;re referenced in a rule&nbsp;group:</p>
+<div class="highlight"><pre><span></span><code><span class="nb">rule_groups</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="na">NetworkRuleGroup</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="na">name</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;IP-Block&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="na">priority</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0</span><span class="p">,</span>
+<span class="w">      </span><span class="na">action</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;block&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nb">statement</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="na">ip_set_reference_statement</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;IP-Block&quot;</span><span class="p">]</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="na">name</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;IP-Allow&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="na">priority</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="p">,</span>
+<span class="w">      </span><span class="na">action</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;allow&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nb">statement</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="na">ip_set_reference_statement</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;IP-Sloth&quot;, &quot;IP-Snake&quot;</span><span class="p">]</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">]</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>Pretty straightforward. These values live in&nbsp;a <code>tfvars</code> file, and Terraform uses some looping logic to construct the necessary&nbsp;resources.</p>
+<p>The configuration plans and applies cleanly—no issues there. The problem arises when modifying an existing <span class="caps">IP</span> set or rule group. Let&#8217;s say we want to remove&nbsp;the <code>IP-Sloth</code> set. You might expect that deleting it from&nbsp;the <code>tfvars</code> file would suffice. Not so&nbsp;fast.</p>
+<h3>The&nbsp;Problem</h3>
+<p>After&nbsp;removing <code>IP-Sloth</code> from&nbsp;the <code>tfvars</code> file, Terraform&#8217;s plan correctly reports that it will destroy one resource and modify another. So far, so good. But when applying the plan, Terraform attempts to destroy&nbsp;the <code>IP-Sloth</code> <span class="caps">IP</span> set <em>before</em> updating the rule group that references&nbsp;it.</p>
+<p>Naturally, this fails—Terraform can&#8217;t delete an <span class="caps">IP</span> set that&#8217;s still in use. The operation spins for a while and then throws an error about the resource being in&nbsp;use.</p>
+<p>This behavior is puzzling. When I ran a&nbsp;full <code>terraform destroy</code> in my lab environment, everything worked as expected. Terraform deleted the rule groups first and then the <span class="caps">IP</span>&nbsp;sets.</p>
+<p>To rule out version-specific issues, I tested with Terraform versions 1.9.7, 1.12.0, and 1.12.1. All exhibited the same&nbsp;behavior.</p>
+<p>This strongly suggests a dependency ordering bug in Terraform when updating resource graphs involving <span class="caps">WAF</span> <span class="caps">IP</span> sets and rule&nbsp;groups.</p>
+<h3>Solution</h3>
+<p>In order to cope with this issue it became necessary to create a much more cumbersome process for revising our <span class="caps">WAF</span> resources to be a multi-step hokey-pokey&nbsp;dance.</p>
+<ol>
+<li>Remove <span class="caps">IP</span> Sets from any Rule Groups that use&nbsp;them</li>
+<li>Commit, Push and&nbsp;Run</li>
+<li>Remove actual <span class="caps">IP</span> Set from&nbsp;tfvars</li>
+<li>Commit, Push and&nbsp;Run</li>
+</ol>
+  </div>
+
+</article>
+
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      &copy;  dword4
+    </div>
+  </footer>
+
+</body>
+</html>

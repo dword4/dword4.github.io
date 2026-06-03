@@ -9,7 +9,7 @@ Summary: Very basic introduction to importing existing AWS resources
 So you have inherited some AWS resources that are not yet in Terraform, but its not feasible to completely rebuild them from scratch without a huge interruption to services. This is where importing comes into play, its not always the most elegant of processes but it helps avoid rebuilding things to get them into IaC.
 
 Lets say we have a VPC that already exists in AWS
-```
+```bash
 $> aws ec2 describe-vpcs 
 {
     "Vpcs": [
@@ -38,7 +38,7 @@ $> aws ec2 describe-vpcs
 
 In order to do an import our code first has to have a very loose idea of what we are going to import, so lets setup for that in our main.tf file. We will assume safely that you have already run terraform init to setup everything.
 
-```
+```bash
 resource "aws_vpc" "test_vpc" {
     # imported resource
 }
@@ -46,7 +46,7 @@ resource "aws_vpc" "test_vpc" {
 
 If you were to run an init and plan on this it would want to create the resource named test-vpc, however we dont want to create anything we want to import. Remember the VpcId from earlier when we looked at the available VPCs? We need to use that with import, it should look like this
 
-```
+```bash
 $> terraform import aws_vpc.test_vpc vpc-00000000
 aws_vpc.test_vpc: Importing from ID "vpc-00000000"...
 aws_vpc.test_vpc: Import prepared!
@@ -60,13 +60,13 @@ The resources that were imported are shown above. These resources are now in
 your Terraform state and will henceforth be managed by Terraform.
 
 If you look at the main.tf it still looks the same, nothing special about it but if we look at the actual terraform state we now see the test_vpc resource we imported.
-```
+```bash
 $> terraform state list
 aws_vpc.test_vpc
 ```
 And to look at the contents of that resource
 
-```
+```bash
 $> terraform state show aws_vpc.test_vpc
 # aws_vpc.test_vpc:
 resource "aws_vpc" "test_vpc" {
@@ -97,7 +97,7 @@ resource "aws_vpc" "test_vpc" {
 
 Now to get our main.tf to be more reasonable and show us some of the thing configured about the VPC we have to move the contents of that resource from the state file into main.tf which should look like the below. You may notice that some values are not brought over like arn, id, tags_all and a bunch of default_ items, the rule here is if its something that would be automatically decided based on the result of applying (aka not available until the vpc is created) then those values do not belong in main.tf and terraform will tell you as much if you run a plan with the values present in the file. Depending on the resource imported this can result in a little trial-and-error to find out what all is not needed.
 
-```
+```bash
 resource "aws_vpc" "test_vpc" {
     assign_generated_ipv6_cidr_block     = false
     cidr_block                           = "172.31.0.0/16"
@@ -112,7 +112,7 @@ resource "aws_vpc" "test_vpc" {
 
 Once you have all the non-needed items removed from the terraform code you plan should come back looking clean like the output below
 
-```
+```bash
 $> terraform plan
 aws_vpc.test_vpc: Refreshing state... [id=vpc-00000000]
 
@@ -123,7 +123,7 @@ Terraform has compared your real infrastructure against your configuration and f
 
 From here we can add resources, such as a subnet and the code treats it as if the item was always present in the state
 
-```
+```bash
 $> cat main.tf
 resource "aws_vpc" "test_vpc" {
     assign_generated_ipv6_cidr_block     = false

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AWS Account Switching with Vault in Jenkins — dword4</title>
+
+<meta name="description" content="A workaround for AWS Account Switching with Vault in Jenkins" />
+<meta property="og:title" content="AWS Account Switching with Vault in Jenkins" />
+<meta property="og:type" content="article" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://dword4.github.io/theme/css/main.css" />
+  <link rel="stylesheet" href="https://dword4.github.io/theme/css/pygments.css" />
+
+
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container">
+      <div class="site-title"><a href="https://dword4.github.io/">dword4</a></div>
+      <nav class="site-nav" aria-label="Main navigation">
+        <a href="https://dword4.github.io/">Posts</a>
+        <a href="https://dword4.github.io/pages/about-me.html">About</a>
+        <a href="https://dword4.github.io/archives.html">Archive</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="container">
+<article>
+  <header class="article-header">
+    <h1 class="article-title"><span class="caps">AWS</span> Account Switching with Vault in&nbsp;Jenkins</h1>
+    <div class="article-meta">
+      <time datetime="2023-06-15T00:00:00-04:00">June 15, 2023</time>
+      <span class="dot">&middot;</span>
+      <a href="https://dword4.github.io/category/programming.html">programming</a>
+      <span class="dot">&middot;</span>
+      <span>dword4</span>
+    </div>
+  </header>
+
+  <div class="article-body">
+    <h2>Problem</h2>
+<p>I ran into an issue recently where some of my automation that cycles through <span class="caps">AWS</span> accounts and runs code
+against each accounts resources broke. It would become sticky to the account that we intially connected
+to Vault and never switch when using `vault read aws/something/else. We worked on trying to use curl calls
+and other various workarounds but nothing seemed to&nbsp;work.</p>
+<h2>Eventual&nbsp;Solution</h2>
+<p>After a few days of working on things off and on I decided to just hammer out a custom function in Groovy
+that would handle the account switching for us. Fastforward like 100+ commits and Jenkins runs later and I 
+finally got something that worked for&nbsp;switching.</p>
+<div class="highlight"><pre><span></span><code>def vaultAWS(account_level, account_team) {
+    def vaultQuery = &quot;aws/$account_level/$account_team/sts/admin&quot;
+    print &quot;testing: $vaultQuery&quot;
+    try {
+        def vaultOutput = sh(returnStdout: true, script: &quot;vault read $vaultQuery&quot;).trim()
+        def keyValuePairs = [:]
+        vaultOutput.split(&#39;\n&#39;).each { line -&gt;
+            def (key, value) = line.split(&#39; &#39;, 2).collect { it.trim() }
+            if ( key == &#39;access_key&#39; || key == &#39;secret_key&#39; || key == &#39;security_token&#39;){
+                keyValuePairs[key] = value
+            }
+        }
+        // set env variables
+        env.AWS_ACCESS_KEY_ID = keyValuePairs[&#39;access_key&#39;]
+        env.AWS_SECRET_ACCESS_KEY = keyValuePairs[&#39;secret_key&#39;]
+        env.AWS_SESSION_TOKEN = keyValuePairs[&#39;security_token&#39;]
+    } catch (Exception e) {
+        println &quot;Something went wrong&quot;
+    }
+
+}
+</code></pre></div>
+
+<p>This let me loop through our lists of accounts and run a basic test to make sure I could actually
+see the resources in the <span class="caps">AWS</span> account. Unfortunately I found additional problems (like an entire set
+of accounts were simply <em>poof</em> gone) but the code worked exactly as I had hoped. Further research lead
+me to the use of @Grab to pull from git repos for code so ideally this can be pulled remotely instead
+of manually pasted into every single Jenkins job we end up using it in. Of course by the time I get all
+that worked out we are going to start the joyful process of moving out automated jobs from Jenkins to 
+Gitlab <span class="caps">CI</span>/<span class="caps">CD</span></p>
+  </div>
+
+</article>
+
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      &copy;  dword4
+    </div>
+  </footer>
+
+</body>
+</html>
