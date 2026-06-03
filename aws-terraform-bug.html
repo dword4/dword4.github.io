@@ -1,64 +1,50 @@
 <!DOCTYPE html>
+<html lang="en">
 <head>
-    <meta charset="utf-8" />
-    <!-- Set the viewport width to device width for mobile -->
-    <meta name="viewport" content="width=device-width" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Terraform & AWS Bug — dword4</title>
 
-    <title>Terraform & AWS Bug</title>
+<meta name="description" content="Detailing a long-standing bug with Terraform and AWS regarding handling of deletion of resources" />
+<meta property="og:title" content="Terraform & AWS Bug" />
+<meta property="og:type" content="article" />
 
-    <link rel="stylesheet" href="https://dword4.github.io/theme/css/normalize.css" />
-    <link rel="stylesheet" href="https://dword4.github.io/theme/css/foundation.min.css" />
-    <link rel="stylesheet" href="https://dword4.github.io/theme/css/style.css" />
-    <link rel="stylesheet" href="https://dword4.github.io/theme/css/pygments.css" />	
-    <script src="https://dword4.github.io/theme/js/custom.modernizr.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://dword4.github.io/theme/css/main.css" />
+  <link rel="stylesheet" href="https://dword4.github.io/theme/css/pygments.css" />
 
-    <!-- So Firefox can bookmark->"abo this site" -->
-    <!-- counter.dev analytics -->
-    <script src="https://cdn.counter.dev/script.js" data-id="73758749-b152-4acd-80e7-11da6c5a7f74" data-utcoffset="-5"></script>
-    <!-- end counter.dev analyrics -->
 
 </head>
-
 <body>
 
-<!-- Nav Bar -->
-<nav>
-<div class="top-bar">
-<div class="row">
-    <div class="large-9 large-centered columns">
-	    <h1><a href="https://dword4.github.io">dword4</a></h1>
+  <header class="site-header">
+    <div class="container">
+      <div class="site-title"><a href="https://dword4.github.io/">dword4</a></div>
+      <nav class="site-nav" aria-label="Main navigation">
+        <a href="https://dword4.github.io/">Posts</a>
+        <a href="https://dword4.github.io/pages/about-me.html">About</a>
+        <a href="https://dword4.github.io/archives.html">Archive</a>
+      </nav>
     </div>
-</div>
-</div>
+  </header>
 
-<!-- Show menu items and pages -->
-<div class="row">
-<div class="large-9 columns">
-    <ul class="button-group navigation">
-
-            <li><a href="https://dword4.github.io/pages/about-me.html" class="button secondary small">About&nbsp;Me</a></li>
-    </ul>
-</div>
-</div>
-</nav>
-<!-- End Nav -->
-
-
-<!-- Main Page Content and Sidebar -->
-<div class="row">
-
-    <!-- Main Blog Content -->
-    <div class="large-9 columns">
+  <main>
+    <div class="container">
 <article>
-    <header>
-        <h3 class="article-title"><a href="https://dword4.github.io/aws-terraform-bug.html" rel="bookmark"
-        title="Permalink to Terraform & AWS Bug">Terraform <span class="amp">&amp;</span> <span class="caps">AWS</span>&nbsp;Bug</a></h3>
-    </header>
+  <header class="article-header">
+    <h1 class="article-title">Terraform <span class="amp">&amp;</span> <span class="caps">AWS</span>&nbsp;Bug</h1>
+    <div class="article-meta">
+      <time datetime="2025-07-14T00:00:00-04:00">July 14, 2025</time>
+      <span class="dot">&middot;</span>
+      <a href="https://dword4.github.io/category/programming.html">programming</a>
+      <span class="dot">&middot;</span>
+      <span>dword4</span>
+    </div>
+  </header>
 
-<h6 class="subheader" title="2025-07-14T00:00:00-04:00">Mon 14 July 2025
-</h6>
-
-
+  <div class="article-body">
     <h3>Background</h3>
 <p>If you&#8217;re not a frequent <span class="caps">AWS</span> user, here&#8217;s some quick context: <span class="caps">AWS</span> Firewall Manager is a service that allows centralized management of <span class="caps">AWS</span> WAFs (Web Application Firewalls) across multiple accounts. It&#8217;s commonly used for enforcing global security policies like <span class="caps">IP</span> blocking rules. A few components are relevant to this&nbsp;issue:</p>
 <ul>
@@ -88,34 +74,34 @@
 </code></pre></div>
 
 <p>And here&#8217;s how they&#8217;re referenced in a rule&nbsp;group:</p>
-<div class="highlight"><pre><span></span><code>rule_groups = {
-  NetworkRuleGroup = [
-    {
-      name     = &quot;IP-Block&quot;,
-      priority = 0,
-      action   = &quot;block&quot;,
-      statement = {
-        ip_set_reference_statement = [&quot;IP-Block&quot;]
-      }
-    },
-    {
-      name     = &quot;IP-Allow&quot;,
-      priority = 1,
-      action   = &quot;allow&quot;,
-      statement = {
-        ip_set_reference_statement = [&quot;IP-Sloth&quot;, &quot;IP-Snake&quot;]
-      }
-    }
-  ]
-}
+<div class="highlight"><pre><span></span><code><span class="nb">rule_groups</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="na">NetworkRuleGroup</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="na">name</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;IP-Block&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="na">priority</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0</span><span class="p">,</span>
+<span class="w">      </span><span class="na">action</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;block&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nb">statement</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="na">ip_set_reference_statement</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;IP-Block&quot;</span><span class="p">]</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="na">name</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;IP-Allow&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="na">priority</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="p">,</span>
+<span class="w">      </span><span class="na">action</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;allow&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nb">statement</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="na">ip_set_reference_statement</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;IP-Sloth&quot;, &quot;IP-Snake&quot;</span><span class="p">]</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">]</span>
+<span class="p">}</span>
 </code></pre></div>
 
-<p>Pretty straightforward. These values live in a <code>tfvars</code> file, and Terraform uses some looping logic to construct the necessary&nbsp;resources.</p>
-<p>The configuration plans and applies cleanly—no issues there. The problem arises when modifying an existing <span class="caps">IP</span> set or rule group. Let&#8217;s say we want to remove the <code>IP-Sloth</code> set. You might expect that deleting it from the <code>tfvars</code> file would suffice. Not so&nbsp;fast.</p>
+<p>Pretty straightforward. These values live in&nbsp;a <code>tfvars</code> file, and Terraform uses some looping logic to construct the necessary&nbsp;resources.</p>
+<p>The configuration plans and applies cleanly—no issues there. The problem arises when modifying an existing <span class="caps">IP</span> set or rule group. Let&#8217;s say we want to remove&nbsp;the <code>IP-Sloth</code> set. You might expect that deleting it from&nbsp;the <code>tfvars</code> file would suffice. Not so&nbsp;fast.</p>
 <h3>The&nbsp;Problem</h3>
-<p>After removing <code>IP-Sloth</code> from the <code>tfvars</code> file, Terraform&#8217;s plan correctly reports that it will destroy one resource and modify another. So far, so good. But when applying the plan, Terraform attempts to destroy the <code>IP-Sloth</code> <span class="caps">IP</span> set <em>before</em> updating the rule group that references&nbsp;it.</p>
+<p>After&nbsp;removing <code>IP-Sloth</code> from&nbsp;the <code>tfvars</code> file, Terraform&#8217;s plan correctly reports that it will destroy one resource and modify another. So far, so good. But when applying the plan, Terraform attempts to destroy&nbsp;the <code>IP-Sloth</code> <span class="caps">IP</span> set <em>before</em> updating the rule group that references&nbsp;it.</p>
 <p>Naturally, this fails—Terraform can&#8217;t delete an <span class="caps">IP</span> set that&#8217;s still in use. The operation spins for a while and then throws an error about the resource being in&nbsp;use.</p>
-<p>This behavior is puzzling. When I ran a full <code>terraform destroy</code> in my lab environment, everything worked as expected. Terraform deleted the rule groups first and then the <span class="caps">IP</span>&nbsp;sets.</p>
+<p>This behavior is puzzling. When I ran a&nbsp;full <code>terraform destroy</code> in my lab environment, everything worked as expected. Terraform deleted the rule groups first and then the <span class="caps">IP</span>&nbsp;sets.</p>
 <p>To rule out version-specific issues, I tested with Terraform versions 1.9.7, 1.12.0, and 1.12.1. All exhibited the same&nbsp;behavior.</p>
 <p>This strongly suggests a dependency ordering bug in Terraform when updating resource graphs involving <span class="caps">WAF</span> <span class="caps">IP</span> sets and rule&nbsp;groups.</p>
 <h3>Solution</h3>
@@ -126,65 +112,18 @@
 <li>Remove actual <span class="caps">IP</span> Set from&nbsp;tfvars</li>
 <li>Commit, Push and&nbsp;Run</li>
 </ol>
-<p class="subheader">Category: <a href="https://dword4.github.io/category/programming.html">programming</a>
-
-</p>
-
-
-
+  </div>
 
 </article>
+
     </div>
-    <!-- End Main Content -->
+  </main>
 
-    <!-- Sidebar -->
-    <aside class="large-3 columns">
-        <h5 class="sidebar-title">Site</h5>
-        <ul class="side-nav">
-            <li><a href="https://dword4.github.io/archives.html">Archives</a>
-            <li><a href="https://dword4.github.io/tags.html">Tags</a>
-
-
-        </ul>
-
-		
-        <h5 class="sidebar-title">Categories</h5>
-        <ul class="side-nav">
-            <li><a href="https://dword4.github.io/category/automation.html">automation</a></li>
-            <li><a href="https://dword4.github.io/category/cloud.html">cloud</a></li>
-            <li><a href="https://dword4.github.io/category/cloud-aws.html">cloud-aws</a></li>
-            <li><a href="https://dword4.github.io/category/devops.html">devops</a></li>
-            <li><a href="https://dword4.github.io/category/fixes.html">fixes</a></li>
-            <li><a href="https://dword4.github.io/category/general.html">general</a></li>
-            <li><a href="https://dword4.github.io/category/homelab.html">Homelab</a></li>
-            <li><a href="https://dword4.github.io/category/programming.html">programming</a></li>
-            <li><a href="https://dword4.github.io/category/programming-cloud-git.html">programming, cloud, git</a></li>
-            <li><a href="https://dword4.github.io/category/projects.html">projects</a></li>
-            <li><a href="https://dword4.github.io/category/sysadmin.html">sysadmin</a></li>
-            <li><a href="https://dword4.github.io/category/thoughts.html">thoughts</a></li>
-   
-        </ul>
-
-        <h5 class="sidebar-title">Links</h5>
-        <ul class="side-nav">
-            <li><a href="https://www.dazedpro.com/">DazedPro</a></li>
-            <li><a href="https://mpietruszka.com/">mikep</a></li>
-        </ul>
-		
-
-    </aside> <!-- End Sidebar -->
-
-</div> <!-- End Main Content and Sidebar -->
-
-
-<!-- Footer -->
-<footer class="row">
-    <div class="large-12 columns">
-        <hr />
-        <div class="row">
-            <div class="large-6 columns">
-                <p>dword4 by dword4</p>
-            </div>
-            </div>
+  <footer class="site-footer">
+    <div class="container">
+      &copy;  dword4
     </div>
-</footer>
+  </footer>
+
+</body>
+</html>
