@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>My Homelab - Building a Production-Grade Network at Home — dword4</title>
+
+<meta name="description" content="A tour of my home lab infrastructure — from Cisco switching and Ruckus APs through Proxmox/Unraid compute, VLAN segmentation, internal PKI, SSO with..." />
+<meta property="og:title" content="My Homelab - Building a Production-Grade Network at Home" />
+<meta property="og:type" content="article" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://dword4.github.io/theme/css/main.css" />
+  <link rel="stylesheet" href="https://dword4.github.io/theme/css/pygments.css" />
+
+
+  <script src="https://cdn.counter.dev/script.js" data-id="73758749-b152-4acd-80e7-11da6c5a7f74" data-utcoffset="-5"></script>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container">
+      <div class="site-title"><a href="https://dword4.github.io/">dword4</a></div>
+      <nav class="site-nav" aria-label="Main navigation">
+        <a href="https://dword4.github.io/">Posts</a>
+        <a href="https://dword4.github.io/pages/about-me.html">About</a>
+        <a href="https://dword4.github.io/archives.html">Archive</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="container">
+<article>
+  <header class="article-header">
+    <h1 class="article-title">My Homelab - Building a Production-Grade Network at&nbsp;Home</h1>
+    <div class="article-meta">
+      <time datetime="2026-06-08T00:00:00-04:00">June 8, 2026</time>
+      <span class="dot">&middot;</span>
+      <a href="https://dword4.github.io/category/homelab.html">homelab</a>
+      <span class="dot">&middot;</span>
+      <span>dword4</span>
+    </div>
+  </header>
+
+  <div class="article-body">
+    <p>Over the years, my homelab has evolved from a few spare machines running random services into something that genuinely resembles enterprise infrastructure — complete with VLANs, <span class="caps">SSO</span>, internal <span class="caps">PKI</span>, <span class="caps">CI</span>/<span class="caps">CD</span> pipelines, and a full observability stack. Here&#8217;s a tour of what I&#8217;m running and&nbsp;why.</p>
+<hr>
+<h2>The&nbsp;Hardware</h2>
+<p>The foundation is a <strong>Cisco <span class="caps">C891F</span></strong> router paired with a <strong>Cisco <span class="caps">C3560CX</span></strong> switch, giving me proper enterprise-grade L3 switching at the edge. Wireless is handled by a pair of <strong>Ruckus R710</strong> access points running Unleashed firmware — these are enterprise APs and the Wi-Fi quality shows&nbsp;it.</p>
+<p>For compute, I run two <strong>Proxmox</strong> hypervisor nodes and two <strong>Unraid</strong> servers alongside a bare metal Linux dev machine. A <strong>Raspberry Pi 4</strong> and <strong>Pi 5</strong> round out the fleet, handling lightweight workloads and edge tasks. It&#8217;s more iron than most people have in a datacenter closet, but there&#8217;s always something to run on&nbsp;it.</p>
+<hr>
+<h2>Network&nbsp;Segmentation</h2>
+<p>The network is divided into four&nbsp;VLANs:</p>
+<table>
+<thead>
+<tr>
+<th><span class="caps">VLAN</span></th>
+<th>Name</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>10</td>
+<td>Trusted</td>
+<td>Daily drivers, workstations</td>
+</tr>
+<tr>
+<td>20</td>
+<td>IoT</td>
+<td>Smart home devices, cameras</td>
+</tr>
+<tr>
+<td>30</td>
+<td>Guest</td>
+<td>Visitor Wi-Fi</td>
+</tr>
+<tr>
+<td>99</td>
+<td>Management</td>
+<td>Infrastructure access</td>
+</tr>
+</tbody>
+</table>
+<p><span class="caps">DNS</span> is handled internally by <strong>Technitium</strong>&nbsp;at <code>192.168.99.3</code>, resolving&nbsp;the <code>int.itsn.network</code> domain for all internal services. This makes service discovery clean and consistent — every self-hosted app gets a proper&nbsp;hostname.</p>
+<hr>
+<h2>Identity <span class="amp">&amp;</span> <span class="caps">PKI</span></h2>
+<p>One of the more &#8220;enterprise-y&#8221; things I&#8217;ve built is a proper identity layer. <strong>Authentik</strong> serves as my <span class="caps">SSO</span>/IdP — think of it as a self-hosted Okta portal. Services like Grafana and Netbox authenticate via <span class="caps">OIDC</span>, so there&#8217;s a single login experience across the&nbsp;stack.</p>
+<p>Certificates are managed by <strong>Certwarden</strong>, backed by an internal <span class="caps">CA</span> called <strong>NestCA</strong>. Every service&nbsp;on <code>*.int.itsn.network</code> gets a valid <span class="caps">TLS</span> cert via wildcard, which means no browser warnings and&nbsp;no <code>curl -k</code> shortcuts. Real <span class="caps">TLS</span>,&nbsp;internally.</p>
+<hr>
+<h2>Observability</h2>
+<p>The observability stack centers on <strong>Grafana</strong> with <strong>Prometheus</strong> for metrics and <strong>Loki + Promtail</strong> for log aggregation. Logs flow in from Proxmox hypervisors, Ruckus APs (via rsyslog), and various services — all centralized and queryable from a single Grafana&nbsp;instance.</p>
+<p>This isn&#8217;t just a dashboard for show. When something breaks at 2am, the logs are&nbsp;there.</p>
+<hr>
+<h2><span class="caps">CI</span>/<span class="caps">CD</span> <span class="amp">&amp;</span>&nbsp;Secrets</h2>
+<p><strong>Forgejo</strong> (a self-hosted Gitea fork) hosts my code, and <strong>Forgejo Actions</strong> handles <span class="caps">CI</span>/<span class="caps">CD</span> — pipelines that build, test, and deploy against internal infrastructure with <span class="caps">SSL</span> trust properly configured against&nbsp;NestCA.</p>
+<p>Secrets are managed by a self-hosted <strong>Infisical</strong> instance&nbsp;at <code>infisical.int.itsn.network</code>. Machine identities authenticate to pull secrets at runtime, keeping credentials out of repos and environment&nbsp;variables.</p>
+<hr>
+<h2>Infrastructure as&nbsp;Code</h2>
+<p><span class="caps">VM</span> provisioning on Proxmox is fully automated with <strong>Terraform</strong> (using&nbsp;the <code>bpg/proxmox</code> provider) and <strong>Ansible</strong> for configuration management. Cloud-init Ubuntu 24.04 templates make spinning up new VMs a&nbsp;single <code>terraform apply</code>. <span class="caps">AWS</span> infrastructure is also managed via&nbsp;Terraform.</p>
+<hr>
+<h2>Self-Hosted&nbsp;Services</h2>
+<p>The application layer is dense. A sampling of what&#8217;s&nbsp;running:</p>
+<ul>
+<li><strong>Nginx Proxy Manager</strong> — reverse proxy and <span class="caps">SSL</span>&nbsp;termination</li>
+<li><strong>Netbox</strong> — <span class="caps">IPAM</span> and network&nbsp;documentation</li>
+<li><strong>Bookstack</strong> — internal&nbsp;wiki</li>
+<li><strong>Jellyfin + arr stack</strong> — media&nbsp;server</li>
+<li><strong>Home Assistant</strong> — home automation with Zigbee, Node-<span class="caps">RED</span>, Frigate <span class="caps">NVR</span> (object detection, <span class="caps">LPR</span>, face recognition), and SmartCast <span class="caps">TV</span>&nbsp;control</li>
+<li><strong>Meshtastic/LoRa</strong> — off-grid mesh networking&nbsp;experiments</li>
+</ul>
+<hr>
+<h2>Lessons&nbsp;Learned</h2>
+<p>Running homelab infrastructure at this scale teaches you things you can&#8217;t get from a&nbsp;tutorial:</p>
+<ul>
+<li><strong><span class="caps">PKI</span> is hard until it isn&#8217;t.</strong> Getting internal <span class="caps">TLS</span> right — <span class="caps">CA</span> trust, cert distribution, mTLS — is painful once and painless&nbsp;forever.</li>
+<li><strong>Secrets management matters even at home.</strong> Hardcoded credentials in&nbsp;a <code>docker-compose.yml</code> are a bad habit at any&nbsp;scale.</li>
+<li><strong>Observability is not optional.</strong> If you can&#8217;t see what&#8217;s happening, you&#8217;re just&nbsp;guessing.</li>
+<li><strong>Automation compounds.</strong> Every hour spent on Terraform and Ansible pays back many times over.
+The homelab is never &#8220;done&#8221; — there&#8217;s always another service to integrate, another pipeline to harden, another protocol to explore. That&#8217;s the&nbsp;point.</li>
+</ul>
+  </div>
+
+</article>
+
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      &copy;  dword4
+    </div>
+  </footer>
+
+</body>
+</html>
