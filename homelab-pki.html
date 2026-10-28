@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PKI in the Homelab — dword4</title>
+
+<meta name="description" content="I got tired of clicking through certificate warnings and typing curl -k, so I built an internal CA. Here’s how NestCA and Certwarden fit together, why..." />
+<meta property="og:title" content="PKI in the Homelab" />
+<meta property="og:type" content="article" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://dword4.github.io/theme/css/main.css" />
+  <link rel="stylesheet" href="https://dword4.github.io/theme/css/pygments.css" />
+
+
+  <script src="https://cdn.counter.dev/script.js" data-id="73758749-b152-4acd-80e7-11da6c5a7f74" data-utcoffset="-5"></script>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container">
+      <div class="site-title"><a href="https://dword4.github.io/">dword4</a></div>
+      <nav class="site-nav" aria-label="Main navigation">
+        <a href="https://dword4.github.io/">Posts</a>
+        <a href="https://dword4.github.io/pages/about-me.html">About</a>
+        <a href="https://dword4.github.io/archives.html">Archive</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="container">
+<article>
+  <header class="article-header">
+    <h1 class="article-title"><span class="caps">PKI</span> in the&nbsp;Homelab</h1>
+    <div class="article-meta">
+      <time datetime="2026-10-28T00:00:00-04:00">October 28, 2026</time>
+      <span class="dot">&middot;</span>
+      <a href="https://dword4.github.io/category/homelab.html">homelab</a>
+      <span class="dot">&middot;</span>
+      <span>dword4</span>
+    </div>
+  </header>
+
+  <div class="article-body">
+    <p>For a long time my homelab had a dirty little secret: a browser full of &#8220;Your connection is not private&#8221; warnings that I had trained myself to click straight through, and a shell history littered&nbsp;with <code>curl -k</code>. I would never let that fly at work, so eventually I got tired of letting it fly at home. This is the story of how I ended up running my own certificate authority, and what I wish I had known before I&nbsp;started.</p>
+<h2>Why&nbsp;Bother?</h2>
+<p>The honest answer is that it started as annoyance and turned into a learning exercise. Once I had Authentik handing out <span class="caps">SSO</span> via <span class="caps">OIDC</span>, Forgejo running <span class="caps">CI</span>, Infisical holding secrets and a pile of other services all talking to each other over <span class="caps">HTTPS</span>, the self-signed cert shortcuts stopped being a minor nuisance and started being actual breakage. <span class="caps">OIDC</span> clients refuse to talk to an IdP they dont trust, <span class="caps">CI</span> runners fail builds on certificate errors, and every tool has its own special flag for ignoring them (none of which are the same flag,&nbsp;naturally).</p>
+<p>The other reason is that <span class="caps">PKI</span> is one of those topics that is easy to hand-wave in a work environment because someone else set it up years ago. Building one from scratch forces you to actually understand what a trust chain is, who is vouching for whom, and what breaks when the answer is&nbsp;nobody.</p>
+<h2>The&nbsp;Setup</h2>
+<p>The short version of my current&nbsp;layout:</p>
+<ul>
+<li><strong>NestCA</strong> is my internal certificate&nbsp;authority</li>
+<li><strong>Certwarden</strong> sits in front of it and handles requesting, renewing and distributing certificates over <span class="caps">ACME</span></li>
+<li><strong>Technitium</strong> serves&nbsp;the <code>int.itsn.network</code> zone so everything has a real&nbsp;hostname</li>
+<li><strong>Nginx Proxy Manager</strong> terminates <span class="caps">TLS</span> for a lot of the web&nbsp;apps</li>
+</ul>
+<p>Every service that lives&nbsp;under <code>*.int.itsn.network</code> gets a valid certificate, and I went with a wildcard to keep things simple. Is a wildcard the most security-minded choice? No, one stolen key opens up the whole domain. But for a network where I am the only admin and the alternative is a hundred individual certs to babysit, I was happy to make that&nbsp;trade.</p>
+<p>&#91;<span class="caps">DREW</span>: add a sentence or two here on how NestCA is built (software, root vs intermediate, where the root key lives) and how long your certs are valid for. I did not want to guess at those&nbsp;details.]</p>
+<h2>Certwarden Is the Part That Makes It&nbsp;Livable</h2>
+<p>Issuing a certificate once is easy. Issuing it every few weeks forever and getting the new one to the right place is the part that kills homelab <span class="caps">PKI</span> projects. Anyone can follow a guide and generate a cert, then forget about it until it expires on a Saturday night and half the house stops&nbsp;working.</p>
+<p>Certwarden changed that for me by treating certificates as something with a lifecycle rather than a file I generated once. It requests them, renews them before they expire, and gives the consuming services a stable place to fetch the current version. The first time a certificate rotated on its own and nothing noticed, I stared at the logs for a while waiting for the other shoe to drop. It never&nbsp;did.</p>
+<h2>Distributing Trust (The Actually Painful&nbsp;Part)</h2>
+<p>Here is the thing nobody warns you about: running a <span class="caps">CA</span> is the easy half. The hard half is getting every single client to trust&nbsp;it.</p>
+<p>Browsers and workstations are the simple case, you import the root once and you are done. The pain shows up in all the places you forget about. Forgejo Actions runners need to trust NestCA or every pipeline that talks to an internal service falls over. Containers carry their own trust stores, so a service that works fine on the host can fail the instant it runs in a container that has never heard of your <span class="caps">CA</span>. Wiring up the Infisical integration for my pipelines meant chasing down <span class="caps">TLS</span> chain problems in more than one place, and at least once the mysterious &#8220;<span class="caps">TLS</span> issue&#8221; I spent an evening on turned out to be a typo in the hostname.&nbsp;Classic.</p>
+<p>The lesson I took away is to treat the trust store like any other piece of configuration. Put the root cert in your Ansible roles and your base images from day one, and you stop discovering missing trust one broken pipeline at a&nbsp;time.</p>
+<h2>What I Would Do&nbsp;Differently</h2>
+<p>If I were starting over I would be more deliberate up front about the boring&nbsp;things:</p>
+<ul>
+<li>Decide how the root and intermediates are structured <em>before</em> issuing anything, because changing it later means re-trusting&nbsp;everywhere</li>
+<li>Bake the <span class="caps">CA</span> into base images and configuration management&nbsp;immediately</li>
+<li>Put expiry monitoring in place early. Prometheus and Grafana are already in my stack, so watching certificate expiry dates is a small amount of work that saves a very annoying&nbsp;outage</li>
+</ul>
+<h2>Was It Worth&nbsp;It?</h2>
+<p>Absolutely, though not for the reason I expected. The padlock in the browser is nice, and no longer&nbsp;typing <code>-k</code> is nicer. What I really got was a much better mental model of how trust works, which has paid off at work more than&nbsp;once.</p>
+<p>The pain is front-loaded. It is miserable until the first time everything just works, and then it quietly stops being something you think about at all. I think that is about the best thing you can say about any piece of&nbsp;infrastructure.</p>
+<p>#<span class="caps">PKI</span> #Homelab #<span class="caps">TLS</span>&nbsp;#Certwarden</p>
+  </div>
+
+</article>
+
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      &copy;  dword4
+    </div>
+  </footer>
+
+</body>
+</html>
